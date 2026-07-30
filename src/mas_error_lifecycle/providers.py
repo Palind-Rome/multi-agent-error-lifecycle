@@ -23,7 +23,12 @@ class ModelRequest:
     prompt_id: str
     messages: tuple[ChatMessage, ...]
     temperature: float = 0.0
+    top_p: float | None = None
+    seed: int | None = None
+    stop: tuple[str, ...] = ()
     max_output_tokens: int | None = None
+    timeout_seconds: float | None = None
+    attempt: int = 1
     metadata: dict[str, Any] = field(default_factory=dict)
 
 
@@ -32,9 +37,9 @@ class ModelResponse:
     content: str
     provider: str
     model: str
-    input_tokens: int
-    output_tokens: int
-    latency_ms: float
+    input_tokens: int | None
+    output_tokens: int | None
+    latency_ms: float | None
     cost_usd: float | None = None
     raw_response_id: str | None = None
     metadata: dict[str, Any] = field(default_factory=dict)

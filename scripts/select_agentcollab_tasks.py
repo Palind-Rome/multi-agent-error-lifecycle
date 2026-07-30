@@ -89,7 +89,14 @@ def main() -> int:
     with temporary.open("w", encoding="utf-8") as handle:
         json.dump(
             {
-                "selection_version": "0.1.0",
+                "selection_version": "0.2.0",
+                "purpose": "instrumentation_stress_sample",
+                "analysis_eligible": False,
+                "selection_caveat": (
+                    f"The min_agents={args.min_agents} filter intentionally "
+                    "favors larger instrumentation cases. This is not a "
+                    "representative or balanced sample for benchmark inference."
+                ),
                 "seed": args.seed,
                 "per_cell": args.per_cell,
                 "min_agents": args.min_agents,

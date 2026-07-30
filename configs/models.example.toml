@@ -20,10 +20,23 @@ model = "UNSET"
 [judge]
 provider = "UNSET"
 model = "UNSET"
-independent_from_tested_models = true
+purpose = "artifact_adoption_or_diagnostic_scoring"
+prompt_name = "UNSET"
+prompt_sha256 = "UNSET"
+scoring_mode = "UNSET"
+calibration_dataset = "UNSET"
+calibration_version = "UNSET"
+agreement_reference = "UNSET"
+tested_model_disjoint = true
+# A boolean is not sufficient provenance: runtime code must compare provider/model
+# identities and persist votes, aggregation, blind fields, tokens, and cost.
 
 [limits]
+# Zero means intentionally blocked, not unlimited. Copy this file locally and
+# set explicit positive caps before any real-model call.
 max_input_tokens_per_call = 0
 max_output_tokens_per_call = 0
 max_cost_usd_per_run = 0.0
 max_wall_seconds_per_run = 0
+max_actions_per_agent = 0
+max_cost_usd_per_experiment = 0.0

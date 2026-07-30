@@ -1,5 +1,12 @@
 [experiment]
-name = "error-lifecycle-pilot-v0.1"
+name = "agentcollab-native-instrumentation-smoke-v0.2"
+purpose = "engineering_smoke"
+protocol_kind = "agentcollab_native"
+suite_kind = "native"
+execution_status = "ready"
+review_status = "native"
+analysis_eligible = false
+seed_supported = false
 tasks = [
   "TASK-DATAENG-CPR-069",
   "TASK-SWE-CPR-059",
@@ -16,10 +23,10 @@ tasks = [
 ]
 repeats = 1
 base_seed = 20260730
-estimated_backbone_calls_per_run = 12
-estimated_judge_calls_per_run = 3
+run_order_seed = 20260731
 
 [factors]
-topology = ["chain", "converging_dag", "star"]
-composition = ["homogeneous", "heterogeneous"]
-verification = ["none", "evidence_required"]
+protocol_variant = ["native_untouched_homogeneous_no_added_verifier"]
+
+[factor_bindings]
+protocol_variant = "native_task_passthrough"

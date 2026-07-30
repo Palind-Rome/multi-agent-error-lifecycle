@@ -1,123 +1,180 @@
-# Research design v0.1
+# Research design v0.2
 
-## Core claim
+## Working claim
 
-Existing work establishes that LLM multi-agent systems fail, lose information,
-and can amplify a planted falsehood. The intended contribution here is narrower:
-identify which conditional transition in an error lifecycle causes the final
-failure, and test whether the same process measurements predict outcome on
-recognized tasks.
+The contribution is not “a lifecycle exists.” MAST and From Spark to Fire
+already provide stage/failure taxonomies and lifecycle-like defenses. The
+intended contribution is narrower:
 
-The error-bearing observational unit is an immutable atomic artifact: a claim,
-constraint, requirement, commitment, or derived result. A run may contain many
-artifacts linked through `parent_artifact_ids`.
+1. identify possession, surfacing, delivery, actual exposure, integration or
+   action adoption, commitment execution, verification, actuation, recovery and
+   relapse at artifact/opportunity level;
+2. state which transitions are actually identifiable from a trace;
+3. estimate controlled interventions with matched assignments and transparent
+   missingness; and
+4. test process measurements and final utility on the same recognized task run.
+
+Tentative title:
+
+> From Error Exposure to Recovery: Mechanistic Lifecycle Analysis and
+> Controlled Interventions in LLM Multi-Agent Collaboration
 
 ## Research questions
 
-- **RQ1:** Which transition—generation, transmission, adoption, verification, or
-  recovery—dominates failure under each task family?
-- **RQ2:** Does topology change only exposure opportunity, or does it also change
-  adoption and correction after exposure?
-- **RQ3:** When do heterogeneous models increase interface mismatch, and when do
-  less-correlated errors improve correction?
-- **RQ4:** Which verification policy minimizes false adoption while preserving
-  task success under a matched token budget?
+- **RQ1 — omission and commission:** At which identifiable transition do
+  required true information and false artifacts fail or spread?
+- **RQ2 — graph/protocol:** What is the total effect of a natural
+  graph/protocol bundle, and—separately—what changes after actual exposure when
+  opportunities and aggregation are controlled?
+- **RQ3 — model assignment:** When does heterogeneous role assignment create
+  interface mismatch, and when does error diversity help correction under
+  counterbalanced role/order assignments?
+- **RQ4 — governance:** Which pre/post verification and
+  detection-only/containment/rollback policy improves safe and usable task
+  completion under matched clean/corrupt budgets?
+- **RQ5 — execution:** How often do acknowledged plans and commitments become
+  fulfilled, breached or contradicted by tool/patch evidence?
 
-## Minimum viable sequence
+## Artifact/event unit
 
-### Stage 0: instrumentation
+An artifact is an immutable claim, correct fact, constraint, requirement, plan,
+commitment, interface contract, tracer, patch claim or test result. An
+opportunity has a stable turn/call/message/action ID. Text appearance,
+endorsement, plan adoption and action dependence are different evidence levels.
 
-Use the deterministic runner and hand-constructed traces to verify that every
-metric has the intended denominator. If artifacts were adopted but no check was
-attempted, `P(verify | adopted)=0`; rates conditioned on a completed check remain
-undefined rather than receiving an artificial perfect score.
+The state machine supports:
 
-### Stage 1: controlled mechanism identification
+- possession without surfacing (HiddenBench/RTD omission);
+- delivery without prompt exposure;
+- exposure without integration;
+- marker mention without endorsement;
+- pre- or post-adoption verification;
+- correct detection without governance actuation;
+- containment/rollback followed by recovery or relapse; and
+- correct information delivery followed by commitment breach.
 
-Select a balanced RTD/CPR subset from AgentCollabBench. Pair every task and seed
-across linear chain, converging DAG, and fully connected source conditions;
-rewire matched task prompts into star conditions in our own harness. Compare homogeneous versus
-heterogeneous teams and no verification versus evidence-required verification.
-Store the complete upstream `RunResult`, actual provider request, and lifecycle
-trace; never rely on the upstream CLI summary alone.
+## Experiment sequence
 
-### Stage 2: context asymmetry and verifier behavior
+### Stage 0 — offline schema and annotation calibration
 
-Use HiddenBench or TeamBench to distinguish:
+- deterministic counterexample fixtures for omission, false adoption,
+  true-artifact rejection, pre/post verification, incomplete/tool-error checks,
+  detection-only, containment, rollback, relapse, commitment breach and invalid
+  tool calls;
+- validate the actual annotation/judge pipeline against MAST's public
+  triple-human subset, preserving multi-label confusion and agreement;
+- do not emit inferential intervals for a single engineering realization.
 
-- information unavailable to the agent;
-- information present in the prompt but omitted from its response;
-- information repeated but not used in an action;
-- information adopted, checked, falsely accepted, or corrected.
+### Stage 1A — native AgentCollabBench instrumentation smoke
 
-### Stage 3: recognized outcome anchors
+Run the 12 pinned RTD/CPR tasks with their untouched native task/topology,
+homogeneous model assignment and no added in-system verifier. This is a
+deliberately difficult medium/hard instrumentation sample, not a representative
+benchmark estimate. Preserve the full result and exact provider requests.
 
-Use CooperBench for paired coding collaboration and a stratified SWE-bench
-Verified subset for deterministic task outcome. Do not claim practical value
-unless lifecycle changes co-occur with final task improvement. Add Terminal-Bench
-only after the coding pipeline is stable.
+RTD measures required true-tracer surfacing/retention/omission. CPR measures
+false-content exposure and provisional surface reproduction; semantic/action
+adoption requires calibrated annotation. Diagnostic scores remain separate from
+task outcome.
 
-## Required controls
+### Stage 1B — derived controlled stress suite (paused)
 
-- single-agent under the same model and maximum token budget;
-- independent best-of-N or majority aggregation;
-- multi-agent with the same aggregate token budget;
-- no-injection clean control;
-- injection without downstream exposure;
-- identical task, seed, prompt templates, stopping rule, judge and tool access;
-- explicit ordering counterbalance when roles use different models.
+The old 144-cell topology/composition/verification matrix is
+`AgentCollabBench-derived`, unvalidated and paused. It can resume only after:
 
-## Primary endpoints
+- topology realism and metric-artifact-isolation review;
+- fixed external final aggregation/output target;
+- matched speaker multiset, turn/call cap, tools and stopping rule;
+- recorded message/token/hop/exposure opportunities;
+- clean/sham/corrupt mirrors;
+- governance verification and actuation implemented as separate runtime hooks;
+- homogeneous first, then a fixed heterogeneous model multiset with
+  role/order/source rotation; and
+- repeats chosen from observed within-task variance and budget.
 
-Mechanism endpoints:
+Report a natural graph/protocol **total bundle effect** separately from an
+exposure-standardized transition effect. Do not call either an official
+AgentCollabBench topology replication.
 
-- transport delivery rate and artifact edge-survival rate;
-- semantic fidelity conditional on exposure;
-- `P(adopt | exposed)`;
-- `P(verify | adopted or disputed)`;
-- false-accept and false-reject rates;
-- `P(recover | detected)`;
-- error reproduction number;
-- maximum adoption hop;
-- time to detection and time to recovery;
-- contaminated-agent-turn AUC.
+### Stage 2A — HiddenBench omission bridge
 
-Outcome endpoints:
+Measure authorized private-information possession, speaking opportunities,
+surfacing, communication completion, exact prompt exposure, integration, hidden
+context leakage and group pre/post outcome. Include an equal-output-budget
+verbose control because Reveal-All also changes communication instructions.
 
-- deterministic task pass/score;
-- safe completion;
-- input/output tokens, API cost, wall latency;
-- blocked-correct-information rate.
+### Stage 2B — TeamBench verifier bridge
 
-The lifecycle, task, and cost axes remain separate. They are not collapsed into
-a single leaderboard score.
+Separate requirement visibility, workspace/report access, write/execute
+authority and shared history. Preserve missing/invalid attestations, isolated
+deterministic grader results, evidence provenance, role violations and tool-call
+validity. Include Solo, Restricted, No-Plan, No-Verify and Full-Team contrasts.
+
+### Stage 3 — CooperBench primary collaboration outcome
+
+Use Solo, Coop and no-communication plus a semantic-contract intervention.
+Record feature-A/B results, branch/final patches, naive/union/resolver merge
+tiers, messages, OpenHands actions and commitment fulfillment. Cluster by
+feature pool/shared base PR; counterbalance heterogeneous A/B feature
+assignment. Start with a four-task container smoke before any expansion.
+
+### Stage 4 — external/ecological validation
+
+- stratified SWE-bench Verified as the recognized external software anchor;
+- MultiAgentBench as a secondary published ecological layer, prioritizing
+  deterministic environments and explicitly modeling tool-call validity;
+- social-adoption/BSS study only as a separate small mechanism experiment with
+  user/peer pressure and random/accuracy/dummy-prior controls.
+
+## Controls and estimands
+
+Required controls include:
+
+- single agent and action/cost-matched Solo;
+- no-communication where meaningful;
+- no-injection clean and matched sham/correct-artifact arms;
+- corrupt assignment with manipulation-check failure retained in ITT;
+- verification-only versus verification plus containment/rollback;
+- same task, pair seed, prompt template, tool/access policy, stopping rule and
+  final scorer except for the pre-registered intervention;
+- model-role/source/order counterbalance;
+- actual exposure-path and opportunity accounting; and
+- clean utility, false rejection, collateral repair/harm, task outcome, tokens,
+  calls, actions, latency and cost reported separately.
+
+Primary rates state their denominators. Missing, invalid, inconclusive, timeout
+and tool error remain separate. `finite_window_secondary_adoption_count` is a
+secondary descriptive measure with a registered window and attribution rule,
+not an epidemic reproduction number. DAG analysis uses time-expanded
+reachability; spectral heuristics are reserved for recurrent graphs.
 
 ## Statistical plan
 
-Pair task and seed across all conditions. Report bootstrap confidence intervals
-for descriptive effects, then use hierarchical regression with task and seed
-random effects and topology/model/policy fixed effects. Mediation claims require
-the topology intervention to precede exposure/adoption measurements and must be
-phrased cautiously unless sequential ignorability is defensible.
+- `pair_id = task × repeat × assignment block`; every condition in a pair shares
+  the assigned sampling seed when the provider supports it.
+- Execution order is randomized with a separate schedule seed.
+- Use task/question as the minimum cluster; CooperBench uses feature pool/shared
+  base PR. Never treat turn, edge, agent or feature pair as automatically
+  independent.
+- Report planned, observed, paired and missing-by-condition counts. Default
+  paired analysis fails on a missing cell; registered sensitivity/ITT views are
+  shown alongside any complete-case view.
+- One-repeat smokes are descriptive and inference-ineligible.
+- Choose repetitions after a variance/budget gate. Confirmatory models include
+  task/cluster and repeat structure, model-by-intervention interaction,
+  multiplicity control and a manipulation-check ledger.
+- Calibrate the actual fixed judge with blinded, stratified human audit and
+  per-label/per-metric confusion—not merely a different model name.
 
-Pre-register:
+## Main validity boundaries
 
-- primary metric and direction for each RQ;
-- semantic adoption rubric and judge prompt;
-- judge-human audit size and agreement statistic;
-- exclusion, retry, timeout, malformed-output and missing-data rules;
-- maximum tokens, turns and dollar cost;
-- multiplicity correction for secondary analyses.
-
-## Threats to validity
-
-- Exact tracer survival is not semantic fidelity.
-- Textual repetition is not adoption; action dependence is stronger evidence.
-- A single LLM judge may share the tested model's blind spots.
-- Fixed topologies can confound topology with prompt and agent count.
-- More agents usually means more tokens and chances to solve the task.
-- Synthetic enterprise scenarios do not establish real repository performance.
-- Homogeneous model results do not generalize to heterogeneous teams.
-- Planted falsehood behavior can differ from naturally generated errors.
-- Spectral-radius asymptotics do not describe finite-horizon propagation in a
-  directed acyclic chain, whose adjacency spectral radius is zero.
+- Native task/topology associations are not randomized topology effects.
+- A rewired graph changes routing, leaf aggregation, context and opportunities.
+- Exact tracer/false-fact survival is not semantic fidelity or belief.
+- User sycophancy, horizontal peer conformity and hallucination are different.
+- Attestation validity and task truth come from separate channels.
+- Detection without enforceable isolation or rollback is not recovery.
+- Clean utility can fall even when false propagation falls.
+- AgentCollabBench diagnostic scores cannot establish practical task value.
+- Learned merge/resolver output must not hide pre-resolver collaboration failure.
+- Synthetic, adapted and real-repository task strata are reported separately.

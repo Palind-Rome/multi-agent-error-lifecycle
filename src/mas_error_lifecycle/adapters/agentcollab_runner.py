@@ -8,7 +8,10 @@ commit ``f016f60``; re-run the offline smoke test when upgrading upstream.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+import time
+from dataclasses import asdict, dataclass, is_dataclass
+from enum import Enum
+from math import isfinite
 from typing import Any
 
 
@@ -19,16 +22,48 @@ class AgentCollabEvaluation:
     score: float
     detailed: Any
     run_result: Any
+    run_context: dict[str, Any] | None = None
+    judge_provenance: dict[str, Any] | None = None
 
     def to_adapter_payload(self) -> dict[str, Any]:
         """Return a JSON-safe payload accepted by the lifecycle adapter."""
 
-        return {
+        payload = {
             "task_id": self.task_id,
             "scores": {self.metric: self.score},
             "errors": {},
+            "detailed": self.detailed,
+            "run_context": self.run_context,
+            "judge_provenance": self.judge_provenance,
             "run_result": self.run_result.to_dict(),
         }
+        normalized = _to_json_value(payload)
+        if not isinstance(normalized, dict):
+            raise TypeError("adapter payload normalization must preserve an object")
+        return normalized
+
+
+def _to_json_value(value: Any) -> Any:
+    """Normalize upstream result objects without leaking arbitrary repr strings."""
+
+    if value is None or isinstance(value, str | bool | int):
+        return value
+    if isinstance(value, float):
+        return value if isfinite(value) else None
+    if isinstance(value, Enum):
+        return _to_json_value(value.value)
+    if is_dataclass(value) and not isinstance(value, type):
+        return _to_json_value(asdict(value))
+    if isinstance(value, dict):
+        return {str(key): _to_json_value(item) for key, item in value.items()}
+    if isinstance(value, list | tuple | set | frozenset):
+        return [_to_json_value(item) for item in value]
+    to_dict = getattr(value, "to_dict", None)
+    if callable(to_dict):
+        return _to_json_value(to_dict())
+    return {
+        "_non_json_type": f"{type(value).__module__}.{type(value).__qualname__}"
+    }
 
 
 def create_agentcollab_runner(
@@ -67,18 +102,65 @@ def create_agentcollab_runner(
 
         def chat(self, messages: list[Any], **kwargs: Any) -> Any:
             provider = self._active_provider()
-            response = provider.chat(messages, **kwargs)
-            self.calls.append(
+            call_index = len(self.calls)
+            call_id = f"agentcollab-call-{call_index + 1:05d}"
+            started_at = time.time()
+            started_monotonic = time.perf_counter()
+            record: dict[str, Any] = {
+                "call_id": call_id,
+                "call_index": call_index,
+                "agent_id": self.active_agent_id,
+                "provider": provider.provider_name(),
+                "model": "unknown",
+                "messages": [
+                    {"role": message.role, "content": message.content}
+                    for message in messages
+                ],
+                "sampling": {
+                    key: kwargs[key]
+                    for key in (
+                        "temperature",
+                        "top_p",
+                        "max_tokens",
+                        "max_output_tokens",
+                        "seed",
+                        "stop",
+                    )
+                    if key in kwargs
+                },
+                "request_started_at": started_at,
+                "status": "attempted",
+            }
+            self.calls.append(record)
+            try:
+                response = provider.chat(messages, **kwargs)
+            except Exception as exc:
+                record.update(
+                    {
+                        "status": "error",
+                        "response_finished_at": time.time(),
+                        "latency_ms": (
+                            time.perf_counter() - started_monotonic
+                        )
+                        * 1000.0,
+                        "error_type": type(exc).__name__,
+                    }
+                )
+                raise
+            record.update(
                 {
-                    "agent_id": self.active_agent_id,
-                    "provider": provider.provider_name(),
+                    "status": "success",
+                    "response_finished_at": time.time(),
+                    "latency_ms": (
+                        time.perf_counter() - started_monotonic
+                    )
+                    * 1000.0,
                     "model": response.model,
-                    "messages": [
-                        {"role": message.role, "content": message.content}
-                        for message in messages
-                    ],
+                    "response_content": response.content,
                     "input_tokens": response.input_tokens,
                     "output_tokens": response.output_tokens,
+                    "cost_usd": getattr(response, "cost_usd", None),
+                    "raw_response_id": getattr(response, "raw_response_id", None),
                 }
             )
             return response
@@ -121,6 +203,8 @@ def evaluate_agentcollab_task(
     metric_config: dict[str, Any] | None = None,
     default_provider: Any | None = None,
     verbose: bool = False,
+    run_context: dict[str, Any] | None = None,
+    judge_provenance: dict[str, Any] | None = None,
 ) -> AgentCollabEvaluation:
     """Run and score one task while retaining the instrumented full result."""
 
@@ -145,6 +229,20 @@ def evaluate_agentcollab_task(
             f"{metric} requires an explicit judge_provider or pre-registered "
             "violation_keywords"
         )
+    if (
+        metric in {"cpr", "idr"}
+        and run_context
+        and run_context.get("analysis_eligible")
+        and not judge_provenance
+    ):
+        raise ValueError(
+            "analysis-eligible CPR/IDR run requires calibrated judge_provenance"
+        )
+    if config.get("violation_keywords") and judge_provenance is None:
+        judge_provenance = {
+            "scoring_mode": "keyword_smoke_non_native",
+            "analysis_eligible": False,
+        }
     runner = create_agentcollab_runner(
         providers,
         metric=metric,
@@ -179,4 +277,6 @@ def evaluate_agentcollab_task(
         score=score,
         detailed=detailed,
         run_result=run_result,
+        run_context=run_context,
+        judge_provenance=judge_provenance,
     )

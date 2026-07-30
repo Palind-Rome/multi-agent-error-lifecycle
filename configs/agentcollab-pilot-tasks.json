@@ -1,5 +1,8 @@
 {
-  "selection_version": "0.1.0",
+  "selection_version": "0.2.0",
+  "purpose": "instrumentation_stress_sample",
+  "analysis_eligible": false,
+  "selection_caveat": "The min_agents=4 filter intentionally favors medium/hard instrumentation cases. This is not a representative or balanced sample for benchmark inference.",
   "upstream_repository": "https://github.com/aritra741/AgentCollabBench",
   "upstream_commit": "f016f60",
   "seed": 20260730,

@@ -8,7 +8,10 @@ import sys
 from pathlib import Path
 from typing import Sequence
 
-from .adapters import convert_agentcollab_result, rewire_agentcollab_task
+from .adapters import (
+    convert_agentcollab_result,
+    generate_agentcollab_derived_counterfactual,
+)
 from .design import load_plan, plan_summary, write_plan
 from .metrics import compute_metrics
 from .runner import MockRunConfig, run_mock
@@ -27,7 +30,7 @@ def build_parser() -> argparse.ArgumentParser:
     demo.add_argument("--seed", type=int, default=7)
     demo.add_argument(
         "--topology",
-        choices=["chain", "star", "converging_dag"],
+        choices=["chain", "broadcast_star", "converging_dag"],
         default="converging_dag",
     )
     demo.add_argument(
@@ -37,6 +40,15 @@ def build_parser() -> argparse.ArgumentParser:
     )
     demo.add_argument("--adoption-probability", type=float, default=0.8)
     demo.add_argument("--verification-accuracy", type=float, default=0.9)
+    demo.add_argument(
+        "--verification-timing",
+        choices=["pre_adoption", "post_adoption"],
+        default="post_adoption",
+    )
+    demo.add_argument(
+        "--governance-action",
+        choices=["none", "contain", "rollback"],
+    )
     demo.add_argument("--force", action="store_true")
 
     validate = subparsers.add_parser("validate", help="validate a lifecycle JSONL trace")
@@ -51,6 +63,11 @@ def build_parser() -> argparse.ArgumentParser:
     plan = subparsers.add_parser("plan", help="expand a TOML pilot matrix")
     plan.add_argument("config", type=Path)
     plan.add_argument("--out", required=True, type=Path)
+    plan.add_argument(
+        "--allow-unready",
+        action="store_true",
+        help="preview a paused/blocked plan; does not make it executable",
+    )
     plan.add_argument("--force", action="store_true")
 
     adapter = subparsers.add_parser(
@@ -58,17 +75,27 @@ def build_parser() -> argparse.ArgumentParser:
     )
     adapter.add_argument("input", type=Path)
     adapter.add_argument("--out", required=True, type=Path)
+    adapter.add_argument(
+        "--run-context",
+        type=Path,
+        help="JSON PlanItem/run context; absent imports are observational only",
+    )
     adapter.add_argument("--force", action="store_true")
 
     rewrite = subparsers.add_parser(
-        "rewrite-agentcollab",
-        help="create a matched AgentCollabBench topology intervention",
+        "derive-agentcollab",
+        help="create an unvalidated AgentCollabBench-derived stress variant",
     )
     rewrite.add_argument("input", type=Path)
     rewrite.add_argument(
         "--topology",
         required=True,
-        choices=["chain", "star", "converging_dag", "fully_connected_dag"],
+        choices=[
+            "chain",
+            "broadcast_star",
+            "converging_dag",
+            "fully_connected_dag",
+        ],
     )
     rewrite.add_argument("--out", required=True, type=Path)
     rewrite.add_argument("--force", action="store_true")
@@ -85,6 +112,11 @@ def main(argv: Sequence[str] | None = None) -> int:
                     seed=args.seed,
                     topology=args.topology,
                     verification=args.verification,
+                    verification_timing=args.verification_timing,
+                    governance_action=(
+                        args.governance_action
+                        or ("none" if args.verification == "none" else "rollback")
+                    ),
                     adoption_probability=args.adoption_probability,
                     verification_accuracy=args.verification_accuracy,
                 )
@@ -124,7 +156,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
             return 0
         if args.command == "plan":
-            items = load_plan(args.config)
+            items = load_plan(args.config, allow_unready=args.allow_unready)
             write_plan(args.out, items, overwrite=args.force)
             _print_json({"ok": True, "plan": str(args.out), **plan_summary(items)})
             return 0
@@ -133,7 +165,13 @@ def main(argv: Sequence[str] | None = None) -> int:
                 payload = json.load(handle)
             if not isinstance(payload, dict):
                 raise ValueError("input must be a JSON object")
-            bundle = convert_agentcollab_result(payload)
+            run_context = None
+            if args.run_context:
+                with args.run_context.open(encoding="utf-8") as handle:
+                    run_context = json.load(handle)
+                if not isinstance(run_context, dict):
+                    raise ValueError("run context must be a JSON object")
+            bundle = convert_agentcollab_result(payload, run_context=run_context)
             write_trace(args.out, bundle, overwrite=args.force)
             _print_json(
                 {
@@ -143,12 +181,14 @@ def main(argv: Sequence[str] | None = None) -> int:
                 }
             )
             return 0
-        if args.command == "rewrite-agentcollab":
+        if args.command == "derive-agentcollab":
             with args.input.open(encoding="utf-8") as handle:
                 task = json.load(handle)
             if not isinstance(task, dict):
                 raise ValueError("input must be a JSON object")
-            rewritten = rewire_agentcollab_task(task, args.topology)
+            rewritten = generate_agentcollab_derived_counterfactual(
+                task, args.topology
+            )
             _write_json_file(args.out, rewritten, overwrite=args.force)
             _print_json(
                 {

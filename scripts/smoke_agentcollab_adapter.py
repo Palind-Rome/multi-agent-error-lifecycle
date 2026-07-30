@@ -55,6 +55,15 @@ def main() -> int:
         {agent_id: EchoProvider() for agent_id in agent_ids},
         metric="cpr",
         metric_config={"violation_keywords": ["JSON format", "nested structure"]},
+        run_context={
+            "purpose": "offline_compatibility_smoke",
+            "protocol_kind": "agentcollab_native",
+            "condition_id": "offline-native-smoke",
+            "cluster_id": task["task_id"],
+            "review_status": "native",
+            "analysis_eligible": False,
+            "upstream_commit": "f016f60",
+        },
     )
     result = evaluation.run_result
     bundle = convert_agentcollab_result(evaluation.to_adapter_payload())
