@@ -1,72 +1,117 @@
-# Trace schema v0.1.0
+# Trace schema v0.2.0
 
-Each JSONL file contains exactly one run in this order:
+Each JSONL file contains exactly one run. Records are immutable, versioned, and
+validated both individually and across the trace.
 
-1. one `run_manifest`;
-2. one or more `artifact` records;
-3. prompt records referenced by exposure events;
-4. ordered `event` records;
-5. one `outcome`.
+## Why v0.2 is not a field-only migration
 
-## Manifest
+v0.1 treated “a controlled injection reached the source” as
+`artifact_generated` and counted generation as contamination. It also allowed a
+partial handoff to become prompt exposure and allowed marker reproduction to
+enter primary adoption. Those semantics are not backward compatible. Old traces
+must be re-imported from their raw benchmark result; changing only the version
+string is invalid.
 
-The manifest fixes task, condition, seed, per-agent provider/model assignment and
-directed topology. `condition_id` must be derived before execution. Runtime code
-must not silently mutate the condition after seeing outputs.
+## Record families
 
-## Artifact
+- `run_manifest`: protocol/native-derived identity, task, condition, paired seed,
+  assignment, cluster, analysis eligibility, model/role/access policy, topology,
+  judge provenance and code/upstream pins.
+- `information_assignment`: initial and authorized holders, visibility, and
+  whether a fact is required for the solution.
+- `injection`: target, corruption kind, sham status, nominal/realized dose,
+  ground-truth reference and manipulation-check verdict.
+- `artifact`: typed claim, fact, requirement, plan, commitment, interface
+  contract, tracer, patch claim, test evidence or tool output, with origin,
+  truth status and lineage.
+- `prompt`, `message`, `model_call`, `tool_call`: exact request/transport/action
+  observations with stable IDs, hashes, status and nullable usage.
+- `evidence`: evidence source, producer, command/tool outcome, snapshot/digests,
+  independence/replay and validity.
+- `annotation`: versioned multi-label/proxy/judge output with target/evidence
+  spans, blindness, model/prompt hash, confidence and identifiability.
+- `event`: ordered lifecycle state transitions.
+- `attestation`: valid/missing/invalid/timeout/error verifier output, separate
+  from task truth.
+- `grader_run`: isolated grader provenance and execution status.
+- `outcome`: recognized, diagnostic-only, synthetic-smoke or unavailable task
+  result plus termination, safe/usable completion, infection and resources.
 
-An artifact has a stable ID, source agent, creation step, truth status and
-lineage. `truth_status=unknown` is valid: uncertainty must not be coerced into
-false. Raw content may be encrypted or replaced with a salted digest when a task
-contains secrets, but the redaction policy belongs in `metadata`.
+## Lifecycle state machine
 
-## Event semantics
+The main paths are branching, not one fixed chain:
 
-| Event | Required interpretation |
-|---|---|
-| `artifact_generated` | The source first emits or receives a controlled injection. |
-| `message_sent` | A sender attempts communication. `details.delivered` records transport success and `artifact_present_in_message` records artifact survival. |
-| `artifact_exposed` | The artifact is demonstrated to be in the receiver's actual prompt/context. |
-| `artifact_adopted` | The receiver repeats, endorses, or acts on it; evidence type is recorded. |
-| `artifact_rejected` | The receiver declines it. |
-| `artifact_uncertain` | The receiver explicitly defers judgment. |
-| `verification_started` | A check is attempted; method and evidence policy are recorded. |
-| `verification_completed` | Verdict is `supported`, `refuted`, `inconclusive`, or `error`. |
-| `artifact_corrected` | A replacement artifact is produced. |
-| `artifact_recovered` | The agent rolls back or stops relying on the error. |
-| `action_taken` | A downstream tool/code/decision action depends on artifacts. |
-| `run_finalized` | Lifecycle recording has ended. |
+```text
+assignment/injection -> possession -> surfacing -> message sent -> delivered
+    -> exact prompt exposure -> integration/adoption -> action/commitment
+                                  |                    |
+                                  +-> pre/post verify -+
+                                          |
+                                 detect -> contain/rollback
+                                          -> recover -> relapse
+```
 
-`message_sent`, `artifact_exposed`, and `artifact_adopted` are deliberately
-different. A handoff can be delivered while omitting the artifact; an artifact
-can be present in context but ignored; a model can repeat it while not acting on
-it. Every adoption event therefore carries an `adoption_evidence` field.
+Important semantics:
 
-## Prompt
+- `artifact_generated` means the model/environment newly produced the artifact.
+  A user assertion, benchmark tracer, private fact or controlled injection uses
+  `artifact_possessed`.
+- `artifact_surfaced` means observable output/message content contains the
+  artifact. It is not belief or action adoption.
+- `message_sent` is an attempt and requires explicit
+  `details.artifact_present`; `message_delivered` is a separate observation.
+- `artifact_exposed` requires an observed full provider request whose target
+  agent and `artifact_ids` match. Reconstructed/partial handoffs cannot produce
+  it.
+- `artifact_adopted` and `artifact_integrated` require
+  `authoritative=true` and a pre-registered evidence level. Marker mentions live
+  in annotation/surfacing records.
+- Verification records timing, completion status, verdict, evidence validity,
+  requirement coverage and evidence IDs. Verification does not itself imply
+  containment or rollback.
+- Recovery requires prior refutation and an explicit actuation event. Natural
+  correction is recorded separately as `artifact_corrected`.
+- Commitment fulfillment/breach requires a commitment/interface-contract
+  artifact and evidence. Acknowledgement alone is not execution.
 
-Every exposure event references a prompt record containing role/content messages
-or an explicitly redacted representation. Unredacted records must match their
-canonical SHA-256 digest. A reconstructed upstream handoff is marked partial and
-must not be described as the full provider request.
+## Validation invariants
 
-## Outcome
+The validator rejects:
 
-`success` and `score` may be `null` when the source benchmark does not provide a
-real task outcome. Diagnostic scores such as RTD or CPR belong in
-`outcome.details`, not in the task-score fields. Unknown latency or cost also
-remain null rather than being reported as zero.
+- unknown/duplicate agents, edges, artifacts, prompts, messages, calls, evidence
+  or event references;
+- future parent events, cross-artifact event parents, artifact lineage cycles or
+  parents created later than children;
+- edge endpoint mismatch;
+- exposure whose prompt belongs to another agent, omits the artifact, or is not
+  an observed full request;
+- authoritative adoption/integration without prior exposure/possession;
+- post-adoption verification before adoption, completion without matching start,
+  or “valid evidence” without valid evidence records;
+- rollback completion without start, recovery without detection/actuation, or
+  relapse without prior containment/recovery;
+- commitment outcome without a prior typed commitment;
+- diagnostic/unavailable scores masquerading as task outcome;
+- recognized completed outcomes without a successful, matching grader.
 
-## IDs and timestamps
+Every trace contains exactly one `run_finalized` event and one outcome.
 
-- IDs are immutable within a run.
-- `step` is the canonical logical clock and must be non-decreasing.
-- wall timestamps are ISO-8601 audit metadata; analyses should use `step` unless
-  cross-process clocks are synchronized.
-- parent event IDs and parent artifact IDs form explicit provenance graphs.
+## Metrics and missingness
+
+Transport is reported as `P(delivered | observed attempt)` and
+`P(artifact survives | delivered)`; missing transport status has separate
+coverage. Required true information has possession, surfacing, exposure and
+integration rates. False support and true-artifact false reject use separate
+truth-aware denominators.
+
+Primary adoption excludes provisional marker annotations. The finite-window
+secondary-adoption count is null until `propagation_window_turns` is registered.
+Contamination AUC is null unless a real turn horizon is registered; it is
+normalized by agent count and horizon rather than raw event count.
 
 ## Privacy
 
-Never write API keys, authorization headers, cookies or unredacted secrets.
-Provider response IDs are allowed; raw provider payloads are opt-in. For CLC
-tasks, private tracer values should be salted/hashed in any public artifact.
+Never store API keys, authorization headers, cookies, hidden tests, gold patches
+or unredacted secrets. Requests/messages may be redacted while retaining their
+canonical digest. Logs for containerized coding tasks must live outside agent
+containers and remain unreadable to agents.

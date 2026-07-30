@@ -1,0 +1,36 @@
+[experiment]
+name = "agentcollab-derived-topology-stress-v0.2"
+purpose = "construct_development_only"
+protocol_kind = "agentcollab_derived_counterfactual"
+suite_kind = "derived"
+execution_status = "paused"
+review_status = "unvalidated"
+analysis_eligible = false
+seed_supported = false
+tasks = [
+  "TASK-DATAENG-CPR-069",
+  "TASK-SWE-CPR-059",
+  "TASK-SWE-CPR-072",
+  "TASK-DATAENG-CPR-014",
+  "TASK-DATAENG-CPR-034",
+  "TASK-SWE-CPR-010",
+  "TASK-DATAENG-RTD-059",
+  "TASK-DEVOPS-RTD-165",
+  "TASK-SWE-RTD-092",
+  "TASK-DATAENG-RTD-108",
+  "TASK-DEVOPS-RTD-103",
+  "TASK-SWE-RTD-105",
+]
+repeats = 1
+base_seed = 20260730
+run_order_seed = 20260731
+
+[factors]
+topology = ["chain", "converging_dag", "broadcast_star"]
+composition = ["homogeneous", "heterogeneous"]
+governance = ["none", "verification_plus_rollback"]
+
+[factor_bindings]
+topology = "derived_topology_rewriter"
+composition = "role_model_assignment"
+governance = "governance_policy"

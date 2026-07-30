@@ -1,69 +1,103 @@
-# Experiment readiness
+# Experiment readiness v0.2
 
-## Ready now
+## Ready offline
 
-- Versioned lifecycle schema and cross-record validation.
-- Full prompt hashing/redaction boundary.
-- Deterministic instrumentation runner and cost/outcome metrics.
-- Paired bootstrap utilities.
-- AgentCollabBench full-result importer.
-- AgentCollabBench per-agent provider routing and exact provider-request capture,
-  tested against upstream commit `f016f60`.
-- Matched task topology rewriter validated by the upstream task validator.
-- A deterministic 12-task, minimum-four-agent RTD/CPR pilot selection.
-- Factorial plan generation and offline unit/integration smoke tests.
+- v0.2 records for origin/assignment/injection, possession, surfacing, messages,
+  exact prompt exposure, authoritative integration/adoption, pre/post
+  verification, evidence, containment/rollback/recovery/relapse, commitments,
+  attestations, graders, model/tool calls and nullable usage.
+- Cross-record and state-machine checks for time/lineage, prompt/edge identity,
+  evidence, verification/recovery, commitment and outcome provenance.
+- Deterministic fixtures where detection-only differs from rollback and
+  injection receipt does not create false-belief contamination.
+- Opportunity-aware true-information omission and false-artifact metrics,
+  explicit transport coverage, truth-aware false support/reject, normalized
+  turn-horizon contamination and registered-window propagation summary.
+- Paired task/repeat/assignment seeds, separately randomized run order,
+  missing-pair refusal, cluster-level paired bootstrap and n=1 inference guard.
+- Multi-label annotation calibration utilities.
+- AgentCollabBench full-result import that preserves exact requests and model
+  call status. Handoffs without requests do not become exposure; exact markers
+  remain surface annotations, not adoption.
+- A 12-assignment untouched-native AgentCollabBench instrumentation plan.
+- An explicitly paused, unvalidated derived topology-stress design.
 
-## Proposed first paid pilot
+## Not ready for paid or inferential runs
 
-`configs/pilot.toml` expands:
+There is no generic `run-plan` executor yet. The plan CLI creates guarded
+assignments; it does not apply model composition, governance hooks, budget caps
+or benchmark execution. In particular:
 
-- 12 AgentCollabBench task seeds;
-- 3 matched topologies;
-- homogeneous and heterogeneous composition;
-- no verification and evidence-required verification;
-- one initial repeat.
+- the 12 native assignments still require provider/model/API and calibrated
+  judge choices before execution;
+- the derived 144-cell preview is not an official benchmark replication,
+  construct-valid topology experiment or executable paid pilot;
+- real governance verification/containment/rollback hooks are not implemented
+  in AgentCollabBench;
+- HiddenBench, TeamBench, CooperBench and SWE-bench adapters/runners are not yet
+  implemented;
+- MAST's public human traces have not yet been vendored and mapped to the local
+  annotation records;
+- repeated-run variance, power/budget gate and human-audit allocation remain
+  unknown.
 
-This is 144 paired runs. The provisional budget estimator gives 1,728 backbone
-calls and 432 judge calls. These are planning numbers, not a quote: actual calls
-depend on task turn budgets, retries, judge policy and provider behavior. Run one
-task across all 12 conditions first, inspect traces, then authorize the remaining
-132 runs. Repeats should be chosen after observing variance, not silently added.
+`execution_status="ready"` in `configs/pilot.toml` means the assignment file can
+be expanded and inspected offline. It does not authorize model/API calls.
 
-## Blocking decisions
+## Native smoke gate
 
-No paid or real-model run should start until all are resolved:
+Before the first real AgentCollabBench call:
 
-1. homogeneous backbone and provider;
-2. heterogeneous role-to-model assignment;
-3. independent judge model or a decision to use human-only annotation;
-4. API budget, per-run cap, timeout, retry and rate-limit policy;
-5. temperature/sampling policy and whether providers support deterministic seeds;
-6. acceptable storage policy for raw prompts and provider response IDs;
-7. human audit sample size and annotator availability;
-8. Docker/x86_64/storage capacity before SWE-bench;
-9. outcome benchmark order after the diagnostic pilot.
+1. select tested provider/model and save full role assignment;
+2. decide whether provider sampling seeds are supported; never claim stochastic
+   pairing when unsupported;
+3. select the actual CPR judge or human-only route and record prompt hash,
+   calibration dataset/version, votes/aggregation and blind fields;
+4. set positive per-call, per-run and experiment token/cost/time limits in a
+   git-ignored local config;
+5. define raw-prompt/provider-response storage and redaction policy;
+6. run one untouched RTD and one untouched CPR task;
+7. manually verify receipt→surfacing, delivery→request exposure and surface
+   proxy labels against raw traces;
+8. run the full offline test/adapter compatibility suite; and
+9. only then authorize the remaining native smoke tasks.
+
+Even after all 12 tasks, results remain instrumentation diagnostics with no
+inferential CI and no recognized task outcome.
+
+## Derived-suite unlock gate
+
+The paused design requires:
+
+- independent topology-realism and metric-artifact-isolation review;
+- fixed external aggregation/output target and matched speaker/call/tool budget;
+- opportunity/message/token/hop balance report;
+- clean/sham/corrupt task variants and manipulation checks;
+- implemented verification-only and verification+rollback runtime policies;
+- source/role/order counterbalance;
+- actual-prompt call alignment under repeated turns;
+- registered attribution window and cluster analysis; and
+- a variance/cost-based repeat decision.
+
+Only after these checks may `review_status` and `execution_status` change. The
+suite must retain the name `AgentCollabBench-derived`.
+
+## External benchmark blockers
+
+- **HiddenBench:** task release/profile mapping, equal-bandwidth control and
+  same-run pre/post group scorer.
+- **TeamBench:** workspace images, typed access policy enforcement,
+  attestation/grader/evidence adapter and missingness sensitivity.
+- **CooperBench:** released manifest reconciliation, OpenHands/container
+  adapter, hidden-boundary audit, action/cost cap, merge/resolver pin and
+  feature-pool/base-PR clusters.
+- **SWE-bench Verified:** serialized Docker smoke, image/cache budget and
+  deterministic scorer provenance.
 
 ## Local infrastructure snapshot
 
-On 2026-07-30 the current machine reported x86_64, 28 CPUs, 15.33 GiB RAM,
-815.88 GiB free workspace storage, Docker Engine 29.6.2 and a responding daemon
-when checked outside the workspace sandbox. This is enough for a serialized
-SWE-bench smoke run, but memory is close to the published 16 GB floor; keep
-container concurrency at one until peak usage is measured. The repository's
-environment checker may report Docker socket permission failure inside a sandbox
-even when the host daemon is healthy.
-
-## Known engineering caveats
-
-- The per-agent AgentCollabBench router depends on the upstream synchronous call
-  order and `_system_prompt_for_metric` hook. Re-run
-  `scripts/smoke_agentcollab_adapter.py` after any upstream upgrade.
-- AgentCollabBench does not expose recognized final task success. Imported
-  outcomes remain null by design.
-- Exact-marker reproduction is only provisional adoption evidence. Primary CPR
-  analyses require a pre-registered semantic/action-grounded rubric.
-- A topology rewrite changes root centrality and speaking order. Those are part
-  of the intervention and are recorded, but interpretation must not call the
-  effect “edges only.”
-- Evidence-required verification needs a real evidence source/tool definition
-  per benchmark; a generic “double-check” prompt is not sufficient.
+The earlier 2026-07-30 inspection reported x86_64, 28 CPUs, 15.33 GiB RAM,
+815.88 GiB free workspace storage, Docker Engine 29.6.2 and a responding host
+daemon. This can support serialized container smokes, but memory is close to the
+published SWE-bench floor; keep container concurrency at one until measured.
+Sandboxed checks may not see the host Docker socket.

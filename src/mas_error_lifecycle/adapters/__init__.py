@@ -6,12 +6,16 @@ from .agentcollab_runner import (
     create_agentcollab_runner,
     evaluate_agentcollab_task,
 )
-from .agentcollab_topology import rewire_agentcollab_task
+from .agentcollab_topology import (
+    generate_agentcollab_derived_counterfactual,
+    rewire_agentcollab_task,
+)
 
 __all__ = [
     "AgentCollabEvaluation",
     "convert_agentcollab_result",
     "create_agentcollab_runner",
     "evaluate_agentcollab_task",
+    "generate_agentcollab_derived_counterfactual",
     "rewire_agentcollab_task",
 ]
