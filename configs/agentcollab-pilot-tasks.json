@@ -1,0 +1,117 @@
+{
+  "selection_version": "0.1.0",
+  "upstream_repository": "https://github.com/aritra741/AgentCollabBench",
+  "upstream_commit": "f016f60",
+  "seed": 20260730,
+  "per_cell": 1,
+  "min_agents": 4,
+  "selection_command": "python scripts/select_agentcollab_tasks.py /path/to/AgentCollabBench/tasks --out configs/agentcollab-pilot-tasks.json",
+  "requested_metrics": [
+    "rtd",
+    "cpr"
+  ],
+  "requested_topologies": [
+    "linear_chain",
+    "converging_dag",
+    "fully_connected"
+  ],
+  "count": 12,
+  "tasks": [
+    {
+      "task_id": "TASK-DATAENG-CPR-069",
+      "domain": "data_engineering",
+      "metric": "cpr",
+      "topology": "converging_dag",
+      "complexity": "hard",
+      "filename": "TASK-DATAENG-CPR-069.json"
+    },
+    {
+      "task_id": "TASK-SWE-CPR-059",
+      "domain": "swe",
+      "metric": "cpr",
+      "topology": "converging_dag",
+      "complexity": "medium",
+      "filename": "TASK-SWE-CPR-059.json"
+    },
+    {
+      "task_id": "TASK-SWE-CPR-072",
+      "domain": "swe",
+      "metric": "cpr",
+      "topology": "fully_connected",
+      "complexity": "hard",
+      "filename": "TASK-SWE-CPR-072.json"
+    },
+    {
+      "task_id": "TASK-DATAENG-CPR-014",
+      "domain": "data_engineering",
+      "metric": "cpr",
+      "topology": "fully_connected",
+      "complexity": "medium",
+      "filename": "TASK-DATAENG-CPR-014.json"
+    },
+    {
+      "task_id": "TASK-DATAENG-CPR-034",
+      "domain": "data_engineering",
+      "metric": "cpr",
+      "topology": "linear_chain",
+      "complexity": "hard",
+      "filename": "TASK-DATAENG-CPR-034.json"
+    },
+    {
+      "task_id": "TASK-SWE-CPR-010",
+      "domain": "swe",
+      "metric": "cpr",
+      "topology": "linear_chain",
+      "complexity": "medium",
+      "filename": "TASK-SWE-CPR-010.json"
+    },
+    {
+      "task_id": "TASK-DATAENG-RTD-059",
+      "domain": "data_engineering",
+      "metric": "rtd",
+      "topology": "converging_dag",
+      "complexity": "hard",
+      "filename": "TASK-DATAENG-RTD-059.json"
+    },
+    {
+      "task_id": "TASK-DEVOPS-RTD-165",
+      "domain": "devops",
+      "metric": "rtd",
+      "topology": "converging_dag",
+      "complexity": "medium",
+      "filename": "TASK-DEVOPS-RTD-165.json"
+    },
+    {
+      "task_id": "TASK-SWE-RTD-092",
+      "domain": "swe",
+      "metric": "rtd",
+      "topology": "fully_connected",
+      "complexity": "hard",
+      "filename": "TASK-SWE-RTD-092.json"
+    },
+    {
+      "task_id": "TASK-DATAENG-RTD-108",
+      "domain": "data_engineering",
+      "metric": "rtd",
+      "topology": "fully_connected",
+      "complexity": "medium",
+      "filename": "TASK-DATAENG-RTD-108.json"
+    },
+    {
+      "task_id": "TASK-DEVOPS-RTD-103",
+      "domain": "devops",
+      "metric": "rtd",
+      "topology": "linear_chain",
+      "complexity": "hard",
+      "filename": "TASK-DEVOPS-RTD-103.json"
+    },
+    {
+      "task_id": "TASK-SWE-RTD-105",
+      "domain": "swe",
+      "metric": "rtd",
+      "topology": "linear_chain",
+      "complexity": "medium",
+      "filename": "TASK-SWE-RTD-105.json"
+    }
+  ]
+}

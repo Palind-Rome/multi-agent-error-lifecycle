@@ -1,0 +1,25 @@
+[experiment]
+name = "error-lifecycle-pilot-v0.1"
+tasks = [
+  "TASK-DATAENG-CPR-069",
+  "TASK-SWE-CPR-059",
+  "TASK-SWE-CPR-072",
+  "TASK-DATAENG-CPR-014",
+  "TASK-DATAENG-CPR-034",
+  "TASK-SWE-CPR-010",
+  "TASK-DATAENG-RTD-059",
+  "TASK-DEVOPS-RTD-165",
+  "TASK-SWE-RTD-092",
+  "TASK-DATAENG-RTD-108",
+  "TASK-DEVOPS-RTD-103",
+  "TASK-SWE-RTD-105",
+]
+repeats = 1
+base_seed = 20260730
+estimated_backbone_calls_per_run = 12
+estimated_judge_calls_per_run = 3
+
+[factors]
+topology = ["chain", "converging_dag", "star"]
+composition = ["homogeneous", "heterogeneous"]
+verification = ["none", "evidence_required"]

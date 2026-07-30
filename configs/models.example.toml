@@ -1,0 +1,29 @@
+# Copy to a local, git-ignored configuration only after the study choices are fixed.
+# Never place API keys in this file; providers should read them from environment variables.
+
+[homogeneous]
+provider = "UNSET"
+model = "UNSET"
+
+[heterogeneous.planner]
+provider = "UNSET"
+model = "UNSET"
+
+[heterogeneous.worker]
+provider = "UNSET"
+model = "UNSET"
+
+[heterogeneous.verifier]
+provider = "UNSET"
+model = "UNSET"
+
+[judge]
+provider = "UNSET"
+model = "UNSET"
+independent_from_tested_models = true
+
+[limits]
+max_input_tokens_per_call = 0
+max_output_tokens_per_call = 0
+max_cost_usd_per_run = 0.0
+max_wall_seconds_per_run = 0

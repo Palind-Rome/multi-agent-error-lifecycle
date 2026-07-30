@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mas-error-lifecycle"
+version = "0.1.0"
+description = "Trace and measure error exposure, adoption, verification, and recovery in LLM multi-agent systems."
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [
+  {name = "Multi-Agent Error Lifecycle contributors"},
+]
+dependencies = []
+
+[project.scripts]
+masel = "mas_error_lifecycle.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.coverage.run]
+branch = true
+source = ["mas_error_lifecycle"]
