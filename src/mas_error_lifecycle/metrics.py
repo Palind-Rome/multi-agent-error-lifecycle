@@ -6,10 +6,20 @@ from dataclasses import asdict, dataclass
 from statistics import fmean
 from typing import Any, Iterable
 
+from .annotation import (
+    RQ1_FACT_ANNOTATION_TAXONOMY,
+    RQ1FactAnnotation,
+    RQ1FactAnnotationStage,
+    RQ1FactAnnotationStatus,
+    RQ1FactObservationStatus,
+)
 from .schema import (
+    AnnotationRecord,
     AttestationStatus,
     AttestationVerdict,
     EventType,
+    RQ1TransformationArm,
+    RQ1TransformationRecord,
     ToolCallStatus,
     TruthStatus,
     VerificationCompletionStatus,
@@ -173,6 +183,247 @@ class AttestationMetrics:
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
+
+
+@dataclass(frozen=True, slots=True)
+class RQ1ArmFactMetrics:
+    arm: str
+    stage: str
+    primary_metric_name: str
+    transformation_count: int
+    fact_opportunity_count: int
+    annotation_count: int
+    missing_annotation_count: int
+    complete_valid_observation_count: int
+    binary_denominator_count: int
+    success_count: int
+    known_loss_count: int
+    uncertain_count: int
+    unknown_count: int
+    unobservable_count: int
+    annotation_coverage: float | None
+    complete_valid_observation_coverage: float | None
+    binary_observation_coverage: float | None
+    required_fact_success_rate: float | None
+    required_fact_known_loss_rate: float | None
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True, slots=True)
+class RQ1TransformationMetrics:
+    stage: str
+    primary_metric_name: str
+    transformation_count: int
+    fact_opportunity_count: int
+    annotation_count: int
+    missing_annotation_count: int
+    complete_valid_observation_count: int
+    binary_denominator_count: int
+    success_count: int
+    known_loss_count: int
+    uncertain_count: int
+    unknown_count: int
+    unobservable_count: int
+    annotation_coverage: float | None
+    complete_valid_observation_coverage: float | None
+    binary_observation_coverage: float | None
+    required_fact_success_rate: float | None
+    required_fact_known_loss_rate: float | None
+    by_arm: dict[str, RQ1ArmFactMetrics]
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            **asdict(self),
+            "by_arm": {
+                arm: metrics.to_dict() for arm, metrics in self.by_arm.items()
+            },
+        }
+
+
+def compute_rq1_transformation_metrics(
+    transformations: Iterable[RQ1TransformationRecord],
+    annotations: Iterable[AnnotationRecord | RQ1FactAnnotation],
+    *,
+    stage: RQ1FactAnnotationStage = RQ1FactAnnotationStage.TRANSFORMATION_OUTPUT,
+) -> RQ1TransformationMetrics:
+    """Compute stage-specific fact fidelity without coercing unknowns to loss.
+
+    A known omission is binary only when its annotation records a complete,
+    valid output observation. Provider/setup failure, incomplete trace,
+    semantic uncertainty, and missing annotation remain outside the binary
+    denominator and are exposed through coverage fields.
+    """
+
+    if not isinstance(stage, RQ1FactAnnotationStage):
+        raise ValueError("RQ1 metrics stage must be an RQ1FactAnnotationStage")
+    rows = tuple(transformations)
+    if not rows:
+        raise ValueError("RQ1 transformation metrics require transformations")
+    from .rq1 import validate_rq1_arm_set
+
+    validate_rq1_arm_set(rows)
+    transformation_by_id: dict[str, RQ1TransformationRecord] = {}
+    for row in rows:
+        row.validate()
+        if row.transformation_id in transformation_by_id:
+            raise ValueError("duplicate RQ1 transformation_id")
+        transformation_by_id[row.transformation_id] = row
+
+    parsed_annotations: list[RQ1FactAnnotation] = []
+    for annotation in annotations:
+        if isinstance(annotation, AnnotationRecord):
+            if annotation.taxonomy != RQ1_FACT_ANNOTATION_TAXONOMY:
+                continue
+            item = RQ1FactAnnotation.from_record(annotation)
+        elif isinstance(annotation, RQ1FactAnnotation):
+            annotation.validate()
+            item = annotation
+        else:
+            raise TypeError("unsupported RQ1 fact annotation value")
+        if item.stage == stage:
+            parsed_annotations.append(item)
+
+    opportunity_keys = {
+        (row.transformation_id, fact_id)
+        for row in rows
+        for fact_id in row.required_fact_ids
+    }
+    annotation_by_key: dict[tuple[str, str], RQ1FactAnnotation] = {}
+    for annotation in parsed_annotations:
+        key = (annotation.transformation_id, annotation.fact_id)
+        if key not in opportunity_keys:
+            raise ValueError("RQ1 fact annotation references unknown opportunity")
+        transformation = transformation_by_id[annotation.transformation_id]
+        if annotation.run_id != transformation.run_id:
+            raise ValueError("RQ1 fact annotation run_id mismatch")
+        if key in annotation_by_key:
+            raise ValueError("duplicate adjudicated RQ1 fact annotation")
+        annotation_by_key[key] = annotation
+
+    by_arm: dict[str, RQ1ArmFactMetrics] = {}
+    for arm in RQ1TransformationArm:
+        arm_rows = tuple(row for row in rows if row.arm == arm)
+        if not arm_rows:
+            continue
+        arm_opportunities = {
+            (row.transformation_id, fact_id)
+            for row in arm_rows
+            for fact_id in row.required_fact_ids
+        }
+        arm_annotations = [
+            annotation_by_key[key]
+            for key in sorted(arm_opportunities)
+            if key in annotation_by_key
+        ]
+        by_arm[arm.value] = _rq1_arm_fact_metrics(
+            arm=arm,
+            stage=stage,
+            transformation_count=len(arm_rows),
+            opportunity_count=len(arm_opportunities),
+            annotations=arm_annotations,
+        )
+
+    all_annotations = list(annotation_by_key.values())
+    total_binary = sum(item.is_binary for item in all_annotations)
+    total_complete_valid = sum(
+        item.observation_status == RQ1FactObservationStatus.COMPLETE_VALID
+        for item in all_annotations
+    )
+    total_success = sum(item.is_success for item in all_annotations)
+    total_known_loss = total_binary - total_success
+    total_opportunities = len(opportunity_keys)
+    total_unknown = sum(
+        item.status == RQ1FactAnnotationStatus.UNKNOWN for item in all_annotations
+    )
+    total_uncertain = sum(
+        item.status == RQ1FactAnnotationStatus.UNCERTAIN
+        for item in all_annotations
+    )
+    total_unobservable = sum(
+        item.status == RQ1FactAnnotationStatus.UNOBSERVABLE
+        for item in all_annotations
+    )
+    return RQ1TransformationMetrics(
+        stage=stage.value,
+        primary_metric_name=_rq1_primary_metric_name(stage),
+        transformation_count=len(rows),
+        fact_opportunity_count=total_opportunities,
+        annotation_count=len(all_annotations),
+        missing_annotation_count=total_opportunities - len(all_annotations),
+        complete_valid_observation_count=total_complete_valid,
+        binary_denominator_count=total_binary,
+        success_count=total_success,
+        known_loss_count=total_known_loss,
+        uncertain_count=total_uncertain,
+        unknown_count=total_unknown,
+        unobservable_count=total_unobservable,
+        annotation_coverage=_rate(len(all_annotations), total_opportunities),
+        complete_valid_observation_coverage=_rate(
+            total_complete_valid, total_opportunities
+        ),
+        binary_observation_coverage=_rate(total_binary, total_opportunities),
+        required_fact_success_rate=_rate(total_success, total_binary),
+        required_fact_known_loss_rate=_rate(total_known_loss, total_binary),
+        by_arm=by_arm,
+    )
+
+
+def _rq1_arm_fact_metrics(
+    *,
+    arm: RQ1TransformationArm,
+    stage: RQ1FactAnnotationStage,
+    transformation_count: int,
+    opportunity_count: int,
+    annotations: list[RQ1FactAnnotation],
+) -> RQ1ArmFactMetrics:
+    binary = sum(item.is_binary for item in annotations)
+    success = sum(item.is_success for item in annotations)
+    known_loss = binary - success
+    complete_valid = sum(
+        item.observation_status == RQ1FactObservationStatus.COMPLETE_VALID
+        for item in annotations
+    )
+    unknown = sum(
+        item.status == RQ1FactAnnotationStatus.UNKNOWN for item in annotations
+    )
+    uncertain = sum(
+        item.status == RQ1FactAnnotationStatus.UNCERTAIN for item in annotations
+    )
+    unobservable = sum(
+        item.status == RQ1FactAnnotationStatus.UNOBSERVABLE
+        for item in annotations
+    )
+    return RQ1ArmFactMetrics(
+        arm=arm.value,
+        stage=stage.value,
+        primary_metric_name=_rq1_primary_metric_name(stage),
+        transformation_count=transformation_count,
+        fact_opportunity_count=opportunity_count,
+        annotation_count=len(annotations),
+        missing_annotation_count=opportunity_count - len(annotations),
+        complete_valid_observation_count=complete_valid,
+        binary_denominator_count=binary,
+        success_count=success,
+        known_loss_count=known_loss,
+        uncertain_count=uncertain,
+        unknown_count=unknown,
+        unobservable_count=unobservable,
+        annotation_coverage=_rate(len(annotations), opportunity_count),
+        complete_valid_observation_coverage=_rate(
+            complete_valid, opportunity_count
+        ),
+        binary_observation_coverage=_rate(binary, opportunity_count),
+        required_fact_success_rate=_rate(success, binary),
+        required_fact_known_loss_rate=_rate(known_loss, binary),
+    )
+
+
+def _rq1_primary_metric_name(stage: RQ1FactAnnotationStage) -> str:
+    if stage == RQ1FactAnnotationStage.TRANSFORMATION_OUTPUT:
+        return "required_fact_preserved_correctly_rate"
+    return "required_fact_correctly_reflected_rate"
 
 
 def compute_metrics(bundle: TraceBundle) -> RunMetrics:

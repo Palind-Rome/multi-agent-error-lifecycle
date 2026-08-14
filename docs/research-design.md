@@ -1,199 +1,244 @@
-# Research design v0.2
+# Research design v0.3 — RQ1 first
 
-## Working claim
+## Current scope and claim
 
-The contribution is not “a lifecycle exists.” MAST and From Spark to Fire
-already provide stage/failure taxonomies and lifecycle-like defenses. The
-intended contribution is narrower:
+The paper keeps three high-level research questions, but the current study
+implements and evaluates **RQ1 only**. RQ2 and RQ3 are deferred until the RQ1
+measurement pipeline is calibrated. Communication topology and heterogeneous
+model assignment are controls or later robustness checks, not research
+questions in the current study.
 
-1. identify possession, surfacing, delivery, actual exposure, integration or
-   action adoption, commitment execution, verification, actuation, recovery and
-   relapse at artifact/opportunity level;
-2. state which transitions are actually identifiable from a trace;
-3. estimate controlled interventions with matched assignments and transparent
-   missingness; and
-4. test process measurements and final utility on the same recognized task run.
+The first contribution is narrower than a general error-lifecycle taxonomy:
 
-Tentative title:
+> Under a fixed task, model, communication protocol and recipient context cap,
+> determine where required correct information first becomes unavailable when
+> a tool result is replaced by an abstractive natural-language summary, relative
+> to raw forwarding and a length-matched fidelity control, and measure the
+> resulting downstream task effect.
 
-> From Error Exposure to Recovery: Mechanistic Lifecycle Analysis and
-> Controlled Interventions in LLM Multi-Agent Collaboration
+The study distinguishes observable transport from semantic judgment. Literal
+presence, delivery, prompt exposure, correct semantic preservation and
+downstream use are separate measurements. Missing observations and missing
+annotations remain unknown rather than becoming measured failures or zeros.
 
 ## Research questions
 
-- **RQ1 — omission and commission:** At which identifiable transition do
-  required true information and false artifacts fail or spread?
-- **RQ2 — graph/protocol:** What is the total effect of a natural
-  graph/protocol bundle, and—separately—what changes after actual exposure when
-  opportunities and aggregation are controlled?
-- **RQ3 — model assignment:** When does heterogeneous role assignment create
-  interface mismatch, and when does error diversity help correction under
-  counterbalanced role/order assignments?
-- **RQ4 — governance:** Which pre/post verification and
-  detection-only/containment/rollback policy improves safe and usable task
-  completion under matched clean/corrupt budgets?
-- **RQ5 — execution:** How often do acknowledged plans and commitments become
-  fulfilled, breached or contradicted by tool/patch evidence?
+- **RQ1 — correct-information loss (current):** Where does required correct
+  information first disappear when an agent transforms a tool result into a
+  natural-language summary, and how does that affect the downstream answer?
+- **RQ2 — false-information propagation (deferred):** How do misunderstandings,
+  sycophancy and hallucinated claims propagate and affect later agents or task
+  outcomes?
+- **RQ3 — governance (deferred):** How effective and costly are
+  verification-only and verification-plus-containment/rollback policies?
 
-## Artifact/event unit
+Runtime context compaction is not part of the first RQ1 experiment. It lacks a
+stable, framework-independent intervention boundary and can combine summarizing,
+truncation, context overflow and vendor runtime behavior. It may become a
+separate replication after the explicit summary transformation is understood.
 
-An artifact is an immutable claim, correct fact, constraint, requirement, plan,
-commitment, interface contract, tracer, patch claim or test result. An
-opportunity has a stable turn/call/message/action ID. Text appearance,
-endorsement, plan adoption and action dependence are different evidence levels.
-For RQ1, required-true-information attrition is audited at message/artifact
-branch units: possession, surfacing, observed delivery, literal survival, exact
-prompt exposure and then semantic integration. Every message must be linked to
-its actual consuming prompt; a later request to the same agent cannot backfill
-an older handoff. Converging prompts retain every `parent_message_ids` branch
-through exposure, then receive one shared semantic-integration row. Repeated
-prompts to the same agent remain distinct opportunities. The observable
-transitions remain reportable when semantic annotation is absent; the
-integration join is then explicitly unknown rather than scored as a failure.
-Absence of a possession/surfacing event is also unknown unless receipt or a
-complete output opportunity makes the binary result identifiable.
+## RQ1 estimand and experimental arms
 
-The state machine supports:
+The experimental unit is one complete `fixture x repeat x arm` run. The fixture,
+not an individual fact, message, turn or agent, is the minimum analysis cluster.
 
-- possession without surfacing (HiddenBench/RTD omission);
-- delivery without prompt exposure;
-- exposure without integration;
-- marker mention without endorsement;
-- pre- or post-adoption verification;
-- correct detection without governance actuation;
-- containment/rollback followed by recovery or relapse; and
-- correct information delivery followed by commitment breach.
+Each controlled fixture contains an immutable tool result, a downstream
+question and answer key. The pilot target is six pre-declared required facts and
+six distractor facts per fixture, balanced across position, numbers/units,
+negation and conditional qualifiers. Inputs must remain well below the context
+window, and automatic context compaction or truncation must be disabled.
 
-## Experiment sequence
+| Arm | Recipient input | Purpose |
+| --- | --- | --- |
+| `raw_passthrough` (C0) | Complete verbatim tool result | Operational baseline |
+| `length_matched_reference` (C1) | Human/rule reference of the same budget that preserves every required fact | Tests whether the bandwidth target is feasible |
+| `abstractive_summary` (T) | Model-generated natural-language summary under the same registered budget as C1 | Main treatment |
 
-### Stage 0 — offline schema and annotation calibration
+The primary policy contrast is T minus C0: the total effect of replacing raw
+tool output with the registered summary policy. T minus C1 isolates model
+summary fidelity at approximately fixed recipient bandwidth. C1 minus C0
+describes the effect of the shorter representation itself. None of these is
+called a runtime-compact effect.
 
-- deterministic counterexample fixtures for omission, false adoption,
-  true-artifact rejection, pre/post verification, incomplete/tool-error checks,
-  detection-only, containment, rollback, relapse, commitment breach and invalid
-  tool calls;
-- validate the actual annotation/judge pipeline against MAST's public
-  triple-human subset, preserving multi-label confusion and agreement;
-- do not emit inferential intervals for a single engineering realization.
+Held fixed within a fixture:
 
-### Stage 1A — native AgentCollabBench instrumentation smoke
+- immutable source tool result, downstream question and answer key;
+- downstream model, prompt template, temperature, context/output caps and
+  stopping rule;
+- two-agent linear handoff, role prompts, tool status and communication rounds;
+- provider/model version and price table; and
+- downstream scorer and annotation rubric.
 
-Run the 12 pinned RTD/CPR tasks with their untouched native task/topology,
-homogeneous model assignment and no added in-system verifier. This is a
-deliberately difficult medium/hard instrumentation sample, not a representative
-benchmark estimate. Preserve the full result and exact provider requests.
+Run order is randomized independently of any provider sampling setting. When a
+provider does not honor a seed, repeats are independent realizations and must
+not be described as seed-paired samples.
 
-RTD measures required true-tracer surfacing/retention/omission. CPR measures
-false-content exposure and provisional surface reproduction; semantic/action
-adoption requires calibrated annotation. Diagnostic scores remain separate from
-task outcome.
+## Transformation and lifecycle evidence
 
-### Stage 1B — derived controlled stress suite (paused)
+Every intervention must have a typed transformation record with stable IDs and
+lineage to the source tool-result event and consuming downstream prompt. It
+records:
 
-The old 144-cell topology/composition/verification matrix is
-`AgentCollabBench-derived`, unvalidated and paused. It can resume only after:
+- source and transformed content hashes (raw text remains private);
+- arm/method and derived-suite identity;
+- producer type, model/version and prompt-template hash when applicable;
+- source and target character/token counts and registered budget;
+- required-fact IDs expected at the transformation boundary; and
+- parent event, emitted message and included prompt IDs.
 
-- topology realism and metric-artifact-isolation review;
-- fixed external final aggregation/output target;
-- matched speaker multiset, turn/call cap, tools and stopping rule;
-- recorded message/token/hop/exposure opportunities;
-- clean/sham/corrupt mirrors;
-- governance verification and actuation implemented as separate runtime hooks;
-- homogeneous first, then a fixed heterogeneous model multiset with
-  role/order/source rotation; and
-- repeats chosen from observed within-task variance and budget.
+For each required fact, one run audits this sequence:
 
-Report a natural graph/protocol **total bundle effect** separately from an
-exposure-standardized transition effect. Do not call either an official
-AgentCollabBench topology replication.
+```text
+source tool result observed
+  -> transformation output observed
+  -> handoff sent and delivered
+  -> exact downstream provider request observed
+  -> fact semantically preserved/reflected
+  -> downstream structured answer correct
+```
 
-### Stage 2A — HiddenBench omission bridge
+The general lifecycle vocabulary remains usable across benchmarks, but evidence
+availability is benchmark-specific. AgentCollabBench RTD supplies literal
+tracer evidence; it does not by itself establish semantic understanding,
+belief, action dependence or recognized task success.
 
-Measure authorized private-information possession, speaking opportunities,
-surfacing, communication completion, exact prompt exposure, integration, hidden
-context leakage and group pre/post outcome. Include an equal-output-budget
-verbose control because Reveal-All also changes communication instructions.
+## Primary and secondary measures
 
-### Stage 2B — TeamBench verifier bridge
+Two run-level co-primary outcomes are registered for the measurement pilot:
 
-Separate requirement visibility, workspace/report access, write/execute
-authority and shared history. Preserve missing/invalid attestations, isolated
-deterministic grader results, evidence provenance, role violations and tool-call
-validity. Include Solo, Restricted, No-Plan, No-Verify and Full-Team contrasts.
+1. **Summary-stage required-fact retention:** correctly preserved required
+   facts divided by all initially required facts, only when the complete
+   transformation output and fact annotations are observed. An observed valid
+   empty or fact-omitting output is a measured loss; an unavailable response,
+   incomplete trace or missing annotation is unobserved, not zero.
+2. **End-to-end required-fact success (ITT):** required facts correctly
+   reflected in an observed downstream structured answer divided by all
+   initially required facts. The denominator is not conditioned on exposure or
+   any other post-treatment mediator. Provider/setup failure or an unobserved
+   answer remains missing and is reported by arm rather than imputed as failure.
 
-### Stage 3 — CooperBench primary collaboration outcome
+Required supporting reports:
 
-Use Solo, Coop and no-communication plus a semantic-contract intervention.
-Record feature-A/B results, branch/final patches, naive/union/resolver merge
-tiers, messages, OpenHands actions and commitment fulfillment. Cluster by
-feature pool/shared base PR; counterbalance heterogeneous A/B feature
-assignment. Start with a four-task container smoke before any expansion.
+- first identifiable loss stage for every fact/path;
+- surfacing, delivery/literal-survival and exact-request exposure opportunities;
+- request-observation and semantic-annotation coverage;
+- authoritative semantic preservation/integration rate and binary denominator;
+- unsupported or contradicted fact rate;
+- objective task score where the suite supplies one; and
+- actual compression ratio, tokens, calls, latency and cost.
 
-### Stage 4 — external/ecological validation
+The repository's `RunMetrics` is a candidate superset. Metrics concerning false
+adoption, governance, rollback, topology or commitments are not primary RQ1
+outcomes merely because fields already exist.
 
-- stratified SWE-bench Verified as the recognized external software anchor;
-- MultiAgentBench as a secondary published ecological layer, prioritizing
-  deterministic environments and explicitly modeling tool-call validity;
-- social-adoption/BSS study only as a separate small mechanism experiment with
-  user/peer pressure and random/accuracy/dummy-prior controls.
+## Human annotation calibration
 
-## Controls and estimands
+Required facts are annotated separately in the transformation output and final
+answer. Every label retains an evidence span and target event ID.
 
-Required controls include:
+Transformation labels:
 
-- single agent and action/cost-matched Solo;
-- no-communication where meaningful;
-- no-injection clean and matched sham/correct-artifact arms;
-- corrupt assignment with manipulation-check failure retained in ITT;
-- verification-only versus verification plus containment/rollback;
-- same task, pair seed, prompt template, tool/access policy, stopping rule and
-  final scorer except for the pre-registered intervention;
-- model-role/source/order counterbalance;
-- actual exposure-path and opportunity accounting; and
-- clean utility, false rejection, collateral repair/harm, task outcome, tokens,
-  calls, actions, latency and cost reported separately.
+- `preserved_correctly`;
+- `omitted`;
+- `distorted_or_contradicted`;
+- `partial`;
+- `uncertain`; and
+- `unobservable`.
 
-Primary rates state their denominators. Missing, invalid, inconclusive, timeout
-and tool error remain separate. `finite_window_secondary_adoption_count` is a
-secondary descriptive measure with a registered window and attribution rule,
-not an epidemic reproduction number. DAG analysis uses time-expanded
-reachability; spectral heuristics are reserved for recurrent graphs.
-Prompt-exposure opportunity, request-observation coverage, semantic annotation
-coverage and the binary rate denominator are separate quantities. A missing
-exact request is not a non-exposure, and a missing authoritative
-integration/adoption disposition is not a measured zero. Final contamination
-is estimable only when all observed or potentially unobserved false-artifact
-prompt paths have a binary authoritative adoption disposition and any positive
-state has timed lifecycle evidence; a one-turn annotation is not silently
-promoted to a terminal pair label.
+Downstream labels:
 
-## Statistical plan
+- `correctly_reflected`;
+- `mentioned_only` (not demonstrably used);
+- `incorrectly_reflected`;
+- `absent`;
+- `uncertain`; and
+- `unobservable`.
 
-- `pair_id = task × repeat × assignment block`; every condition in a pair shares
-  the assigned sampling seed when the provider supports it.
-- Execution order is randomized with a separate schedule seed.
-- Use task/question as the minimum cluster; CooperBench uses feature pool/shared
-  base PR. Never treat turn, edge, agent or feature pair as automatically
-  independent.
-- Report planned, observed, paired and missing-by-condition counts. Default
-  paired analysis fails on a missing cell; registered sensitivity/ITT views are
-  shown alongside any complete-case view.
-- One-repeat smokes are descriptive and inference-ineligible.
-- Choose repetitions after a variance/budget gate. Confirmatory models include
-  task/cluster and repeat structure, model-by-intervention interaction,
-  multiplicity control and a manipulation-check ledger.
-- Calibrate the actual fixed judge with blinded, stratified human audit and
-  per-label/per-metric confusion—not merely a different model name.
+The instrumentation pilot requires 100% disposition coverage for observable
+fact opportunities before aggregate semantic rates are interpreted. Two
+annotators independently label the full pilot while blinded to arm, model,
+benchmark score and later-stage text; disagreements are adjudicated by a third
+person. Report per-label agreement/confusion and Cohen's kappa as annotation
+reliability, not as a model-performance metric.
+
+## Execution sequence and gates
+
+### Stage 0 — offline contract calibration (current)
+
+- implement the typed transformation lineage and three-arm contract;
+- run a deterministic `1 fixture x 3 arms` calibration without an API;
+- test missing/unobservable evidence, budget violations and fact-level scoring;
+- implement a closed benchmark-plugin registry and one-assignment executor; and
+- keep all raw tool results, summaries and prompts in git-ignored private paths.
+
+### Stage 1 — three-run real engineering calibration
+
+Run one approved derived fixture once in each arm with the fixed homogeneous
+Qwen model. Manually audit every source result, transformation, handoff,
+provider request and final answer. This stage remains
+`purpose="engineering_smoke"` and `analysis_eligible=false`.
+
+### Stage 2 — RQ1 measurement/variance pilot
+
+Provisional size, to be frozen before calls:
+
+- eight controlled fixtures;
+- C0, C1 and T: three independent downstream repeats each; and
+- `8 x 3 x 3 = 72` total runs.
+
+The C1 reference text may be created once and held immutable, but its downstream
+model run is repeated like the other arms. Because provider seeds are not
+assumed, the design does not claim random-number pairing. T and C1 are matched
+on transformation-output bandwidth; C0 deliberately contains more actual input
+and estimates the operational raw-versus-summary policy contrast.
+
+This pilot estimates instrumentation missingness, annotation disagreement,
+within-fixture variation and cost. It does not provide a confirmatory
+generalization claim. Main-study size is chosen only after the variance and
+budget gate.
+
+### Stage 3 — outcome and ecological validation
+
+- **AgentCollabBench:** first mechanism/instrumentation bridge. Untouched native
+  RTD results remain separate; inserting a summary treatment creates an
+  explicitly named derived suite.
+- **CooperBench:** later coding-collaboration outcome validation using objective
+  tests and separate pre-merge/merge/resolver outcomes. It requires its own
+  plugin and required-information annotation.
+- **HiddenBench:** optional distributed-information semantic bridge with an
+  equal-bandwidth control.
+- **MultiAgentBench:** deferred breadth layer because environment, protocol,
+  topology and tools are bundled.
+- **BrowseComp/GDPval:** not native MAS benchmarks; using them would require a
+  separately justified derived MAS harness.
+
+## Readiness rule
+
+Formal or inferential data collection must not begin until all of the following
+are true:
+
+1. fixture manifest, fact keys, arms, budgets and stopping rule are frozen and
+   hashed;
+2. transformation lineage and exact provider requests pass manual audit;
+3. unknown/unobservable values cannot enter a binary numerator or denominator;
+4. annotation protocol and blinding fields are frozen and calibrated;
+5. provider/model/version, unsupported seed status and price ceilings are
+   rechecked;
+6. experiment-level call/token/time/cost caps are enforced;
+7. every planned run has an analysis-eligibility decision made before execution;
+8. full offline tests pass; and
+9. planned, observed, missing and excluded counts can be reconciled by arm.
 
 ## Main validity boundaries
 
-- Native task/topology associations are not randomized topology effects.
-- A rewired graph changes routing, leaf aggregation, context and opportunities.
-- Exact tracer/false-fact survival is not semantic fidelity or belief.
-- User sycophancy, horizontal peer conformity and hallucination are different.
-- Attestation validity and task truth come from separate channels.
-- Detection without enforceable isolation or rollback is not recovery.
-- Clean utility can fall even when false propagation falls.
-- AgentCollabBench diagnostic scores cannot establish practical task value.
-- Learned merge/resolver output must not hide pre-resolver collaboration failure.
-- Synthetic, adapted and real-repository task strata are reported separately.
+- Exact tracer retention is not semantic fidelity or understanding.
+- A summary intervention added to AgentCollabBench is not untouched native
+  AgentCollabBench.
+- Shortening and abstraction differ; the three arms are required to diagnose
+  them.
+- Facts and turns nested in one fixture are not independent samples.
+- A missing request or annotation is not a measured loss.
+- `validate` establishes record integrity, not scientific validity.
+- A single-run `summarize` result is not a cross-run estimate.
+- Multiple Qwen models are a later robustness study, not part of the first
+  measurement pilot.

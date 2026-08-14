@@ -39,3 +39,28 @@
   inference guard.
 - Label rewired tasks `AgentCollabBench-derived`; native and derived results
   cannot share benchmark identity or reporting paths.
+
+## 2026-08-14 — RQ1 scope freeze for engineering calibration
+
+- Keep three paper-level questions—correct-information loss, false-information
+  propagation and governance—but implement RQ1 only until its measurements are
+  calibrated. Topology and heterogeneous model assignment are not current RQs.
+- Study explicit natural-language summarization before runtime context
+  compaction. Compaction is framework-specific and can mix summarization,
+  truncation, overflow and vendor behavior.
+- Use three RQ1 arms: verbatim raw forwarding, a length-matched fidelity
+  reference, and an abstractive model summary. Keep the task, downstream model,
+  recipient budget and scorer fixed.
+- Treat the run/fixture as the experimental/cluster unit. Facts, turns, messages
+  and agents within one run are nested observations, not independent samples.
+- Register summary-stage fact retention and end-to-end required-fact success as
+  the pilot co-primary measures. Keep missing requests, unobservable output and
+  absent semantic annotations explicitly unknown.
+- Any summary intervention layered onto an AgentCollabBench task is a derived
+  suite, not an untouched native benchmark run. Native RTD remains an
+  instrumentation bridge only.
+- Use one homogeneous Qwen model for engineering calibration. Multi-model
+  comparisons are deferred robustness checks.
+- Implement a closed benchmark-plugin registry and one-assignment executor
+  before claiming that a config can switch harnesses. A config may select only
+  plugins whose execution and evidence contracts already exist and pass tests.

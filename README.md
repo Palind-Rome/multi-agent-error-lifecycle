@@ -1,7 +1,8 @@
 # Multi-Agent Error Lifecycle
 
-这是论文 **From Error Exposure to Recovery: Mechanistic Lifecycle Analysis and
-Controlled Interventions in LLM Multi-Agent Collaboration** 的实验基础设施。
+这是 multi-agent 协作错误研究的实验基础设施。论文保留三个高层问题，但当前
+只推进 **RQ1：自然语言概括工具结果时，正确信息在哪里首次丢失**。错误信息传播
+与治理干预暂缓；通信拓扑和异构模型不是当前研究问题。
 
 v0.2 的核心变化是：不再把“收到注入”当作模型生成或污染，也不再把字符串复现当作
 正式 adoption。一次运行现在可以审计：
@@ -37,6 +38,8 @@ evidence validity、access/tool failure 和 commitment breach 都是一等记录
 - 记录 commitment、evidence、attestation、grader、model/tool call 和 nullable
   usage；
 - 生成真正共享 task/repeat seed 的 paired assignments，并单独随机化执行顺序；
+- 通过不可变的闭集 `BenchmarkPlugin` registry 校验 plugin/version/raw schema，
+  并用一个仅支持可信离线插件的单-assignment executor 做私有原子落盘；
 - 对缺 pair 硬失败，以 task/shared-pool cluster 做 paired bootstrap；
 - 离线校准 MAST 风格的 multi-label annotation；
 - 导入 AgentCollabBench 完整结果，并保留 exact request 与 call provenance；
@@ -45,9 +48,11 @@ evidence validity、access/tool failure 和 commitment breach 都是一等记录
 - 生成明确标为 `AgentCollabBench-derived`、默认暂停且不可作 native/causal
   汇报的 topology stress variant。
 
-当前不能开始付费主实验或推断性实验：虽已有固定 PaperBypass/Qwen 示例配置和
-单任务 engineering-smoke driver，但没有通用 `run-plan` executor、校准 judge 或
-HiddenBench/TeamBench/CooperBench/SWE-bench runner。
+当前不能开始付费主实验或推断性实验：虽已有固定 PaperBypass/Qwen 示例配置、
+单任务 engineering-smoke driver、离线单-assignment executor，以及通过反例测试的
+RQ1 三臂数据/标注契约，但还没有注册真实网络 benchmark plugin、可恢复的批量
+`run-plan`、真实 provider/setup 失败轨迹分支、完成盲标校准的人工流程，或
+CooperBench 等 runner。
 详见 [`docs/experiment-readiness.md`](docs/experiment-readiness.md)。
 
 ## 快速开始
@@ -70,12 +75,21 @@ PYTHONPATH=src python -m mas_error_lifecycle summarize outputs/demo.jsonl
 
 PYTHONPATH=src python -m mas_error_lifecycle plan \
   configs/pilot.toml \
+  --allow-unready \
   --out outputs/native-smoke-plan.jsonl \
   --force
+
+# 不调用 API；生成 1 个 fixture × 3 个 arm 的确定性契约校准结果
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src \
+  python scripts/rq1_offline_calibration.py
 ```
 
+最后一条命令只证明 transformation、lineage、事实级 rubric、unknown 分母和三臂
+配对校验可以工作；其中的数值是人工构造的校准预期，不是论文证据。
+
 `configs/pilot.toml` 只展开 12 个 untouched-native、homogeneous、
-no-added-verifier 的 engineering assignments。它没有触发 API 调用，也没有推断资格。
+no-added-verifier 的 blocked engineering assignments。它没有触发 API 调用，也没有
+推断资格；没有 `--allow-unready` 时会拒绝展开。
 
 旧的 144-cell 设计已移到
 [`configs/derived-topology-stress.paused.toml`](configs/derived-topology-stress.paused.toml)。
@@ -180,8 +194,12 @@ causal intervention。
 
 ## 设计与 schema
 
+- 基础设施各层、当前已有和未有能力：
+  [`docs/infrastructure.md`](docs/infrastructure.md)
 - 研究顺序、estimands、controls 与统计门槛：
   [`docs/research-design.md`](docs/research-design.md)
+- RQ1 事实级人工标注规则与缺失处理：
+  [`docs/rq1-annotation-guide.md`](docs/rq1-annotation-guide.md)
 - JSONL records、事件语义与不变量：
   [`docs/trace-schema.md`](docs/trace-schema.md)
 - 当前可运行范围与阻塞：

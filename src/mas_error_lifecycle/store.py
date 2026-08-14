@@ -157,6 +157,27 @@ class TraceBundle:
         )
         self._validate_usage(model_call_map, errors)
 
+        # RQ1 transformations are additive contracts nested in annotations.
+        # Import lazily to avoid coupling the generic record schema to the
+        # derived-suite calibration helper while still validating fail-closed.
+        rq1_declared = (
+            self.manifest.protocol_kind.startswith("rq1_")
+            or self.manifest.benchmark.lower().startswith("rq1")
+            or any(str(key).startswith("rq1_") for key in self.manifest.config)
+            or any(
+                annotation.taxonomy
+                in {"rq1-transformation", "rq1-required-fact"}
+                for annotation in self.annotations
+            )
+        )
+        if rq1_declared:
+            try:
+                from .rq1 import _validate_rq1_bundle_records
+
+                _validate_rq1_bundle_records(self)
+            except (KeyError, TypeError, ValueError) as exc:
+                errors.append(f"RQ1 transformation contract: {exc}")
+
         if errors:
             raise TraceValidationError(errors)
 

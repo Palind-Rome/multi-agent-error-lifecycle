@@ -21,11 +21,17 @@ IMPLEMENTED_FACTOR_BINDINGS = {
     "injection_variant",
     "source_position_assignment",
 }
+PLAN_VERSION = "0.3.0"
+KNOWN_REVIEW_STATUSES = frozenset({"native", "not_required", "unvalidated"})
+EXECUTABLE_REVIEW_STATUSES = frozenset({"native", "not_required"})
 
 
 @dataclass(frozen=True, slots=True)
 class PlanItem:
     plan_version: str
+    benchmark_plugin: str
+    plugin_version: str
+    raw_schema_version: str
     experiment: str
     purpose: str
     protocol_kind: str
@@ -83,6 +89,22 @@ def load_plan(
     backbone_calls = experiment.get("estimated_backbone_calls_per_run")
     judge_calls = experiment.get("estimated_judge_calls_per_run")
     preregistration_hash = experiment.get("preregistration_hash")
+    benchmark_plugin = experiment.get("benchmark_plugin")
+    plugin_version = experiment.get("plugin_version")
+    raw_schema_version = experiment.get("raw_schema_version")
+    if not isinstance(benchmark_plugin, str) or not re.fullmatch(
+        r"[a-z][a-z0-9_.-]{0,63}", benchmark_plugin
+    ):
+        raise ValueError(
+            "experiment.benchmark_plugin must match "
+            "[a-z][a-z0-9_.-]{0,63}"
+        )
+    for value, label in (
+        (plugin_version, "experiment.plugin_version"),
+        (raw_schema_version, "experiment.raw_schema_version"),
+    ):
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError(f"{label} must be a non-empty string")
 
     for value, label in (
         (name, "experiment.name"),
@@ -94,13 +116,15 @@ def load_plan(
             raise ValueError(f"{label} must be non-empty")
     if execution_status not in {"ready", "paused", "blocked"}:
         raise ValueError("experiment.execution_status is invalid")
+    if review_status not in KNOWN_REVIEW_STATUSES:
+        raise ValueError("experiment.review_status is invalid")
     if not allow_unready and execution_status != "ready":
         raise ValueError(
             f"plan is {execution_status}; pass allow_unready=True only to preview it"
         )
-    if not allow_unready and review_status == "unvalidated":
+    if not allow_unready and review_status not in EXECUTABLE_REVIEW_STATUSES:
         raise ValueError(
-            "unvalidated plan cannot be expanded as ready; complete construct review"
+            "plan review_status is not executable; complete construct review"
         )
     if not isinstance(analysis_eligible, bool):
         raise ValueError("experiment.analysis_eligible must be boolean")
@@ -166,7 +190,10 @@ def load_plan(
                 run_id = _stable_id("run", assignment_id)
                 items.append(
                     PlanItem(
-                        plan_version="0.2.0",
+                        plan_version=PLAN_VERSION,
+                        benchmark_plugin=benchmark_plugin,
+                        plugin_version=plugin_version,
+                        raw_schema_version=raw_schema_version,
                         experiment=name,
                         purpose=purpose,
                         protocol_kind=protocol_kind,

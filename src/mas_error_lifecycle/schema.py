@@ -109,6 +109,29 @@ class ToolCallStatus(StrEnum):
     TIMEOUT = "timeout"
 
 
+class RQ1TransformationArm(StrEnum):
+    RAW_PASSTHROUGH = "raw_passthrough"
+    LENGTH_MATCHED_REFERENCE = "length_matched_reference"
+    ABSTRACTIVE_SUMMARY = "abstractive_summary"
+
+
+class RQ1TransformationMethod(StrEnum):
+    IDENTITY = "identity"
+    REFERENCE_SUMMARY = "reference_summary"
+    ABSTRACTIVE_SUMMARY = "abstractive_summary"
+
+
+class RQ1TransformationProducerKind(StrEnum):
+    DETERMINISTIC = "deterministic"
+    HUMAN_REFERENCE = "human_reference"
+    MODEL = "model"
+    OFFLINE_FIXTURE = "offline_fixture"
+
+
+RQ1_TRANSFORMATION_TAXONOMY = "rq1-transformation"
+RQ1_TRANSFORMATION_TAXONOMY_VERSION = "1.0.0"
+
+
 class GraderStatus(StrEnum):
     SUCCESS = "success"
     ERROR = "error"
@@ -434,6 +457,10 @@ class RunManifest:
             raise ValueError("execution_status must be ready, paused, or blocked")
         if not isinstance(self.analysis_eligible, bool):
             raise ValueError("analysis_eligible must be boolean")
+        if self.analysis_eligible and self.preregistration_hash is None:
+            raise ValueError(
+                "analysis_eligible manifest requires preregistration_hash"
+            )
         if not self.agents:
             raise ValueError("manifest must contain at least one agent")
         for agent in self.agents:
@@ -1053,6 +1080,437 @@ class ToolCallRecord:
 
 
 @dataclass(frozen=True, slots=True)
+class RQ1TransformationRecord:
+    """Auditable contract for one tool-result text transformation.
+
+    The v0.2 trace envelope stores this additive contract inside an
+    ``AnnotationRecord`` with taxonomy ``rq1-transformation``.  Keeping it as a
+    typed nested contract avoids pretending that the calibration suite is an
+    untouched native benchmark and avoids changing the generic trace container.
+    """
+
+    contract_type: ClassVar[str] = "rq1_transformation"
+
+    transformation_id: str
+    run_id: str
+    fixture_id: str
+    repeat_id: str
+    block_id: str
+    benchmark_id: str
+    suite_kind: str
+    protocol_kind: str
+    arm: RQ1TransformationArm
+    method: RQ1TransformationMethod
+    source_text_sha256: str
+    target_text_sha256: str
+    source_char_count: int
+    target_char_count: int
+    source_token_count: int
+    target_token_count: int
+    token_count_method: str
+    token_count_version: str
+    char_budget: int
+    token_budget: int
+    required_fact_ids: tuple[str, ...]
+    source_tool_call_id: str
+    parent_event_ids: tuple[str, ...]
+    output_event_id: str
+    target_message_id: str
+    downstream_prompt_ids: tuple[str, ...]
+    downstream_contract_sha256: str
+    producer_kind: RQ1TransformationProducerKind
+    producer_id: str
+    source_native_benchmark_id: str | None = None
+    tokenizer_name: str | None = None
+    producer_model: str | None = None
+    producer_prompt_id: str | None = None
+    producer_prompt_sha256: str | None = None
+    producer_call_id: str | None = None
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+    def validate(self) -> None:
+        for name in (
+            "transformation_id",
+            "run_id",
+            "fixture_id",
+            "repeat_id",
+            "block_id",
+            "benchmark_id",
+            "suite_kind",
+            "protocol_kind",
+            "source_tool_call_id",
+            "output_event_id",
+            "target_message_id",
+            "downstream_contract_sha256",
+            "producer_id",
+            "token_count_method",
+            "token_count_version",
+        ):
+            _assert_nonempty(getattr(self, name), f"transformation {name}")
+        _assert_json_object(self.metadata, "transformation metadata")
+        if self.suite_kind != "derived":
+            raise ValueError("RQ1 transformation suite_kind must be derived")
+        if not isinstance(self.arm, RQ1TransformationArm):
+            raise ValueError("transformation arm must be an RQ1TransformationArm")
+        if not isinstance(self.method, RQ1TransformationMethod):
+            raise ValueError(
+                "transformation method must be an RQ1TransformationMethod"
+            )
+        if not isinstance(self.producer_kind, RQ1TransformationProducerKind):
+            raise ValueError(
+                "transformation producer_kind must be an "
+                "RQ1TransformationProducerKind"
+            )
+        expected_method = {
+            RQ1TransformationArm.RAW_PASSTHROUGH: RQ1TransformationMethod.IDENTITY,
+            RQ1TransformationArm.LENGTH_MATCHED_REFERENCE: (
+                RQ1TransformationMethod.REFERENCE_SUMMARY
+            ),
+            RQ1TransformationArm.ABSTRACTIVE_SUMMARY: (
+                RQ1TransformationMethod.ABSTRACTIVE_SUMMARY
+            ),
+        }[self.arm]
+        if self.method != expected_method:
+            raise ValueError("transformation arm and method are inconsistent")
+        expected_producer_kind = {
+            RQ1TransformationArm.RAW_PASSTHROUGH: (
+                RQ1TransformationProducerKind.DETERMINISTIC
+            ),
+            RQ1TransformationArm.LENGTH_MATCHED_REFERENCE: (
+                RQ1TransformationProducerKind.HUMAN_REFERENCE
+            ),
+            RQ1TransformationArm.ABSTRACTIVE_SUMMARY: (
+                RQ1TransformationProducerKind.MODEL
+            ),
+        }[self.arm]
+        if self.producer_kind != expected_producer_kind:
+            raise ValueError("transformation arm and producer_kind are inconsistent")
+        _assert_sha256(
+            self.source_text_sha256,
+            "transformation source_text_sha256",
+            required=True,
+        )
+        _assert_sha256(
+            self.target_text_sha256,
+            "transformation target_text_sha256",
+            required=True,
+        )
+        _assert_sha256(
+            self.producer_prompt_sha256,
+            "transformation producer_prompt_sha256",
+        )
+        _assert_sha256(
+            self.downstream_contract_sha256,
+            "transformation downstream_contract_sha256",
+            required=True,
+        )
+        for name in (
+            "source_char_count",
+            "target_char_count",
+            "source_token_count",
+            "target_token_count",
+            "char_budget",
+            "token_budget",
+        ):
+            value = getattr(self, name)
+            if not isinstance(value, int) or isinstance(value, bool) or value < 0:
+                raise ValueError(f"transformation {name} must be non-negative integer")
+        if self.char_budget < 1 or self.token_budget < 1:
+            raise ValueError("transformation budgets must be positive")
+        if self.target_char_count > self.char_budget:
+            raise ValueError("transformation target exceeds char_budget")
+        if self.target_token_count > self.token_budget:
+            raise ValueError("transformation target exceeds token_budget")
+        if not self.required_fact_ids or len(set(self.required_fact_ids)) != len(
+            self.required_fact_ids
+        ):
+            raise ValueError(
+                "transformation required_fact_ids must be non-empty and unique"
+            )
+        if not self.parent_event_ids or len(set(self.parent_event_ids)) != len(
+            self.parent_event_ids
+        ):
+            raise ValueError(
+                "transformation parent_event_ids must be non-empty and unique"
+            )
+        if not self.downstream_prompt_ids or len(
+            set(self.downstream_prompt_ids)
+        ) != len(self.downstream_prompt_ids):
+            raise ValueError(
+                "transformation downstream_prompt_ids must be non-empty and unique"
+            )
+        for value in (
+            *self.required_fact_ids,
+            *self.parent_event_ids,
+            *self.downstream_prompt_ids,
+        ):
+            _assert_nonempty(value, "transformation lineage/fact ID")
+        for name in (
+            "source_native_benchmark_id",
+            "tokenizer_name",
+            "producer_model",
+            "producer_prompt_id",
+            "producer_call_id",
+        ):
+            _assert_optional_nonempty(getattr(self, name), f"transformation {name}")
+        if (self.producer_prompt_id is None) != (
+            self.producer_prompt_sha256 is None
+        ):
+            raise ValueError(
+                "producer_prompt_id and producer_prompt_sha256 must appear together"
+            )
+        if self.arm in {
+            RQ1TransformationArm.LENGTH_MATCHED_REFERENCE,
+            RQ1TransformationArm.ABSTRACTIVE_SUMMARY,
+        } and self.producer_prompt_id is None:
+            raise ValueError("summary transformations require prompt provenance")
+        if self.arm == RQ1TransformationArm.ABSTRACTIVE_SUMMARY:
+            if self.producer_kind != RQ1TransformationProducerKind.MODEL:
+                raise ValueError("abstractive summary producer_kind must be model")
+            if any(
+                value is None
+                for value in (
+                    self.producer_model,
+                    self.producer_prompt_id,
+                    self.producer_prompt_sha256,
+                    self.producer_call_id,
+                )
+            ):
+                raise ValueError(
+                    "model abstractive summary requires model, prompt, and call provenance"
+                )
+        if self.producer_kind == RQ1TransformationProducerKind.MODEL and any(
+            value is None
+            for value in (
+                self.producer_model,
+                self.producer_prompt_id,
+                self.producer_prompt_sha256,
+                self.producer_call_id,
+            )
+        ):
+            raise ValueError(
+                "model transformation requires model, prompt, and call provenance"
+            )
+        if self.producer_kind == RQ1TransformationProducerKind.MODEL:
+            producer_contract = self.metadata.get("producer_contract")
+            required_producer_fields = {
+                "provider_id",
+                "model",
+                "model_version",
+                "prompt_sha256",
+                "temperature",
+                "output_token_cap",
+                "stopping_rule",
+            }
+            if not isinstance(producer_contract, dict) or set(
+                producer_contract
+            ) != required_producer_fields:
+                raise ValueError("model producer_contract fields are incomplete or unknown")
+            if producer_contract["model"] != self.producer_model:
+                raise ValueError("producer_contract model mismatch")
+            if producer_contract["prompt_sha256"] != self.producer_prompt_sha256:
+                raise ValueError("producer_contract prompt hash mismatch")
+            for name in (
+                "provider_id",
+                "model",
+                "model_version",
+                "prompt_sha256",
+                "stopping_rule",
+            ):
+                _assert_nonempty(
+                    producer_contract[name], f"transformation producer_contract.{name}"
+                )
+            _assert_sha256(
+                producer_contract["prompt_sha256"],
+                "transformation producer_contract.prompt_sha256",
+                required=True,
+            )
+            producer_cap = producer_contract["output_token_cap"]
+            if (
+                not isinstance(producer_cap, int)
+                or isinstance(producer_cap, bool)
+                or producer_cap < 1
+            ):
+                raise ValueError("producer_contract.output_token_cap must be positive integer")
+            if self.target_token_count > producer_cap:
+                raise ValueError("model producer output exceeds producer token cap")
+            producer_temperature = producer_contract["temperature"]
+            if not isinstance(producer_temperature, int | float) or isinstance(
+                producer_temperature, bool
+            ):
+                raise ValueError("producer_contract.temperature must be numeric")
+        if self.arm == RQ1TransformationArm.RAW_PASSTHROUGH:
+            if (
+                self.source_text_sha256 != self.target_text_sha256
+                or self.source_char_count != self.target_char_count
+                or self.source_token_count != self.target_token_count
+            ):
+                raise ValueError("raw_passthrough must be an identity transformation")
+        if self.metadata.get("native_benchmark_claimed") is not False:
+            raise ValueError(
+                "RQ1 derived transformation must explicitly set "
+                "metadata.native_benchmark_claimed=false"
+            )
+        if "derived" not in self.benchmark_id.lower():
+            raise ValueError("RQ1 derived benchmark_id must explicitly identify derived data")
+        if self.source_native_benchmark_id == self.benchmark_id:
+            raise ValueError("derived and source-native benchmark identities must differ")
+        if not isinstance(self.metadata.get("calibration_only"), bool):
+            raise ValueError("transformation metadata.calibration_only must be boolean")
+        if not isinstance(self.metadata.get("synthetic_fixture"), bool):
+            raise ValueError("transformation metadata.synthetic_fixture must be boolean")
+        if not isinstance(self.metadata.get("api_called"), bool):
+            raise ValueError("transformation metadata.api_called must be boolean")
+        if self.metadata["synthetic_fixture"] and (
+            self.metadata["calibration_only"] is not True
+            or self.metadata["api_called"] is not False
+        ):
+            raise ValueError(
+                "synthetic transformation must be offline calibration-only"
+            )
+        downstream_contract = self.metadata.get("downstream_contract")
+        if not isinstance(downstream_contract, dict):
+            raise ValueError("transformation metadata.downstream_contract is required")
+        required_downstream_fields = {
+            "task_id",
+            "task_payload_sha256",
+            "prompt_template",
+            "prompt_template_sha256",
+            "provider_id",
+            "model",
+            "model_version",
+            "context_token_cap",
+            "output_token_cap",
+            "temperature",
+            "stopping_rule",
+            "scorer_id",
+            "scorer_version",
+        }
+        if set(downstream_contract) != required_downstream_fields:
+            raise ValueError(
+                "transformation downstream_contract fields are incomplete or unknown"
+            )
+        for name in (
+            "task_id",
+            "task_payload_sha256",
+            "prompt_template",
+            "prompt_template_sha256",
+            "provider_id",
+            "model",
+            "model_version",
+            "stopping_rule",
+            "scorer_id",
+            "scorer_version",
+        ):
+            _assert_nonempty(
+                downstream_contract[name], f"transformation downstream_contract.{name}"
+            )
+        _assert_sha256(
+            downstream_contract["prompt_template_sha256"],
+            "transformation downstream_contract.prompt_template_sha256",
+            required=True,
+        )
+        if downstream_contract["prompt_template"].count("{transformed_text}") != 1:
+            raise ValueError(
+                "downstream_contract.prompt_template must contain one "
+                "{transformed_text} placeholder"
+            )
+        try:
+            downstream_contract["prompt_template"].format(
+                transformed_text="validation-placeholder"
+            )
+        except (IndexError, KeyError, ValueError) as exc:
+            raise ValueError("downstream_contract.prompt_template is invalid") from exc
+        if text_sha256(downstream_contract["prompt_template"]) != (
+            downstream_contract["prompt_template_sha256"]
+        ):
+            raise ValueError("downstream_contract prompt template hash mismatch")
+        _assert_sha256(
+            downstream_contract["task_payload_sha256"],
+            "transformation downstream_contract.task_payload_sha256",
+            required=True,
+        )
+        for name in ("context_token_cap", "output_token_cap"):
+            value = downstream_contract[name]
+            if not isinstance(value, int) or isinstance(value, bool) or value < 1:
+                raise ValueError(f"downstream_contract.{name} must be positive integer")
+        temperature = downstream_contract["temperature"]
+        if not isinstance(temperature, int | float) or isinstance(temperature, bool):
+            raise ValueError("downstream_contract.temperature must be numeric")
+        canonical_downstream = json.dumps(
+            downstream_contract,
+            ensure_ascii=False,
+            allow_nan=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+        if hashlib.sha256(canonical_downstream).hexdigest() != self.downstream_contract_sha256:
+            raise ValueError("transformation downstream_contract_sha256 mismatch")
+        _assert_json_object(self.metadata, "transformation metadata")
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            **asdict(self),
+            "contract_type": self.contract_type,
+            "arm": self.arm.value,
+            "method": self.method.value,
+            "producer_kind": self.producer_kind.value,
+            "required_fact_ids": list(self.required_fact_ids),
+            "parent_event_ids": list(self.parent_event_ids),
+            "downstream_prompt_ids": list(self.downstream_prompt_ids),
+        }
+
+    @classmethod
+    def from_dict(cls, value: dict[str, Any]) -> RQ1TransformationRecord:
+        if value.get("contract_type") != cls.contract_type:
+            raise ValueError("invalid RQ1 transformation contract_type")
+        return cls(
+            transformation_id=str(value["transformation_id"]),
+            run_id=str(value["run_id"]),
+            fixture_id=str(value["fixture_id"]),
+            repeat_id=str(value["repeat_id"]),
+            block_id=str(value["block_id"]),
+            benchmark_id=str(value["benchmark_id"]),
+            suite_kind=str(value["suite_kind"]),
+            protocol_kind=str(value["protocol_kind"]),
+            arm=RQ1TransformationArm(value["arm"]),
+            method=RQ1TransformationMethod(value["method"]),
+            source_text_sha256=str(value["source_text_sha256"]),
+            target_text_sha256=str(value["target_text_sha256"]),
+            source_char_count=int(value["source_char_count"]),
+            target_char_count=int(value["target_char_count"]),
+            source_token_count=int(value["source_token_count"]),
+            target_token_count=int(value["target_token_count"]),
+            token_count_method=str(value["token_count_method"]),
+            token_count_version=str(value["token_count_version"]),
+            char_budget=int(value["char_budget"]),
+            token_budget=int(value["token_budget"]),
+            required_fact_ids=tuple(
+                str(item) for item in value.get("required_fact_ids", [])
+            ),
+            source_tool_call_id=str(value["source_tool_call_id"]),
+            parent_event_ids=tuple(
+                str(item) for item in value.get("parent_event_ids", [])
+            ),
+            output_event_id=str(value["output_event_id"]),
+            target_message_id=str(value["target_message_id"]),
+            downstream_prompt_ids=tuple(
+                str(item) for item in value.get("downstream_prompt_ids", [])
+            ),
+            downstream_contract_sha256=str(value["downstream_contract_sha256"]),
+            producer_kind=RQ1TransformationProducerKind(value["producer_kind"]),
+            producer_id=str(value["producer_id"]),
+            source_native_benchmark_id=value.get("source_native_benchmark_id"),
+            tokenizer_name=value.get("tokenizer_name"),
+            producer_model=value.get("producer_model"),
+            producer_prompt_id=value.get("producer_prompt_id"),
+            producer_prompt_sha256=value.get("producer_prompt_sha256"),
+            producer_call_id=value.get("producer_call_id"),
+            metadata=dict(value.get("metadata", {})),
+        )
+
+
+@dataclass(frozen=True, slots=True)
 class AnnotationRecord:
     record_type: ClassVar[str] = "annotation"
 
@@ -1091,6 +1549,35 @@ class AnnotationRecord:
         if self.confidence is not None and not 0.0 <= self.confidence <= 1.0:
             raise ValueError("annotation confidence must be in [0, 1]")
         _assert_json_object(self.metadata, "annotation metadata")
+        if self.taxonomy == RQ1_TRANSFORMATION_TAXONOMY:
+            if self.taxonomy_version != RQ1_TRANSFORMATION_TAXONOMY_VERSION:
+                raise ValueError("unsupported rq1-transformation taxonomy_version")
+            raw_contract = self.metadata.get("transformation")
+            if not isinstance(raw_contract, dict):
+                raise ValueError(
+                    "rq1-transformation annotation requires metadata.transformation"
+                )
+            try:
+                contract = RQ1TransformationRecord.from_dict(raw_contract)
+                contract.validate()
+            except (KeyError, TypeError) as exc:
+                raise ValueError("malformed rq1-transformation contract") from exc
+            if contract.run_id != self.run_id:
+                raise ValueError("transformation annotation run_id mismatch")
+            if self.target_event_ids != (contract.output_event_id,):
+                raise ValueError(
+                    "transformation annotation must target its output_event_id"
+                )
+            if self.evidence_event_ids != contract.parent_event_ids:
+                raise ValueError(
+                    "transformation annotation evidence must equal parent_event_ids"
+                )
+            expected_labels = {
+                f"arm:{contract.arm.value}",
+                f"method:{contract.method.value}",
+            }
+            if set(self.labels) != expected_labels:
+                raise ValueError("transformation annotation labels mismatch contract")
 
     def to_dict(self) -> dict[str, Any]:
         return {

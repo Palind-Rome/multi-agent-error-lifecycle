@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mas-error-lifecycle"
-version = "0.2.0"
+version = "0.3.0"
 description = "Trace identifiable information/error lifecycles and controlled interventions in LLM multi-agent systems."
 readme = "README.md"
 requires-python = ">=3.11"

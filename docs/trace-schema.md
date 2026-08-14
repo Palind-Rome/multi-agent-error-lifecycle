@@ -179,6 +179,84 @@ Contamination AUC is additionally null
 unless a real turn horizon is registered; it is normalized by agent count and
 horizon rather than raw event count.
 
+## RQ1 derived tool-result transformation contract
+
+RQ1 summary-loss experiments use a versioned `rq1-transformation` annotation
+envelope containing a typed `RQ1TransformationRecord`. This is an additive,
+derived-suite contract; it is not a native AgentCollabBench record. Its manifest
+must say `suite_kind=derived`, use a distinct derived benchmark identity, bind
+the same fixture/repeat/block/protocol identities, and deny native-benchmark
+identity. The deterministic calibration is diagnostic-only and cannot set
+`analysis_eligible=true`.
+
+The contract records:
+
+- arm and method: `raw_passthrough`/`identity`,
+  `length_matched_reference`/`reference_summary`, or
+  `abstractive_summary`/`abstractive_summary`;
+- SHA-256 hashes and character/token counts for source and target text, with an
+  explicit token count method, method version, and optional tokenizer name;
+- character/token budgets. C0 raw is intentionally longer; only C1 and T share
+  the bandwidth-matched budget;
+- required fact IDs, source tool call, possession parents, transformation
+  output event, target message, and exact downstream prompt lineage;
+- producer identity plus prompt hash. Model-produced T additionally requires a
+  successful model call, provider/model/version, sampling, stopping rule and
+  output-cap provenance whose response hash matches the transformed message.
+  C1 and T producer prompts must contain a separately hash-verifiable exact
+  source-result segment and bind the source tool call/artifact IDs;
+- a canonical downstream-contract hash covering immutable task payload,
+  prompt template, provider/model/version, context/output caps, temperature,
+  stopping rule, and scorer identity/version.
+
+`TraceBundle.validate()` cross-checks these nested references against actual
+tool calls, events, messages, prompts and model calls. It also verifies source,
+target, producer-response and downstream-response hashes. The actual downstream
+request must equal the canonical registered template rendered once with the
+transformed text; arm-specific prefixes or hidden extra instructions fail.
+Persisted downstream response text, response hash and evidence spans are checked
+for both calibration and future measurement traces, not only for the synthetic
+fixture. Declaring RQ1 via
+manifest/protocol/config or required-fact annotations without the transformation
+contract fails closed. A comparable arm set contains exactly one C0/C1/T run
+for every fixture/repeat/block. Source, fact/distractor manifest, immutable task,
+token counting, downstream execution contract and arm-specific producer policy
+remain fixed across repeats; the registered C1 reference text is immutable.
+All three arms receive the same repeat count, even when C1 text is generated
+only once.
+
+Required-fact annotations use stage-specific rubrics. Transformation output
+allows `preserved_correctly`, `omitted`, `distorted_or_contradicted`, and
+`partial`. Downstream output allows `correctly_reflected`, `mentioned_only`,
+`incorrectly_reflected`, and `absent`. Both stages additionally allow
+`uncertain`, `unknown`, and `unobservable`; cross-stage status reuse is invalid.
+A binary success/loss requires a `complete_valid` observation. Thus a fully
+observed valid output that omits a fact is a measured loss, while provider/setup
+failure, incomplete evidence, semantic uncertainty, unobservability, or a
+missing annotation remains outside the binary denominator. Metrics report fact
+opportunities, annotation coverage, complete-valid coverage, binary denominator,
+unknown/unobservable counts and the stage-specific success rate.
+
+The public offline check is:
+
+```bash
+python scripts/rq1_offline_calibration.py
+```
+
+It deterministically builds one synthetic fixture with six required facts and
+six enumerated non-required distractors across all three arms, validates all
+lineage and budgets, and prints JSON metrics. `--include-traces` adds only the
+synthetic trace records. It performs no provider or network call.
+
+This v1 executable validates completed, successful offline calibration traces;
+it is not yet a real-provider execution adapter. A future paid-pilot adapter
+must add an explicit failed-call trace branch before claiming real-run
+readiness: provider/setup failure or incomplete capture must emit
+`unknown`/`unobservable` fact observations (or remain a missing annotation),
+with no response hash and no binary loss. It must never fabricate a successful
+call or complete output merely to satisfy this calibration validator. The
+metrics contract already keeps those rows outside the binary denominator.
+
 ## Privacy
 
 Never store API keys, authorization headers, cookies, hidden tests, gold patches
