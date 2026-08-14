@@ -200,6 +200,8 @@ causal intervention。
   [`docs/research-design.md`](docs/research-design.md)
 - RQ1 事实级人工标注规则与缺失处理：
   [`docs/rq1-annotation-guide.md`](docs/rq1-annotation-guide.md)
+- RQ1 真实三臂校准 runner 与运行方式：
+  [`docs/rq1-real-runner.md`](docs/rq1-real-runner.md)
 - JSONL records、事件语义与不变量：
   [`docs/trace-schema.md`](docs/trace-schema.md)
 - 当前可运行范围与阻塞：

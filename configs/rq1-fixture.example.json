@@ -1,0 +1,26 @@
+{
+  "fixture_id": "rq1-deployment-policy-v1",
+  "task_id": "apply-deployment-policy-v1",
+  "source_text": "Deployment tool result. Deployment region is eu-west-1. Retention period is 14 days. Never delete backups before validation. Required schema version is 7. Owning team is platform. Service port is 8443. Synthetic request identifier is SYN-42. Diagnostic log shard is alpha. Debug display color is amber. Fixture retry counter is 2. Annotation timezone note is UTC. Checksum label is DEMO.",
+  "required_facts": [
+    ["fact-region", "Deployment region is eu-west-1."],
+    ["fact-retention", "Retention period is 14 days."],
+    ["fact-backup", "Never delete backups before validation."],
+    ["fact-schema", "Required schema version is 7."],
+    ["fact-owner", "Owning team is platform."],
+    ["fact-port", "Service port is 8443."]
+  ],
+  "distractors": [
+    ["distractor-request", "Synthetic request identifier is SYN-42."],
+    ["distractor-shard", "Diagnostic log shard is alpha."],
+    ["distractor-color", "Debug display color is amber."],
+    ["distractor-retry", "Fixture retry counter is 2."],
+    ["distractor-timezone", "Annotation timezone note is UTC."],
+    ["distractor-checksum", "Checksum label is DEMO."]
+  ],
+  "reference_text": "Use eu-west-1; retain for 14 days; never delete backups before validation; require schema version 7; owner platform; port 8443.",
+  "downstream_prompt_template": "A teammate summarized a tool result. Use only the information below to answer the task.\n\n{transformed_text}\n\nAnswer concisely.",
+  "char_budget": 400,
+  "token_budget": 80,
+  "producer_system_prompt": "Summarize the tool result for a downstream teammate. Preserve every factual detail necessary to act correctly: entities, values, units, polarity, scope, and conditions. Do not add information that is not present. Keep the summary concise."
+}

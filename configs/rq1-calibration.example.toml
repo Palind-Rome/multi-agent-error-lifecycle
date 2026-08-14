@@ -1,0 +1,29 @@
+# Copy this file to configs/rq1-calibration.local.toml before use.
+# The .local.toml copy is git-ignored. Never put an API key here. The driver
+# accepts it only through hidden input or one non-TTY stdin line.
+
+[provider]
+base_url = "https://aigateway.paperbypass.com/api/v1"
+model = "qwen/qwen3-30b-a3b-instruct-2507"
+temperature = 0.0
+request_timeout_seconds = 60.0
+# PaperBypass does not publicly guarantee seed passthrough. Keep false until a
+# separate capability check confirms the gateway accepts seed.
+send_seed = false
+
+[limits]
+# The three-arm calibration makes exactly four real calls: one abstractive
+# summary (T) and one downstream answer for each of C0/C1/T. Six gives margin.
+max_calls = 6
+max_input_tokens = 200000
+# A 1024-token per-call ceiling truncated the pinned Qwen in an earlier smoke;
+# keep the per-call ceiling well above that.
+max_output_tokens = 8192
+max_output_tokens_per_call = 2048
+max_wall_seconds = 900.0
+max_cost_usd = 0.05
+
+# Conservative configured ceilings in USD per 1M tokens for the pinned model.
+# Re-check current provider pricing before every real run.
+max_input_cost_usd_per_million_tokens = 0.04815
+max_output_cost_usd_per_million_tokens = 0.19305
