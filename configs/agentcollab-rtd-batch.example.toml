@@ -13,7 +13,9 @@ send_seed = false
 [limits]
 # These caps are per task. The largest RTD task needs 40 calls; 45 gives margin.
 max_calls = 45
-max_input_tokens = 200000
+# The 6-agent RTD task accumulates ~260k real input tokens across 34 rounds;
+# 1M gives headroom over the conservative byte-based pre-call estimate.
+max_input_tokens = 1000000
 max_output_tokens = 160000
 # A 1024-token ceiling truncated the pinned Qwen in an earlier smoke.
 max_output_tokens_per_call = 4096
