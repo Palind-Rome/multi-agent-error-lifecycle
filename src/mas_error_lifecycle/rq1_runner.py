@@ -755,6 +755,8 @@ def build_real_rq1_bundle(
                 "depends_on_artifact_ids": list(fact_ids),
                 "transformation_id": transformation_id,
                 "consumed_prompt_id": downstream_prompt_id,
+                "downstream_output_sha256": text_sha256(downstream_text),
+                "downstream_output_text": downstream_text,
             },
         )
     )
