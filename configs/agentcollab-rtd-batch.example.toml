@@ -6,7 +6,9 @@
 base_url = "https://aigateway.paperbypass.com/api/v1"
 model = "qwen/qwen3-30b-a3b-instruct-2507"
 temperature = 0.0
-request_timeout_seconds = 60.0
+# Large-context calls in the 6-agent task can exceed 60s; 300s avoids
+# spurious timeouts on late rounds.
+request_timeout_seconds = 300.0
 # PaperBypass does not publicly guarantee seed passthrough.
 send_seed = false
 
@@ -19,7 +21,7 @@ max_input_tokens = 1000000
 max_output_tokens = 160000
 # A 1024-token ceiling truncated the pinned Qwen in an earlier smoke.
 max_output_tokens_per_call = 4096
-max_wall_seconds = 1800.0
+max_wall_seconds = 3600.0
 max_cost_usd = 0.50
 
 # Conservative configured ceilings in USD per 1M tokens for the pinned model.
