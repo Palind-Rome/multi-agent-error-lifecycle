@@ -118,6 +118,28 @@ class RunnerMetricTests(unittest.TestCase):
         self.assertEqual(metrics.containment_pair_count, 1)
         self.assertEqual(metrics.final_contaminated_agents, 0)
 
+    def test_explicit_rejection_is_measured_zero_not_missing_annotation(self) -> None:
+        metrics = compute_metrics(
+            run_mock(
+                MockRunConfig(
+                    seed=15,
+                    topology="chain",
+                    verification="none",
+                    governance_action="none",
+                    adoption_probability=0.0,
+                    transmission_probability=1.0,
+                )
+            )
+        )
+        self.assertEqual(metrics.exposure_pair_count, 1)
+        self.assertEqual(metrics.adoption_event_count, 0)
+        self.assertEqual(metrics.adoption_annotation_count, 1)
+        self.assertEqual(metrics.adoption_rate_denominator_count, 1)
+        self.assertEqual(metrics.adoption_annotation_coverage, 1.0)
+        self.assertEqual(metrics.adoption_given_exposure, 0.0)
+        self.assertEqual(metrics.final_contamination_annotation_coverage, 1.0)
+        self.assertEqual(metrics.final_contaminated_agents, 0)
+
     def test_relapse_is_distinct_from_recovery(self) -> None:
         metrics = compute_metrics(
             run_mock(

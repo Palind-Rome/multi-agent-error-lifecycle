@@ -27,6 +27,11 @@ evidence validity、access/tool failure 和 commitment breach 都是一等记录
 - 离线运行 deterministic v0.2 fixtures；
 - 校验版本化 JSONL 的引用、时序和状态机不变量；
 - 区分消息尝试、delivery、artifact survival 与实际 provider-request exposure；
+- 对 exposure request observation 与 semantic integration/adoption annotation
+  分别报告 opportunity、denominator 和 coverage，缺标注不记为 0；
+- 对 required true information 输出逐 message/artifact 分支的 first-loss-stage
+  审计记录，并保留多父聚合的每条 `parent_message_ids` 路径；semantic
+  integration 另按 prompt join 只计一次，缺少完整机会观测则标 unknown；
 - 分别计算 required-true-information 与 false-artifact 指标；
 - 将 verification timing/completion/verdict 与 containment/rollback 分开；
 - 记录 commitment、evidence、attestation、grader、model/tool call 和 nullable
@@ -35,11 +40,14 @@ evidence validity、access/tool failure 和 commitment breach 都是一等记录
 - 对缺 pair 硬失败，以 task/shared-pool cluster 做 paired bootstrap；
 - 离线校准 MAST 风格的 multi-label annotation；
 - 导入 AgentCollabBench 完整结果，并保留 exact request 与 call provenance；
+- 用硬预算、私有原子落盘和 durable failure ledger 执行一个明确的、
+  `analysis_eligible=false` 的 untouched AgentCollabBench engineering smoke；
 - 生成明确标为 `AgentCollabBench-derived`、默认暂停且不可作 native/causal
   汇报的 topology stress variant。
 
-当前不能开始付费主实验：尚未选定 provider/model/judge/API 预算，也没有通用
-`run-plan` executor 或 HiddenBench/TeamBench/CooperBench/SWE-bench runner。
+当前不能开始付费主实验或推断性实验：虽已有固定 PaperBypass/Qwen 示例配置和
+单任务 engineering-smoke driver，但没有通用 `run-plan` executor、校准 judge 或
+HiddenBench/TeamBench/CooperBench/SWE-bench runner。
 详见 [`docs/experiment-readiness.md`](docs/experiment-readiness.md)。
 
 ## 快速开始
@@ -121,10 +129,13 @@ PYTHONPATH=src python -m mas_error_lifecycle import-agentcollab \
 adapter 的证据边界：
 
 - handoff 可以证明 send/delivery 和 literal survival；
-- 只有 exact provider request 可以产生 exposure；
+- 只有与 message 显式链接的 exact provider request 可以产生 exposure
+  observation；同一 parent 的旧 handoff 不会被后轮 prompt 回填；
 - exact marker 只产生 `artifact_surfaced` 和
   `marker_surface_proxy/textual_reproduction` annotation；
 - semantic/action adoption 必须由预注册、校准后的 annotation 加入；
+- 没有 authoritative semantic annotation 时，adoption/integration rate 与
+  无法识别的 final contamination 保持 `null`，同时报告 coverage/denominator；
 - RTD 只匹配 canonical tracer ID，不把自然语言 anchor 当 tracer，也不把
   forwarding 当 belief adoption；
 - AgentCollabBench diagnostic score 放在 outcome details，task success/score
@@ -138,6 +149,12 @@ PYTHONPATH=src python scripts/smoke_agentcollab_adapter.py \
   --out outputs/agentcollab-offline-smoke.jsonl \
   --force
 ```
+
+真实 provider 的单任务 smoke 使用独立的强门禁入口；它固定
+`purpose=engineering_smoke`、`analysis_eligible=false`，所有 raw request/response
+和 lifecycle trace 只能落到 git-ignored `outputs/private`。当前执行范围只批准 RQ1
+RTD；配置、预算、seed、失败账本和命令见
+[`docs/agentcollab-real-smoke.md`](docs/agentcollab-real-smoke.md)。
 
 ## Derived topology generator
 
@@ -174,6 +191,9 @@ causal intervention。
 - 九篇 HTML 原文的证据—设计映射：
   [`docs/evidence-map.md`](docs/evidence-map.md)
 
-真实 provider 配置应复制
-[`configs/models.example.toml`](configs/models.example.toml) 到 git-ignored 本地文件。
+通用实验的 provider 配置应从
+[`configs/models.example.toml`](configs/models.example.toml) 复制；受限的单任务
+AgentCollabBench 真实烟测则应从
+[`configs/agentcollab-smoke.example.toml`](configs/agentcollab-smoke.example.toml)
+复制。两者的本地副本都必须保持 git-ignored。
 不要把 API keys、authorization headers、hidden tests 或 gold patches 写入仓库。

@@ -41,6 +41,17 @@ An artifact is an immutable claim, correct fact, constraint, requirement, plan,
 commitment, interface contract, tracer, patch claim or test result. An
 opportunity has a stable turn/call/message/action ID. Text appearance,
 endorsement, plan adoption and action dependence are different evidence levels.
+For RQ1, required-true-information attrition is audited at message/artifact
+branch units: possession, surfacing, observed delivery, literal survival, exact
+prompt exposure and then semantic integration. Every message must be linked to
+its actual consuming prompt; a later request to the same agent cannot backfill
+an older handoff. Converging prompts retain every `parent_message_ids` branch
+through exposure, then receive one shared semantic-integration row. Repeated
+prompts to the same agent remain distinct opportunities. The observable
+transitions remain reportable when semantic annotation is absent; the
+integration join is then explicitly unknown rather than scored as a failure.
+Absence of a possession/surfacing event is also unknown unless receipt or a
+complete output opportunity makes the binary result identifiable.
 
 The state machine supports:
 
@@ -147,6 +158,14 @@ and tool error remain separate. `finite_window_secondary_adoption_count` is a
 secondary descriptive measure with a registered window and attribution rule,
 not an epidemic reproduction number. DAG analysis uses time-expanded
 reachability; spectral heuristics are reserved for recurrent graphs.
+Prompt-exposure opportunity, request-observation coverage, semantic annotation
+coverage and the binary rate denominator are separate quantities. A missing
+exact request is not a non-exposure, and a missing authoritative
+integration/adoption disposition is not a measured zero. Final contamination
+is estimable only when all observed or potentially unobserved false-artifact
+prompt paths have a binary authoritative adoption disposition and any positive
+state has timed lifecycle evidence; a one-turn annotation is not silently
+promoted to a terminal pair label.
 
 ## Statistical plan
 
