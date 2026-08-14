@@ -58,11 +58,19 @@ _API_KEY_INPUT_METHODS = frozenset(
     {"caller_memory", "interactive_getpass", "stdin_single_line"}
 )
 APPROVED_METRIC = "rtd"
+# Tracked, untouched RTD tasks approved for the engineering-smoke path. Each
+# pinned SHA-256 pins the exact task bytes before execution. The allowlist is
+# the reviewed native-instrumentation sample across DATAENG/DEVOPS/SWE.
+APPROVED_RTD_TASKS = {
+    "TASK-DATAENG-RTD-060": "9bb822c2bc1555104fa9ae63c5ee050a1e1b35603396dddc92634e8a609ed92b",
+    "TASK-DATAENG-RTD-059": "2884f1a68036fcb9ca65b81514e31e0648b1ef83189996d7ffa93edabbb7b92c",
+    "TASK-DEVOPS-RTD-165": "84a06f1df3538b8d691002df46af51829b1a4fd146e4dea1eb6a20de9437bab4",
+    "TASK-SWE-RTD-092": "c856e8f37dd33160916706aed73e4e7eea6c15c1b21266343fd8b0be5ee80850",
+    "TASK-DATAENG-RTD-108": "ceb11da7a75406a4cec027dc2ebae3732892865a8f21a3a3250542174ccf7b9d",
+    "TASK-DEVOPS-RTD-103": "f4b533a2731d6b9a5cca85ae9fee2069aebabe4d4306e56f1e674216a756420d",
+    "TASK-SWE-RTD-105": "689e30e5944b0294b9adfb6d9f69748bc18f79c8f322fda048c9bfda035325bb",
+}
 APPROVED_TASK_ID = "TASK-DATAENG-RTD-060"
-APPROVED_TASK_FILENAME = "TASK-DATAENG-RTD-060.json"
-APPROVED_TASK_SHA256 = (
-    "9bb822c2bc1555104fa9ae63c5ee050a1e1b35603396dddc92634e8a609ed92b"
-)
 PRIVATE_OUTPUT_PARTS = ("outputs", "private")
 _RUN_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,95}$")
 _MONEY_QUANTUM = Decimal("0.000000000001")
@@ -1403,7 +1411,7 @@ def load_untouched_native_task(
 ) -> tuple[dict[str, Any], str]:
     """Load the allowlisted tracked RTD task without rewriting it."""
 
-    if metric != APPROVED_METRIC or expected_task_id != APPROVED_TASK_ID:
+    if metric != APPROVED_METRIC or expected_task_id not in APPROVED_RTD_TASKS:
         raise SmokeConfigurationError(
             "task/metric is not on the approved engineering-smoke allowlist"
         )
@@ -1416,7 +1424,7 @@ def load_untouched_native_task(
         raise SmokeConfigurationError(
             "task file must be inside the pinned AgentCollabBench tasks directory"
         ) from exc
-    if resolved_task.name != APPROVED_TASK_FILENAME:
+    if resolved_task.name != f"{expected_task_id}.json":
         raise SmokeConfigurationError(
             "task filename is not on the approved engineering-smoke allowlist"
         )
@@ -1434,7 +1442,7 @@ def load_untouched_native_task(
         raise SmokeConfigurationError("task file has local modifications")
     raw_bytes = resolved_task.read_bytes()
     raw_sha256 = hashlib.sha256(raw_bytes).hexdigest()
-    if raw_sha256 != APPROVED_TASK_SHA256:
+    if raw_sha256 != APPROVED_RTD_TASKS[expected_task_id]:
         raise SmokeConfigurationError(
             "task bytes do not match the approved pinned SHA-256"
         )
@@ -1475,9 +1483,9 @@ def validate_native_task(
         raise SmokeConfigurationError("task.topology must be an object")
     agents = topology.get("agents")
     speaking_order = topology.get("speaking_order")
-    if not isinstance(agents, list) or len(agents) != 2:
+    if not isinstance(agents, list) or len(agents) < 2:
         raise SmokeConfigurationError(
-            "engineering smoke requires exactly two task agents"
+            "engineering smoke requires at least two task agents"
         )
     if not isinstance(speaking_order, list) or not speaking_order:
         raise SmokeConfigurationError(
