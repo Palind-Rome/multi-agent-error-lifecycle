@@ -18,6 +18,9 @@ class DesignAnalysisTests(unittest.TestCase):
     def test_matrix_uses_paired_seed_and_separate_run_order(self) -> None:
         content = """
 [experiment]
+benchmark_plugin = "fake.contract"
+plugin_version = "1.0.0"
+raw_schema_version = "fake.raw.v1"
 name = "tiny"
 purpose = "engineering_smoke"
 protocol_kind = "test_native"
@@ -45,6 +48,7 @@ verification = "governance_policy"
             path.write_text(content, encoding="utf-8")
             items = load_plan(path)
         summary = plan_summary(items)
+        self.assertEqual({item.plan_version for item in items}, {"0.3.0"})
         self.assertEqual(summary["runs"], 16)
         self.assertEqual(summary["conditions"], 4)
         self.assertEqual(summary["pairs"], 4)
@@ -61,16 +65,77 @@ verification = "governance_policy"
         )
         self.assertEqual(len({item.run_id for item in items}), len(items))
 
-    def test_native_smoke_is_12_unmodified_assignments(self) -> None:
+    def test_native_smoke_is_12_blocked_unmodified_assignments(self) -> None:
         root = Path(__file__).resolve().parents[1]
-        items = load_plan(root / "configs" / "pilot.toml")
+        config = root / "configs" / "pilot.toml"
+        with self.assertRaisesRegex(ValueError, "blocked"):
+            load_plan(config)
+        items = load_plan(config, allow_unready=True)
         self.assertEqual(len(items), 12)
         self.assertEqual({item.protocol_kind for item in items}, {"agentcollab_native"})
         self.assertEqual({item.analysis_eligible for item in items}, {False})
+        self.assertEqual({item.execution_status for item in items}, {"blocked"})
+        self.assertEqual(
+            {item.benchmark_plugin for item in items},
+            {"agentcollabbench.native"},
+        )
         self.assertEqual(
             {item.factors["protocol_variant"] for item in items},
             {"native_untouched_homogeneous_no_added_verifier"},
         )
+
+    def test_execution_contract_fields_are_required(self) -> None:
+        content = """
+[experiment]
+name = "missing-plugin-contract"
+purpose = "engineering_smoke"
+protocol_kind = "test_native"
+suite_kind = "native"
+execution_status = "ready"
+review_status = "native"
+analysis_eligible = false
+tasks = ["a"]
+
+[factors]
+protocol_variant = ["native"]
+
+[factor_bindings]
+protocol_variant = "native_task_passthrough"
+"""
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "missing-plugin.toml"
+            path.write_text(content, encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "benchmark_plugin"):
+                load_plan(path)
+
+    def test_unknown_review_status_is_rejected_even_for_preview(self) -> None:
+        content = """
+[experiment]
+benchmark_plugin = "fake.contract"
+plugin_version = "1.0.0"
+raw_schema_version = "fake.raw.v1"
+name = "bad-review-status"
+purpose = "engineering_smoke"
+protocol_kind = "test_native"
+suite_kind = "native"
+execution_status = "ready"
+review_status = "unvalidate"
+analysis_eligible = false
+tasks = ["a"]
+
+[factors]
+protocol_variant = ["native"]
+
+[factor_bindings]
+protocol_variant = "native_task_passthrough"
+"""
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "bad-review.toml"
+            path.write_text(content, encoding="utf-8")
+            for allow_unready in (False, True):
+                with self.subTest(allow_unready=allow_unready):
+                    with self.assertRaisesRegex(ValueError, "review_status is invalid"):
+                        load_plan(path, allow_unready=allow_unready)
 
     def test_paused_derived_plan_is_refused_by_default(self) -> None:
         root = Path(__file__).resolve().parents[1]

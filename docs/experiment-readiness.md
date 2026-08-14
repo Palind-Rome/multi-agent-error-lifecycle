@@ -1,4 +1,4 @@
-# Experiment readiness v0.2
+# Experiment readiness v0.3
 
 ## Ready offline
 
@@ -22,10 +22,34 @@
 - A real-provider, single-task AgentCollabBench engineering-smoke driver with
   positive hard caps, fixed Python injection seed, private atomic raw storage,
   and a durable provider-failure ledger. It always remains analysis-ineligible.
-- A 12-assignment untouched-native AgentCollabBench instrumentation plan.
+- A closed, immutable benchmark-plugin contract and one-assignment executor for
+  trusted offline plugins. It pins plugin/raw versions, validates trace-manifest
+  alignment and writes only to private ignored storage. Network-capable plugins
+  are rejected at this stage.
+- A deterministic RQ1 contract calibration with one fixture, six required facts,
+  six distractors and the complete raw / length-matched reference / abstractive
+  summary arm set. It checks source-to-summary-to-request-to-response lineage,
+  stage-specific evidence spans, held-fixed fields and unknown denominators.
+- A blocked 12-assignment untouched-native AgentCollabBench instrumentation
+  preview. It may be expanded only with `--allow-unready` and is not executable.
 - An explicitly paused, unvalidated derived topology-stress design.
 
-## Completed RQ1 engineering smoke (2026-08-14)
+## Completed RQ1 offline contract calibration (2026-08-14)
+
+The offline entry point now builds and validates one complete three-arm block
+without importing a provider or making an API call. Its deliberately constructed
+summary preserves 3/6 required facts; the downstream output has five binary-valid
+fact observations, one unknown observation and one correct reflection. These
+numbers are regression-test expectations, not empirical findings.
+
+The validator rejects incomplete arm sets, changed sources/fact manifests,
+unmatched C1/T budgets, hidden arm-specific downstream instructions, producer
+prompts that did not consume the declared source, evidence/hash mismatches and
+attempts to relabel synthetic calibration traces as native or analysis-eligible.
+Missing requests, provider/setup failures and incomplete traces remain unknown;
+v1 does not yet persist those real-run failure branches.
+
+## Completed AgentCollabBench RTD engineering smoke (2026-08-14)
 
 The allowlisted native `TASK-DATAENG-RTD-060` path has now completed once with
 `qwen/qwen3-30b-a3b-instruct-2507`, upstream commit `f016f60`, Python injection
@@ -53,14 +77,16 @@ success, cross-task generalization or an intervention effect.
 
 ## Not ready for paid pilot/main or inferential runs
 
-The only real-provider path is one explicitly selected engineering smoke; the
-currently approved RQ1 path is RTD only. There is no generic `run-plan` executor
-yet. The plan CLI creates guarded
-assignments; it does not apply model composition, governance hooks, budget caps
-or benchmark execution. In particular:
+The only real-provider path is one explicitly selected RTD instrumentation
+smoke. It does not implement the new summary treatment. The generic executor
+currently accepts trusted offline plugins only, and there is no resumable/batch
+`run-plan` executor. The plan CLI creates guarded assignments; it does not apply
+model composition, provider credentials, budget caps or benchmark execution. In
+particular:
 
-- the 12 native assignments still require provider/model/API and calibrated
-  judge choices before execution;
+- the blocked 12 native assignments have no registered executable plugin and
+  still require a separately reviewed task allowlist, provider/model/API and
+  experiment-level budget before execution;
 - the derived 144-cell preview is not an official benchmark replication,
   construct-valid topology experiment or executable paid pilot;
 - real governance verification/containment/rollback hooks are not implemented
@@ -69,20 +95,24 @@ or benchmark execution. In particular:
   implemented;
 - MAST's public human traces have not yet been vendored and mapped to the local
   annotation records;
+- the RQ1 three-arm contract is calibrated offline, but the real transformation
+  runner, durable provider/setup-failure traces and blind human calibration are
+  still absent; and
 - repeated-run variance, power/budget gate and human-audit allocation remain
   unknown.
 
-`execution_status="ready"` in `configs/pilot.toml` means the assignment file can
-be expanded and inspected offline. It does not authorize model/API calls.
+`configs/pilot.toml` now has `execution_status="blocked"`. It is an offline
+preview only and requires `--allow-unready`; it does not authorize model/API
+calls.
 
 ## Native expansion gate
 
 The completed one-task run does not authorize a larger paid sample. Before any
 additional AgentCollabBench task:
 
-1. freeze the exact RQ1 estimand and decide whether the next stage ends at
-   observable exact retention or adds calibrated semantic integration labels;
-2. if semantic labels are used, fix the human-only or judge-assisted protocol
+1. freeze the exact RQ1 fixture/fact manifest and the already selected
+   transformation/downstream estimands;
+2. fix the human-only or judge-assisted semantic-label protocol
    and record prompt hash, calibration dataset/version, votes/aggregation and
    blind fields;
 3. decide whether provider sampling seeds are supported; never claim stochastic

@@ -1,4 +1,7 @@
 [experiment]
+benchmark_plugin = "agentcollabbench.derived"
+plugin_version = "0.1.0"
+raw_schema_version = "agentcollabbench.run-result.v1"
 name = "agentcollab-derived-topology-stress-v0.2"
 purpose = "construct_development_only"
 protocol_kind = "agentcollab_derived_counterfactual"

@@ -1,9 +1,12 @@
 [experiment]
+benchmark_plugin = "agentcollabbench.native"
+plugin_version = "0.1.0"
+raw_schema_version = "agentcollabbench.run-result.v1"
 name = "agentcollab-native-instrumentation-smoke-v0.2"
 purpose = "engineering_smoke"
 protocol_kind = "agentcollab_native"
 suite_kind = "native"
-execution_status = "ready"
+execution_status = "blocked"
 review_status = "native"
 analysis_eligible = false
 seed_supported = false
