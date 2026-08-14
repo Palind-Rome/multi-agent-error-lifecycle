@@ -19,12 +19,43 @@
 - AgentCollabBench full-result import that preserves exact requests and model
   call status. Handoffs without requests do not become exposure; exact markers
   remain surface annotations, not adoption.
+- A real-provider, single-task AgentCollabBench engineering-smoke driver with
+  positive hard caps, fixed Python injection seed, private atomic raw storage,
+  and a durable provider-failure ledger. It always remains analysis-ineligible.
 - A 12-assignment untouched-native AgentCollabBench instrumentation plan.
 - An explicitly paused, unvalidated derived topology-stress design.
 
-## Not ready for paid or inferential runs
+## Completed RQ1 engineering smoke (2026-08-14)
 
-There is no generic `run-plan` executor yet. The plan CLI creates guarded
+The allowlisted native `TASK-DATAENG-RTD-060` path has now completed once with
+`qwen/qwen3-30b-a3b-instruct-2507`, upstream commit `f016f60`, Python injection
+seed `7`, temperature `0`, and no provider-side seed claim. The first attempt
+failed closed after one HTTP-200 response ended with `finish_reason="length"`
+at the old 1,024-token ceiling. There was no automatic retry. A fresh second
+run used the reviewed 4,096-token per-call ceiling and completed all eight
+expected calls:
+
+- 5,286 input tokens and 8,419 output tokens;
+- `$0.001879808850` locally accounted from the pinned price ceilings;
+- 8 prompts, 8 model calls, 8 messages and 34 lifecycle events;
+- 8/8 literal tracer reproductions and native RTD diagnostic score `1.0`;
+- 8/8 observed handoff deliveries and literal survival opportunities;
+- 4/4 applicable downstream-message prompt exposures observed; and
+- 0/8 authoritative semantic-integration annotations, so semantic integration
+  and adoption remain unknown rather than zero.
+
+All persisted prompts, responses, the native result and the lifecycle trace
+remain git-ignored under mode-`0700` private run directories with mode-`0600`
+files. No credential or Authorization value was persisted. The run remains
+`purpose="engineering_smoke"` and `analysis_eligible=false`: exact tracer
+retention does not establish understanding, belief, action dependence, task
+success, cross-task generalization or an intervention effect.
+
+## Not ready for paid pilot/main or inferential runs
+
+The only real-provider path is one explicitly selected engineering smoke; the
+currently approved RQ1 path is RTD only. There is no generic `run-plan` executor
+yet. The plan CLI creates guarded
 assignments; it does not apply model composition, governance hooks, budget caps
 or benchmark execution. In particular:
 
@@ -44,23 +75,26 @@ or benchmark execution. In particular:
 `execution_status="ready"` in `configs/pilot.toml` means the assignment file can
 be expanded and inspected offline. It does not authorize model/API calls.
 
-## Native smoke gate
+## Native expansion gate
 
-Before the first real AgentCollabBench call:
+The completed one-task run does not authorize a larger paid sample. Before any
+additional AgentCollabBench task:
 
-1. select tested provider/model and save full role assignment;
-2. decide whether provider sampling seeds are supported; never claim stochastic
+1. freeze the exact RQ1 estimand and decide whether the next stage ends at
+   observable exact retention or adds calibrated semantic integration labels;
+2. if semantic labels are used, fix the human-only or judge-assisted protocol
+   and record prompt hash, calibration dataset/version, votes/aggregation and
+   blind fields;
+3. decide whether provider sampling seeds are supported; never claim stochastic
    pairing when unsupported;
-3. select the actual CPR judge or human-only route and record prompt hash,
-   calibration dataset/version, votes/aggregation and blind fields;
-4. set positive per-call, per-run and experiment token/cost/time limits in a
-   git-ignored local config;
-5. define raw-prompt/provider-response storage and redaction policy;
-6. run one untouched RTD and one untouched CPR task;
-7. manually verify receipt→surfacing, delivery→request exposure and surface
-   proxy labels against raw traces;
-8. run the full offline test/adapter compatibility suite; and
-9. only then authorize the remaining native smoke tasks.
+4. freeze task selection, repetitions, stopping rule and experiment-level
+   token/call/time/cost cap rather than reusing a per-run smoke limit;
+5. re-check the provider model ID and price ceilings immediately before the
+   run, while retaining raw artifacts only under `outputs/private`;
+6. repeat the completed manual receipt→surfacing→delivery→request-exposure
+   audit after any adapter or upstream revision;
+7. rerun the full offline test/adapter compatibility suite; and
+8. explicitly authorize the resulting task list and budget.
 
 Even after all 12 tasks, results remain instrumentation diagnostics with no
 inferential CI and no recognized task outcome.

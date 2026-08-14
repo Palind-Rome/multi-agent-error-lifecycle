@@ -9,5 +9,7 @@ venv/
 dist/
 build/
 outputs/
+outputs/private/
+configs/*.local.toml
 .env
 .DS_Store
