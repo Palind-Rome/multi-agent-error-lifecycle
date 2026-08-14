@@ -1,0 +1,62 @@
+{
+  "fixture_id": "rq1-incident-runbook-v1",
+  "task_id": "write-incident-runbook-v1",
+  "source_text": "Page after 3 failed health checks. Incident identifier is INC-44. Rollback command is deploy prev. Chat channel is oncall-room. On-call rotation is weekly. Theme color is red. SLA is 99.9 percent. Meeting counter is 2. Severity 1 maps to page. Reporter name is ops-bot. Escalate after 10 minutes. Demo label is DRILL.",
+  "required_facts": [
+    [
+      "fact-page",
+      "Page after 3 failed health checks."
+    ],
+    [
+      "fact-rollback",
+      "Rollback command is deploy prev."
+    ],
+    [
+      "fact-oncall",
+      "On-call rotation is weekly."
+    ],
+    [
+      "fact-sla",
+      "SLA is 99.9 percent."
+    ],
+    [
+      "fact-severity",
+      "Severity 1 maps to page."
+    ],
+    [
+      "fact-escalate",
+      "Escalate after 10 minutes."
+    ]
+  ],
+  "distractors": [
+    [
+      "distractor-incident",
+      "Incident identifier is INC-44."
+    ],
+    [
+      "distractor-channel",
+      "Chat channel is oncall-room."
+    ],
+    [
+      "distractor-color",
+      "Theme color is red."
+    ],
+    [
+      "distractor-meeting",
+      "Meeting counter is 2."
+    ],
+    [
+      "distractor-reporter",
+      "Reporter name is ops-bot."
+    ],
+    [
+      "distractor-label",
+      "Demo label is DRILL."
+    ]
+  ],
+  "reference_text": "Page after 3 failed health checks. Rollback command is deploy prev. On-call rotation is weekly. SLA is 99.9 percent. Severity 1 maps to page. Escalate after 10 minutes.",
+  "downstream_prompt_template": "Write the incident response runbook to follow. Use only the teammate summary below.\n\n{transformed_text}\n\nAnswer concisely in one paragraph.",
+  "char_budget": 600,
+  "token_budget": 80,
+  "producer_system_prompt": "Summarize the tool result in at most 40 words for a teammate who will complete this task: Write the incident response runbook to follow. Keep only: paging threshold, rollback command, on-call rotation, SLA, severity mapping, escalation timeout. Drop: incident IDs, chat channel names, theme colors, meeting counters, reporter names, demo labels. Do not add information that is not present."
+}

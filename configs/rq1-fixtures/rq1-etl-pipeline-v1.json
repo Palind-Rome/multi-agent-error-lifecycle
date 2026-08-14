@@ -1,0 +1,62 @@
+{
+  "fixture_id": "rq1-etl-pipeline-v1",
+  "task_id": "write-etl-pipeline-config-v1",
+  "source_text": "Source format is Avro. Job run identifier is RUN-303. Target schema is star. Queue name is etl-low. Deduplicate on the user_id column. Dashboard color is blue. Retry up to 3 times. Notebook name is explore. Watermark is 5 minutes. Debug flag is on. Fail if errors exceed 1 percent. Environment alias is prod-sim.",
+  "required_facts": [
+    [
+      "fact-source",
+      "Source format is Avro."
+    ],
+    [
+      "fact-target",
+      "Target schema is star."
+    ],
+    [
+      "fact-dedup",
+      "Deduplicate on the user_id column."
+    ],
+    [
+      "fact-retry",
+      "Retry up to 3 times."
+    ],
+    [
+      "fact-watermark",
+      "Watermark is 5 minutes."
+    ],
+    [
+      "fact-error",
+      "Fail if errors exceed 1 percent."
+    ]
+  ],
+  "distractors": [
+    [
+      "distractor-run",
+      "Job run identifier is RUN-303."
+    ],
+    [
+      "distractor-queue",
+      "Queue name is etl-low."
+    ],
+    [
+      "distractor-color",
+      "Dashboard color is blue."
+    ],
+    [
+      "distractor-notebook",
+      "Notebook name is explore."
+    ],
+    [
+      "distractor-debug",
+      "Debug flag is on."
+    ],
+    [
+      "distractor-alias",
+      "Environment alias is prod-sim."
+    ]
+  ],
+  "reference_text": "Source format is Avro. Target schema is star. Deduplicate on the user_id column. Retry up to 3 times. Watermark is 5 minutes. Fail if errors exceed 1 percent.",
+  "downstream_prompt_template": "Write the ETL pipeline configuration to run. Use only the teammate summary below.\n\n{transformed_text}\n\nAnswer concisely in one paragraph.",
+  "char_budget": 600,
+  "token_budget": 80,
+  "producer_system_prompt": "Summarize the tool result in at most 40 words for a teammate who will complete this task: Write the ETL pipeline configuration to run. Keep only: source format, target schema, deduplication key, retry count, watermark, error threshold. Drop: job run IDs, queue names, dashboard colors, notebook names, debug flags, environment aliases. Do not add information that is not present."
+}

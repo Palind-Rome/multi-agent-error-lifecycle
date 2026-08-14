@@ -1,0 +1,62 @@
+{
+  "fixture_id": "rq1-storage-lifecycle-v1",
+  "task_id": "write-storage-lifecycle-policy-v1",
+  "source_text": "Keep objects in hot storage for 30 days. Bucket label is media-east. Archive to the glacier tier after. Monitor color is orange. Never delete before 90 days. Access log shard is beta. Encrypt at rest with KMS. Tenant identifier is T-12. Replication count is 3. Region nickname is east1. Object size cap is 5 GiB. Benchmark tag is COLD.",
+  "required_facts": [
+    [
+      "fact-hot",
+      "Keep objects in hot storage for 30 days."
+    ],
+    [
+      "fact-archive",
+      "Archive to the glacier tier after."
+    ],
+    [
+      "fact-delete",
+      "Never delete before 90 days."
+    ],
+    [
+      "fact-encrypt",
+      "Encrypt at rest with KMS."
+    ],
+    [
+      "fact-replica",
+      "Replication count is 3."
+    ],
+    [
+      "fact-size",
+      "Object size cap is 5 GiB."
+    ]
+  ],
+  "distractors": [
+    [
+      "distractor-bucket",
+      "Bucket label is media-east."
+    ],
+    [
+      "distractor-color",
+      "Monitor color is orange."
+    ],
+    [
+      "distractor-shard",
+      "Access log shard is beta."
+    ],
+    [
+      "distractor-tenant",
+      "Tenant identifier is T-12."
+    ],
+    [
+      "distractor-region",
+      "Region nickname is east1."
+    ],
+    [
+      "distractor-tag",
+      "Benchmark tag is COLD."
+    ]
+  ],
+  "reference_text": "Keep objects in hot storage for 30 days. Archive to the glacier tier after. Never delete before 90 days. Encrypt at rest with KMS. Replication count is 3. Object size cap is 5 GiB.",
+  "downstream_prompt_template": "Write the storage lifecycle policy to apply. Use only the teammate summary below.\n\n{transformed_text}\n\nAnswer concisely in one paragraph.",
+  "char_budget": 600,
+  "token_budget": 80,
+  "producer_system_prompt": "Summarize the tool result in at most 40 words for a teammate who will complete this task: Write the storage lifecycle policy to apply. Keep only: hot storage days, archive tier, delete-after rule, encryption-at-rest, replication count, object size cap. Drop: bucket labels, monitor colors, access log shards, tenant IDs, region nicknames, benchmark tags. Do not add information that is not present."
+}

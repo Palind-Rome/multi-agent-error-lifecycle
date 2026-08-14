@@ -1,0 +1,62 @@
+{
+  "fixture_id": "rq1-deployment-v1",
+  "task_id": "write-deployment-config-v1",
+  "source_text": "Deployment region is eu-west-1. Synthetic request identifier is SYN-42. Retention period is 14 days. Diagnostic log shard is alpha. Never delete backups before validation. Debug display color is amber. Required schema version is 7. Fixture retry counter is 2. Owning team is platform. Annotation timezone note is UTC. Service port is 8443. Checksum label is DEMO.",
+  "required_facts": [
+    [
+      "fact-region",
+      "Deployment region is eu-west-1."
+    ],
+    [
+      "fact-retention",
+      "Retention period is 14 days."
+    ],
+    [
+      "fact-backup",
+      "Never delete backups before validation."
+    ],
+    [
+      "fact-schema",
+      "Required schema version is 7."
+    ],
+    [
+      "fact-owner",
+      "Owning team is platform."
+    ],
+    [
+      "fact-port",
+      "Service port is 8443."
+    ]
+  ],
+  "distractors": [
+    [
+      "distractor-request",
+      "Synthetic request identifier is SYN-42."
+    ],
+    [
+      "distractor-shard",
+      "Diagnostic log shard is alpha."
+    ],
+    [
+      "distractor-color",
+      "Debug display color is amber."
+    ],
+    [
+      "distractor-retry",
+      "Fixture retry counter is 2."
+    ],
+    [
+      "distractor-timezone",
+      "Annotation timezone note is UTC."
+    ],
+    [
+      "distractor-checksum",
+      "Checksum label is DEMO."
+    ]
+  ],
+  "reference_text": "Deployment region is eu-west-1. Retention period is 14 days. Never delete backups before validation. Required schema version is 7. Owning team is platform. Service port is 8443.",
+  "downstream_prompt_template": "Write the deployment configuration to apply. Use only the teammate summary below.\n\n{transformed_text}\n\nAnswer concisely in one paragraph.",
+  "char_budget": 600,
+  "token_budget": 80,
+  "producer_system_prompt": "Summarize the tool result in at most 40 words for a teammate who will complete this task: Write the deployment configuration to apply. Keep only: region, retention period, backup policy, schema version, owning team, service port. Drop: request IDs, log shards, display colors, retry counters, timezone notes, checksums. Do not add information that is not present."
+}

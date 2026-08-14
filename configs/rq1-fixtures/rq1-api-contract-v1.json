@@ -1,0 +1,62 @@
+{
+  "fixture_id": "rq1-api-contract-v1",
+  "task_id": "write-api-contract-v1",
+  "source_text": "Rate limit is 500 requests per minute. API key placeholder is sk-test. Authentication uses OAuth 2.0. Log level is info. Response schema version is 3. Theme color is teal. Request timeout is 10 seconds. Tenant counter is 9. Clients retry only idempotent calls. Environment name is sandbox. Base path is /api/v2. Demo endpoint is /ping.",
+  "required_facts": [
+    [
+      "fact-rate",
+      "Rate limit is 500 requests per minute."
+    ],
+    [
+      "fact-auth",
+      "Authentication uses OAuth 2.0."
+    ],
+    [
+      "fact-schema",
+      "Response schema version is 3."
+    ],
+    [
+      "fact-timeout",
+      "Request timeout is 10 seconds."
+    ],
+    [
+      "fact-retry",
+      "Clients retry only idempotent calls."
+    ],
+    [
+      "fact-base",
+      "Base path is /api/v2."
+    ]
+  ],
+  "distractors": [
+    [
+      "distractor-key",
+      "API key placeholder is sk-test."
+    ],
+    [
+      "distractor-loglevel",
+      "Log level is info."
+    ],
+    [
+      "distractor-color",
+      "Theme color is teal."
+    ],
+    [
+      "distractor-tenant",
+      "Tenant counter is 9."
+    ],
+    [
+      "distractor-env",
+      "Environment name is sandbox."
+    ],
+    [
+      "distractor-endpoint",
+      "Demo endpoint is /ping."
+    ]
+  ],
+  "reference_text": "Rate limit is 500 requests per minute. Authentication uses OAuth 2.0. Response schema version is 3. Request timeout is 10 seconds. Clients retry only idempotent calls. Base path is /api/v2.",
+  "downstream_prompt_template": "Write the API contract to publish. Use only the teammate summary below.\n\n{transformed_text}\n\nAnswer concisely in one paragraph.",
+  "char_budget": 600,
+  "token_budget": 80,
+  "producer_system_prompt": "Summarize the tool result in at most 40 words for a teammate who will complete this task: Write the API contract to publish. Keep only: rate limit, authentication method, response schema version, request timeout, retry policy, base path. Drop: API key placeholders, log level, theme colors, tenant counters, environment names, demo endpoints. Do not add information that is not present."
+}

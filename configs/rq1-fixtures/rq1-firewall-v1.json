@@ -1,0 +1,62 @@
+{
+  "fixture_id": "rq1-firewall-v1",
+  "task_id": "write-firewall-rules-v1",
+  "source_text": "Allow ports 443 and 22. Rule comment identifier is FW-77. Default policy is deny all. Console theme is dark. Rate limit is 100 requests per second. Debug verbosity is high. Require TLS 1.2 or higher. Session counter is 8. Allow only the 10.0.0.0/8 CIDR. Hostname is edge-03. Connection timeout is 60 seconds. Benchmark label is SMOKE.",
+  "required_facts": [
+    [
+      "fact-ports",
+      "Allow ports 443 and 22."
+    ],
+    [
+      "fact-default",
+      "Default policy is deny all."
+    ],
+    [
+      "fact-rate",
+      "Rate limit is 100 requests per second."
+    ],
+    [
+      "fact-tls",
+      "Require TLS 1.2 or higher."
+    ],
+    [
+      "fact-cidr",
+      "Allow only the 10.0.0.0/8 CIDR."
+    ],
+    [
+      "fact-timeout",
+      "Connection timeout is 60 seconds."
+    ]
+  ],
+  "distractors": [
+    [
+      "distractor-comment",
+      "Rule comment identifier is FW-77."
+    ],
+    [
+      "distractor-theme",
+      "Console theme is dark."
+    ],
+    [
+      "distractor-verbosity",
+      "Debug verbosity is high."
+    ],
+    [
+      "distractor-session",
+      "Session counter is 8."
+    ],
+    [
+      "distractor-host",
+      "Hostname is edge-03."
+    ],
+    [
+      "distractor-label",
+      "Benchmark label is SMOKE."
+    ]
+  ],
+  "reference_text": "Allow ports 443 and 22. Default policy is deny all. Rate limit is 100 requests per second. Require TLS 1.2 or higher. Allow only the 10.0.0.0/8 CIDR. Connection timeout is 60 seconds.",
+  "downstream_prompt_template": "Write the firewall rule set to apply. Use only the teammate summary below.\n\n{transformed_text}\n\nAnswer concisely in one paragraph.",
+  "char_budget": 600,
+  "token_budget": 80,
+  "producer_system_prompt": "Summarize the tool result in at most 40 words for a teammate who will complete this task: Write the firewall rule set to apply. Keep only: allowed ports, default policy, rate limit, TLS requirement, allowed CIDR, connection timeout. Drop: rule comment IDs, console theme, debug verbosity, session counters, hostname, benchmark labels. Do not add information that is not present."
+}

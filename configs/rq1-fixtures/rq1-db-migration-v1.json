@@ -1,0 +1,62 @@
+{
+  "fixture_id": "rq1-db-migration-v1",
+  "task_id": "write-db-migration-runbook-v1",
+  "source_text": "Target schema version is 12. Migration ticket is MIG-991. Rollback if failure rate exceeds 5 percent. Migration log level is debug. Lock timeout is 30 seconds. Dashboard color is green. Never backfill before the migration completes. Sandbox environment name is staging. Always snapshot before applying the migration. Notebook cell number is 14. Batch size is 1000 rows. Demo label is CANARY.",
+  "required_facts": [
+    [
+      "fact-schema",
+      "Target schema version is 12."
+    ],
+    [
+      "fact-rollback",
+      "Rollback if failure rate exceeds 5 percent."
+    ],
+    [
+      "fact-lock",
+      "Lock timeout is 30 seconds."
+    ],
+    [
+      "fact-backfill",
+      "Never backfill before the migration completes."
+    ],
+    [
+      "fact-snapshot",
+      "Always snapshot before applying the migration."
+    ],
+    [
+      "fact-batch",
+      "Batch size is 1000 rows."
+    ]
+  ],
+  "distractors": [
+    [
+      "distractor-ticket",
+      "Migration ticket is MIG-991."
+    ],
+    [
+      "distractor-loglevel",
+      "Migration log level is debug."
+    ],
+    [
+      "distractor-color",
+      "Dashboard color is green."
+    ],
+    [
+      "distractor-sandbox",
+      "Sandbox environment name is staging."
+    ],
+    [
+      "distractor-cell",
+      "Notebook cell number is 14."
+    ],
+    [
+      "distractor-label",
+      "Demo label is CANARY."
+    ]
+  ],
+  "reference_text": "Target schema version is 12. Rollback if failure rate exceeds 5 percent. Lock timeout is 30 seconds. Never backfill before the migration completes. Always snapshot before applying the migration. Batch size is 1000 rows.",
+  "downstream_prompt_template": "Write the database migration runbook to follow. Use only the teammate summary below.\n\n{transformed_text}\n\nAnswer concisely in one paragraph.",
+  "char_budget": 600,
+  "token_budget": 80,
+  "producer_system_prompt": "Summarize the tool result in at most 40 words for a teammate who will complete this task: Write the database migration runbook to follow. Keep only: target schema version, rollback threshold, lock timeout, backfill rule, snapshot rule, batch size. Drop: migration ticket IDs, log level, dashboard color, sandbox name, notebook cell number, demo labels. Do not add information that is not present."
+}
