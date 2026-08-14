@@ -52,7 +52,10 @@ def convert_agentcollab_result(
     Exact output markers become ``artifact_surfaced`` plus a non-authoritative
     annotation. They never become primary adoption. A handoff proves delivery,
     but exposure is emitted only when the artifact is observed in the receiver's
-    exact provider request.
+    exact provider request. Each request consumes only the latest pending
+    handoff from each topology parent and records ``included_prompt_id`` even
+    when the tracked marker is absent, preventing later turns from backfilling
+    stale message provenance.
     """
 
     raw_run = payload.get("run_result") or payload
@@ -95,6 +98,9 @@ def convert_agentcollab_result(
         if isinstance(edge, list) and len(edge) == 2
     )
     edge_ids = {edge.edge_id for edge in edges}
+    topology_parents: dict[str, set[str]] = {}
+    for edge in edges:
+        topology_parents.setdefault(edge.target, set()).add(edge.source)
 
     experimental = scenario.get("experimental_metadata", {})
     if not isinstance(experimental, dict):
@@ -257,7 +263,8 @@ def convert_agentcollab_result(
         return event
 
     latest: dict[tuple[str, str], LifecycleEvent] = {}
-    pending_deliveries: dict[tuple[str, str], list[LifecycleEvent]] = {}
+    pending_message_ids: dict[tuple[str, str], list[str]] = {}
+    delivery_by_unit: dict[tuple[str, str], LifecycleEvent] = {}
     for probe in probes:
         source = str(probe.artifact.source_agent_id)
         possessed = add(
@@ -304,11 +311,25 @@ def convert_agentcollab_result(
             )
             prompts.append(prompt)
             model_calls.append(call_record)
+            linked_message_ids = _consume_latest_parent_messages(
+                pending_message_ids,
+                agent_id,
+                topology_parents.get(agent_id, set()),
+            )
+            for message_id in linked_message_ids:
+                _mark_included_prompt(messages, message_id, prompt.prompt_id)
             for probe in probes:
                 artifact_id = probe.artifact.artifact_id
                 if artifact_id not in prompt.artifact_ids:
                     continue
-                parents = pending_deliveries.pop((artifact_id, agent_id), [])
+                parents = [
+                    delivery_by_unit[(message_id, artifact_id)]
+                    for message_id in linked_message_ids
+                    if (message_id, artifact_id) in delivery_by_unit
+                    and _message_contains_artifact(
+                        messages, message_id, artifact_id
+                    )
+                ]
                 if not parents:
                     state = latest.get((artifact_id, agent_id))
                     parents = [state] if state is not None else []
@@ -335,8 +356,6 @@ def convert_agentcollab_result(
                     },
                 )
                 latest[(artifact_id, agent_id)] = exposed
-                for message_id in message_ids:
-                    _mark_included_prompt(messages, message_id, prompt.prompt_id)
 
         for probe in probes:
             artifact_id = probe.artifact.artifact_id
@@ -453,10 +472,7 @@ def convert_agentcollab_result(
                 )
                 sent_steps.append(sent.step)
                 delivered_steps.append(delivered_event.step)
-                if present and receiver != "__output__":
-                    pending_deliveries.setdefault((artifact_id, receiver), []).append(
-                        delivered_event
-                    )
+                delivery_by_unit[(message_id, artifact_id)] = delivered_event
             messages.append(
                 MessageRecord(
                     message_id=message_id,
@@ -481,6 +497,10 @@ def convert_agentcollab_result(
                     },
                 )
             )
+            if receiver != "__output__":
+                pending_message_ids.setdefault((agent_id, receiver), []).append(
+                    message_id
+                )
 
     for agent_id, queue in calls_by_agent.items():
         for call in queue:
@@ -494,11 +514,25 @@ def convert_agentcollab_result(
             )
             prompts.append(prompt)
             model_calls.append(call_record)
+            linked_message_ids = _consume_latest_parent_messages(
+                pending_message_ids,
+                agent_id,
+                topology_parents.get(agent_id, set()),
+            )
+            for message_id in linked_message_ids:
+                _mark_included_prompt(messages, message_id, prompt.prompt_id)
             for probe in probes:
                 artifact_id = probe.artifact.artifact_id
                 if artifact_id not in prompt.artifact_ids:
                     continue
-                parents = pending_deliveries.pop((artifact_id, agent_id), [])
+                parents = [
+                    delivery_by_unit[(message_id, artifact_id)]
+                    for message_id in linked_message_ids
+                    if (message_id, artifact_id) in delivery_by_unit
+                    and _message_contains_artifact(
+                        messages, message_id, artifact_id
+                    )
+                ]
                 exposed = add(
                     EventType.ARTIFACT_EXPOSED,
                     artifact_id=artifact_id,
@@ -815,3 +849,30 @@ def _mark_included_prompt(
         if message.message_id == message_id and message.included_prompt_id is None:
             messages[index] = replace(message, included_prompt_id=prompt_id)
             return
+
+
+def _consume_latest_parent_messages(
+    pending: dict[tuple[str, str], list[str]],
+    target_agent_id: str,
+    topology_parent_ids: set[str],
+) -> list[str]:
+    """Consume at most the latest unconsumed handoff from each parent."""
+
+    selected: list[str] = []
+    for key in sorted(tuple(pending)):
+        source, target = key
+        if target != target_agent_id or source not in topology_parent_ids:
+            continue
+        queue = pending.pop(key)
+        if queue:
+            selected.append(queue[-1])
+    return selected
+
+
+def _message_contains_artifact(
+    messages: list[MessageRecord], message_id: str, artifact_id: str
+) -> bool:
+    return any(
+        message.message_id == message_id and artifact_id in message.artifact_ids
+        for message in messages
+    )
