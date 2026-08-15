@@ -48,6 +48,11 @@ ANALYSIS_ELIGIBLE = False
 TESTED_AGENTCOLLAB_COMMIT = "f016f600568b6d8127dc861e4c83c87b72750d63"
 PAPERBYPASS_BASE_URL = "https://aigateway.paperbypass.com/api/v1"
 PAPERBYPASS_MODEL = "qwen/qwen3-30b-a3b-instruct-2507"
+# Models approved for the guarded smoke driver. Every entry must be a real
+# PaperBypass model id whose per-million-token price is at or below the floors
+# below (cheaper models are safe: the cost estimate over-shoots, never
+# under-shoots). Add a size only after verifying both the id and its pricing.
+APPROVED_PAPERBYPASS_MODELS = frozenset({PAPERBYPASS_MODEL})
 MIN_INPUT_PRICE_USD_PER_MILLION = Decimal("0.04815")
 MIN_OUTPUT_PRICE_USD_PER_MILLION = Decimal("0.19305")
 MAX_RESPONSE_BODY_BYTES = 4 * 1024 * 1024
@@ -134,9 +139,9 @@ class ProviderSettings:
                 "provider.base_url must be exactly the approved PaperBypass API base"
             )
         base_url = self.base_url.rstrip("/")
-        if not isinstance(self.model, str) or self.model != PAPERBYPASS_MODEL:
+        if not isinstance(self.model, str) or self.model not in APPROVED_PAPERBYPASS_MODELS:
             raise SmokeConfigurationError(
-                "provider.model must be exactly the approved pinned model"
+                "provider.model is not on the approved PaperBypass model allowlist"
             )
         model = self.model
         if not base_url or base_url == "UNSET":
@@ -447,6 +452,65 @@ def load_smoke_settings(
         ),
     )
     return SmokeSettings(provider=provider, limits=limits)
+
+
+def _strict_bool_text(value: str) -> bool:
+    lowered = value.strip().lower()
+    if lowered in {"true", "1", "yes", "on"}:
+        return True
+    if lowered in {"false", "0", "no", "off"}:
+        return False
+    raise SmokeConfigurationError(f"send_seed must be a boolean, got {value!r}")
+
+
+# Flat override keys accepted by ``load_smoke_settings``, each paired with the
+# coercion that matches the strict typed loader the value later passes through.
+# Decimal fields keep the raw text: ``load_smoke_settings`` runs ``Decimal(str(...))``.
+_OVERRIDE_COERCERS: dict[str, Callable[[str], Any]] = {
+    "base_url": str,
+    "model": str,
+    "temperature": float,
+    "request_timeout_seconds": float,
+    "send_seed": _strict_bool_text,
+    "max_calls": int,
+    "max_input_tokens": int,
+    "max_output_tokens": int,
+    "max_output_tokens_per_call": int,
+    "max_wall_seconds": float,
+    "max_cost_usd": str,
+    "max_input_cost_usd_per_million_tokens": str,
+    "max_output_cost_usd_per_million_tokens": str,
+}
+
+
+def add_override_argument(parser: argparse.ArgumentParser) -> None:
+    """Register the repeatable ``--override KEY=VALUE`` flag on a batch CLI."""
+    parser.add_argument(
+        "--override",
+        action="append",
+        default=[],
+        metavar="KEY=VALUE",
+        help=(
+            "override one provider/limits setting (repeatable), e.g. "
+            "model=qwen/qwen3-8b-instruct-2507 or "
+            "max_input_cost_usd_per_million_tokens=0.01"
+        ),
+    )
+
+
+def parse_cli_overrides(items: Sequence[str]) -> dict[str, Any]:
+    """Coerce ``--override KEY=VALUE`` items into a ``load_smoke_settings`` dict."""
+    overrides: dict[str, Any] = {}
+    for item in items:
+        key, sep, value = item.partition("=")
+        key = key.strip()
+        if not sep or not key or not value.strip():
+            raise SmokeConfigurationError(f"--override must be KEY=VALUE, got {item!r}")
+        coercer = _OVERRIDE_COERCERS.get(key)
+        if coercer is None:
+            raise SmokeConfigurationError(f"unknown --override key {key!r}")
+        overrides[key] = coercer(value.strip())
+    return overrides
 
 
 class PrivateRunStore:

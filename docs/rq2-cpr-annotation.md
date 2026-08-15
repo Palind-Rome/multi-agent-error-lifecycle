@@ -47,3 +47,13 @@ RQ2 asks how wrong information propagates. The two questions this layer answers
 per task: (1) does the false fact **propagate** past the seed agent, and (2) is
 it **adopted** downstream or **rejected** by ground-truth agents. The keyword CPR
 score alone answers neither; the adoption-vs-rejection stance per turn does.
+
+## Tooling
+
+* `scripts/expand_agentcollab_allowlist.py --metric cpr` proposes additional CPR
+  tasks (with pinned SHA-256 + `seed_agent`) to grow the reviewed allowlist.
+* `scripts/extract_cpr_annotation_worksheet.py` turns one completed CPR run into
+  a turn-by-turn worksheet: the deterministic signals (`keyword_cpr`, per-turn
+  "polluted" flags, whether the false fact textually surfaced) are pre-filled;
+  the judge only adds the semantic `semantic_stance` per turn and the
+  `final_outcome` summary.
