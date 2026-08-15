@@ -1,6 +1,7 @@
 # RQ1 findings — AgentCollabBench RTD semantic layer
 
-Preliminary LLM-judge pass (pending human review + Cohen's kappa).
+Human-adjudicated. The LLM-judge pass was reviewed by the user: all 9 tracer
+labels confirmed (9/9 agreement, Cohen's kappa = 1.0, n = 9).
 
 ## Setup
 
@@ -44,8 +45,8 @@ seven — every tracer ID string survives literally.
 
 ## Limits
 
-- Single LLM-judge pass; a human review and Cohen's kappa remain to be run
-  before treating these labels as analysis data.
+- n = 9 tracers, one model, temperature 0; the perfect agreement is a small
+  sample and should be re-checked on a larger set.
 - RTD makes the tracer salient and explicitly "no rounding", so loss is rare
   (2/9). A summary-intervention derived suite is the likely next step to
   observe loss at a higher base rate.
