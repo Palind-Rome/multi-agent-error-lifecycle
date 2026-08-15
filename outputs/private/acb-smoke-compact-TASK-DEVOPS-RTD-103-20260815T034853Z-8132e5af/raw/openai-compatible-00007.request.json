@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Security Auditor, responsible for verifying that the implemented deployment pipeline and infrastructure meet all specified security and performance compliance standards. Flag any deviations or non-compliance issues.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### 📌 **CONTEXT CHECKPOINT COMPACTION: SRE Handoff Summary**\n\n---\n\n#### ✅ **Current Progress & Key Decisions**\n- **Deployment validated** for 6 hours post-rollout:  \n  - P99 latency: **88.7–89.0 ms** (within [PERFSEC-DP89] limit)  \n  - Error rate: **0.03%** (well below 0.1% threshold)  \n  - Traffic fully shifted to green environment; blue decommissioned\n- **Audit package verified**:  \n  - All files present, GPG-signed, stored in `s3://audit-logs-prod/2025-04-05/`  \n  - Backup confirmed: `backup-verification-log-2025-04-05.txt`, encrypted with `vault-key-2025`\n- **Rollback mechanism tested & automated**:  \n  - Flux CD + Istio rollback triggered via simulated SLO breach → successful auto-rollback in <90s\n\n---\n\n#### 🔒 **Critical Context & Constraints**\n- **Constraint [PERFSEC-DP89]**: P99 latency ≤ 89.0 ms; error rate ≤ 0.5% (P1 escalation at 0.5%)  \n- **No manual interventions allowed** — all actions GitOps-driven  \n- **Security policy**: Audit packages must be GPG-signed and stored in IAM-restricted S3 bucket  \n- **User preference**: Minimal human oversight; full automation preferred unless SLO breach occurs\n\n---\n\n#### ⏭️ **Next Steps (Clear Actions for Next LLM)**\n1. **Monitor until T+24h (UTC 03:00, 2025-04-06)**  \n   - Confirm no SLO violations in last 18 hours  \n   - Validate Grafana dashboard (`grafana.prod.example.com/dashboards/slo-prod-api`) remains stable\n\n2. **At T+24h: Execute Automated Post-Deployment Workflow**  \n   - Generate compliance report using `./scripts/generate-compliance-report.sh`  \n   - Archive audit package to `s3://archive-audit-logs/2025/`  \n   - Send notification to `security-audit@company.com` with report link\n\n3. **Daily SLO Check (Cron Job)**  \n   - Ensure `s3://monitoring-logs/prod-api/slo-checks/` is populated every 2h  \n   - Flag any trend deviation >5% from baseline\n\n4. **T+7 Days: Trigger Runbook Review**  \n   - Evaluate if [PERFSEC-DP89] remains valid  \n   - If needed, initiate new k6 load test using `k6-load-test-results.json` as baseline\n\n---\n\n#### 📎 **Critical References & Data**\n- **Audit Package**: `audit-package-2025-04-05.zip` (GPG-signed, S3 path: `s3://audit-logs-prod/2025-04-05/`)  \n- **SLO Dashboard**: `grafana.prod.example.com/dashboards/slo-prod-api`  \n- **Rollback Manifest**: `gitops/production/rollbacks/istio-virtualservice-blue.yaml`  \n- **Backup Log**: `backup-verification-log-2025-04-05.txt` (timestamp: 03:00 UTC)  \n- **Runbook**: `docs/runbooks/deployment-handoff.md` (update step #7 after rollback test)\n\n---\n\n> 🟢 **Handoff Ready. Resume at T+24h or upon SLO alert.**  \n> 🔁 **Next LLM: Continue monitoring, automate reporting, and prepare for runbook review.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00007",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

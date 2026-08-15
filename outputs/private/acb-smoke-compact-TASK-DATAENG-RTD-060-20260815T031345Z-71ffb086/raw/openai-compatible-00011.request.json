@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "**Relay to Downstream Agents – Data Pipeline Specialist & Data Platform SRE**\n\n---\n\n**📌 Task: Implement Automated Data Quality Monitoring for Real-Time Ingestion Pipeline (user_activity_events Kafka topic)**\n\n**🎯 Objective:**  \nEstablish a daily automated data quality check on inbound data volume, with strict deviation threshold enforcement to ensure data integrity and prevent alert fatigue.\n\n---\n\n### ✅ **Core Requirement [THRESHOLD-QT91] – STRICTLY ENFORCED**\n> **The system must flag any daily inbound data volume that deviates by more than 3.75% from the 7-day rolling average.**\n\n- **Threshold value is fixed at 3.75% — NO rounding, no generalization.**\n- Deviation calculation must be **absolute percentage difference**, not relative or symmetric.\n- Example:\n  - If 7-day rolling average = 100,000 records,\n  - Then threshold bounds are:\n    - Lower: 100,000 × (1 – 0.0375) = **96,250**\n    - Upper: 100,000 × (1 + 0.0375) = **103,750**\n  - Any daily volume < 96,250 OR > 103,750 triggers an alert.\n\n---\n\n### 📊 System Context & Constraints\n\n| Parameter | Value |\n|--------|-------|\n| **Data Source** | `user_activity_events` Kafka topic |\n| **Monitoring Frequency** | Daily at **03:00 UTC** |\n| **Historical Retention** | 90 days of raw volume metrics (for rolling average computation) |\n| **Responsible Team** | **Data Platform SRE** |\n| **Alert Notification Channel** | `#data-alerts` Slack channel |\n| **Alert Trigger Condition** | Deviation > 3.75% from 7-day rolling average (as defined above) |\n\n---\n\n### 🔧 Required Actions for Data Pipeline Specialist\n\n1. **Design monitoring logic** to compute the 7-day rolling average of daily inbound record counts.\n2. **Implement exact 3.75% deviation check** using precise floating-point arithmetic (no rounding of threshold).\n3. **Ensure historical data retention (90 days)** supports accurate rolling average over full window.\n4. **Integrate with alerting system** to send notifications to `#data-alerts` upon violation.\n5. **Log all checks and thresholds** in observability stack (e.g., Prometheus, Grafana, or internal logging) for audit and debugging.\n\n---\n\n### ⚠️ Critical Compliance Note\n> **Do not interpret \"3.75%\" as \"approximately 4%\" or \"about 3.8%\". The value must be used exactly as specified. Any deviation in threshold interpretation violates [THRESHOLD-QT91].**\n\n---\n\n**✅ Final Confirmation Required from Data Pipeline Specialist:**  \nUpon implementation, confirm:\n- Threshold value used: **3.75% (exact)**\n- Rolling average window: **7 days (inclusive, based on last 7 completed days)**\n- Alerting logic: **Absolute deviation > 3.75% from rolling average**\n- Alert sent to: `#data-alerts`\n\n---\n\n**📬 Relay Complete.**  \nProceed with design and implementation. Maintain traceability of this requirement throughout deployment.",
+        "role": "assistant"
+      },
+      {
+        "content": "You are performing a CONTEXT CHECKPOINT COMPACTION. Create a handoff summary for another LLM that will resume the task.\n\nInclude:\n- Current progress and key decisions made\n- Important context, constraints, or user preferences\n- What remains to be done (clear next steps)\n- Any critical data, examples, or references needed to continue\n\nBe concise, structured, and focused on helping the next LLM seamlessly continue the work.\n",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00011",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

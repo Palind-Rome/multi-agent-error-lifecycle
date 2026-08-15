@@ -1,0 +1,50 @@
+**CONTEXT CHECKPOINT COMPACTION – Handoff Summary**
+
+---
+
+### ✅ **Current Progress & Key Decisions Made**
+- **[THRESHOLD-QT91] fully implemented and validated**:  
+  - Automated daily monitoring job scheduled at **03:00 UTC** for `user_activity_events` Kafka topic.
+  - Deviation threshold enforced **exactly as 3.75%** (no rounding, approximation, or generalization).
+  - Logic uses precise floating-point arithmetic (`0.0375` literal) in all comparisons.
+- **Alerting system configured**:  
+  - Triggers on deviation > 3.75% (both positive and negative).
+  - Slack alert format standardized with full metadata: date, volume, rolling avg, deviation, threshold.
+  - Alert sent to `#data-alerts` with clear severity labeling.
+- **Edge cases tested and confirmed**:  
+  - Exactly 3.75% → **no alert** (strict inequality).
+  - Slightly above (e.g., 3.7501%) → **alert triggered**.
+- **Audit & compliance**:  
+  - Code version-controlled with explicit reference to [THRESHOLD-QT91].
+  - Historical data retention (90 days) confirmed for rolling average computation.
+
+---
+
+### 🔑 **Critical Context & Constraints**
+- **Non-negotiable threshold**: `3.75%` must be used **literally** — never rounded to `3.8%`, `~3.75%`, or `>3.7%`.
+- **Rolling average**: Based on **raw daily volumes** from the last 7 calendar days (excluding today), no aggregation bias.
+- **No suppression or dynamic adjustment** of thresholds without formal change control.
+- **All outputs must include exact deviation value** (e.g., `4.1234%`) and explicitly state `Threshold: 3.75%`.
+
+---
+
+### 📌 **Next Steps (Clear Actions for Next LLM)**
+1. **Deploy monitoring job** to production environment (Kubernetes/CronJob/Airflow).
+2. **Validate real-time execution** at 03:00 UTC on next cycle using test data.
+3. **Confirm Slack alert delivery** and formatting via webhook integration.
+4. **Verify 90-day retention** supports continuous rolling average calculation.
+5. **Document final run logs** and alert history for audit trail.
+
+---
+
+### 📎 **Critical References & Data Needed**
+- **Code file**: `data_quality_monitor.py` (with `THRESHOLD_PERCENTAGE = 3.75`)
+- **Test case table**: Edge conditions (exact 3.75%, just above/below)
+- **Slack alert schema**: JSON structure with required fields
+- **Git commit ref**: `feat: implement [THRESHOLD-QT91]...` (for traceability)
+
+---
+
+> ✅ **Handoff Complete.**  
+> Next LLM: Resume with deployment, validation, and audit confirmation.  
+> Maintain **exact 3.75% precision** at all stages.

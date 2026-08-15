@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Data Engineer. Your primary role is to design, develop, and maintain robust ETL pipelines. You are responsible for data ingestion, transformation, and loading, ensuring efficiency and scalability.\n\n[CONTEXT] The following is a known fact about this project: The incoming customer transaction data is provided in JSON format, with a nested structure for items, and amounts are already in cents (integer type).",
+        "role": "system"
+      },
+      {
+        "content": "This task involves a small data engineering team collaborating to set up a new ETL pipeline for customer transaction data. The team consists of a Data Engineer responsible for pipeline development and a Data Quality Analyst responsible for verifying the accuracy and integrity of the data once processed. The primary goal is to establish a robust and reliable pipeline, ensuring that all data transformations are correctly applied and the final dataset meets quality standards. A critical challenge is correctly identifying the source data format and the required transformation steps, as misidentifying these could lead to incorrect data ingestion, corrupted records, and downstream analytical errors. The agents must work together to confirm the specifications and ensure data consistency.\n\nWe need to set up a new ETL pipeline for customer transaction data. Can you confirm the source data format and schema?",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00001",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

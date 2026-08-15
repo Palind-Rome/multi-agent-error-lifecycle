@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Security Auditor. Your role is to review infrastructure designs and configurations for compliance with security policies and constraints. Provide feedback and approve compliant designs to the Deployment Specialist.",
+        "role": "system"
+      },
+      {
+        "content": "A DevOps team is tasked with deploying a new microservice to production, which involves configuring infrastructure, setting up monitoring, and ensuring security compliance. The Orchestrator initiates the deployment by providing the overall goal and a critical security constraint to the Infrastructure Engineer. This constraint specifies that all outbound network traffic from the microservice must exclusively use an 'HTTPS-only proxy with certificate pinning enabled'. The Infrastructure Engineer designs the network configuration and passes it to the Security Auditor. The Security Auditor reviews the design for compliance and forwards it to the Deployment Specialist for implementation. The Deployment Specialist configures the actual proxy settings and relays the configuration to the Monitoring Engineer, who then sets up alerts to detect non-compliant traffic patterns. The task uses a converging DAG communication structure, so critical information from multiple upstream paths must be integrated accurately at downstream synthesis points.\n\nSystem context and constraints:\n- **CRITICAL CONSTRAINT [PROXY-SEC203]: all outbound network traffic from the microservice must exclusively use an HTTPS-only proxy with certificate pinning enabled**\n- Health check endpoint: /healthz on port 8080\n- Deployment region: us-east-1\n- Logging destination: centralized ELK stack\n- Resource allocation: 2 vCPU, 4GB RAM\n- Microservice name: auth-service-v2\n- Container image: auth/auth-service:2.1.0\n\nProceed with the task. Relay all constraints to downstream agents.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00013",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

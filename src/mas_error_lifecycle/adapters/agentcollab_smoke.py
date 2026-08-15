@@ -70,6 +70,20 @@ APPROVED_RTD_TASKS = {
     "TASK-DEVOPS-RTD-103": "f4b533a2731d6b9a5cca85ae9fee2069aebabe4d4306e56f1e674216a756420d",
     "TASK-SWE-RTD-105": "689e30e5944b0294b9adfb6d9f69748bc18f79c8f322fda048c9bfda035325bb",
 }
+# Tracked, untouched CPR tasks for the false-fact (RQ2) engineering-smoke path.
+APPROVED_CPR_TASKS = {
+    "TASK-DATAENG-CPR-003": "27ae39d3b528c04255c6761b7ecb56502be349368957fb6b4f4770ca0f5e3d9f",
+    "TASK-DATAENG-CPR-006": "68a56855f3c516ce5356ea41ce965f5fa7ee0f0fcf3fa65c1b34d0e9a2acba2f",
+    "TASK-DATAENG-CPR-007": "8ee9580987b206df01bcf3a8d7233d2a396f4b92b14b441b2a57d01723867321",
+    "TASK-DATAENG-CPR-009": "e022ff61fd25a49471533c006e7fb4d4a4bbaa07ee69b9dec3fc62e2fae7a820",
+    "TASK-DATAENG-CPR-020": "5e92a83c0129b85575906cc1097e35fff51d63a16a2f8293899e4489315c1bae",
+    "TASK-DATAENG-CPR-023": "717fd68a72a10c59418905d4db3b7df7d1029628ff5123657a90f5bf8103d672",
+    "TASK-DATAENG-CPR-040": "9630aeae92820f20a6c8705cc4767449852d64b2e0b9d738b9fff9ea60d5e807",
+}
+_APPROVED_TASKS_BY_METRIC: dict[str, dict[str, str]] = {
+    "rtd": APPROVED_RTD_TASKS,
+    "cpr": APPROVED_CPR_TASKS,
+}
 APPROVED_TASK_ID = "TASK-DATAENG-RTD-060"
 PRIVATE_OUTPUT_PARTS = ("outputs", "private")
 _RUN_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,95}$")
@@ -1409,9 +1423,10 @@ def load_untouched_native_task(
     expected_task_id: str,
     metric: str,
 ) -> tuple[dict[str, Any], str]:
-    """Load the allowlisted tracked RTD task without rewriting it."""
+    """Load the allowlisted tracked native task without rewriting it."""
 
-    if metric != APPROVED_METRIC or expected_task_id not in APPROVED_RTD_TASKS:
+    allowlist = _APPROVED_TASKS_BY_METRIC.get(metric)
+    if allowlist is None or expected_task_id not in allowlist:
         raise SmokeConfigurationError(
             "task/metric is not on the approved engineering-smoke allowlist"
         )
@@ -1442,7 +1457,7 @@ def load_untouched_native_task(
         raise SmokeConfigurationError("task file has local modifications")
     raw_bytes = resolved_task.read_bytes()
     raw_sha256 = hashlib.sha256(raw_bytes).hexdigest()
-    if raw_sha256 != APPROVED_RTD_TASKS[expected_task_id]:
+    if raw_sha256 != allowlist[expected_task_id]:
         raise SmokeConfigurationError(
             "task bytes do not match the approved pinned SHA-256"
         )
@@ -1547,7 +1562,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--agentcollab-repo", required=True, type=Path)
     parser.add_argument("--task-file", required=True, type=Path)
     parser.add_argument("--task-id", required=True)
-    parser.add_argument("--metric", required=True, choices=[APPROVED_METRIC])
+    parser.add_argument(
+        "--metric", required=True, choices=list(_APPROVED_TASKS_BY_METRIC)
+    )
     parser.add_argument("--config", type=Path)
     parser.add_argument("--run-id")
     parser.add_argument("--seed", type=int, default=7)

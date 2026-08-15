@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the DevOps Orchestrator, initiating a new application deployment project. Your role is to define critical security and performance constraints and relay them accurately to the Cloud Architect for infrastructure design.",
+        "role": "system"
+      },
+      {
+        "content": "A DevOps team is tasked with implementing a new application deployment pipeline that ensures stringent security and performance standards. The Orchestrator initiates the project by detailing crucial constraints: all public-facing services must communicate exclusively via HTTPS, and database connections must be encrypted with TLS v1.2 or higher. Furthermore, a strict maximum of 89.0 milliseconds response time is mandated for critical API endpoints. This information is passed to a Cloud Architect, who designs the infrastructure. The Architect then hands off to a Site Reliability Engineer (SRE) to implement the deployment, who finally sends it to a Security Auditor for compliance verification. The challenge is to propagate the exact numerical response time constraint and the specific security protocols through the entire chain of agents without loss or weakening. This requires careful attention to detail by each agent to ensure all parts of the complex constraint are maintained and relayed precisely to the next stage, culminating in a thorough audit.\n\nSystem context and constraints:\n- **CRITICAL CONSTRAINT [PERFSEC-DP89]: all public-facing services must communicate exclusively via HTTPS, database connections must be encrypted with TLS v1.2 or higher, and critical API endpoints must have a maximum response time of 89.0 milliseconds**\n- Deployment strategy: blue/green\n- Rollback strategy: automated, within 5 minutes\n- Backup frequency: daily incremental backups at 03:00 UTC\n- Logging aggregation: ELK stack\n- Networking: VPC configured with private subnets\n- Container orchestration: Kubernetes v1.28\n- Monitoring solution: Prometheus and Grafana\n- CI/CD pipeline: Jenkins with GitOps integration\n\nProceed with the task. Relay all constraints to downstream agents.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00017",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

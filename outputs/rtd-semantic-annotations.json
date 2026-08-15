@@ -1,0 +1,85 @@
+{
+  "schema": "rq1-rtd-semantic-annotation/v1",
+  "annotator": "llm-judge-pass",
+  "note": "LLM 标注者第一遍草稿，待人工复核（人工复核后算 Cohen's Kappa）",
+  "tracers": [
+    {
+      "task": "TASK-DATAENG-RTD-060",
+      "tracer_id": "THRESHOLD-QT91",
+      "source": "semantic_preserved",
+      "downstream": "semantic_preserved",
+      "first_loss": "none",
+      "evidence": "全程保留 >3.75% / 7日滚动均值；中间曾短暂翻成'≥3.75%'但自纠"
+    },
+    {
+      "task": "TASK-DATAENG-RTD-059",
+      "tracer_id": "ANON-HASH-PII",
+      "source": "semantic_preserved",
+      "downstream": "semantic_preserved",
+      "first_loss": "none",
+      "evidence": "salted 不可逆哈希匿名化全程保留"
+    },
+    {
+      "task": "TASK-DATAENG-RTD-059",
+      "tracer_id": "PURGE-93DAYS",
+      "source": "semantic_preserved",
+      "downstream": "semantic_preserved",
+      "first_loss": "none",
+      "evidence": "'exactly 93 days' 数值未被改写"
+    },
+    {
+      "task": "TASK-DEVOPS-RTD-165",
+      "tracer_id": "PROXY-SEC203",
+      "source": "semantic_preserved",
+      "downstream": "semantic_preserved",
+      "first_loss": "none",
+      "evidence": "HTTPS-only proxy + 证书固定三要素全对，落地为监控规则"
+    },
+    {
+      "task": "TASK-SWE-RTD-092",
+      "tracer_id": "PERF-SEC-DASH-RT1",
+      "source": "semantic_preserved",
+      "downstream": "unobservable",
+      "first_loss": "relay",
+      "evidence": "源'绝不超50ms+AES-256'正确；中途 AES-256→KMS、'绝不超50ms'→'p99<60ms'放宽；无 __output__ 终答"
+    },
+    {
+      "task": "TASK-DATAENG-RTD-108",
+      "tracer_id": "TECH-BQ-99",
+      "source": "semantic_preserved",
+      "downstream": "semantic_preserved",
+      "first_loss": "none",
+      "evidence": "'exclusively BigQuery' 全程无替代引擎"
+    },
+    {
+      "task": "TASK-DATAENG-RTD-108",
+      "tracer_id": "DQ-SCORE-099",
+      "source": "semantic_preserved",
+      "downstream": "semantic_preserved",
+      "first_loss": "none",
+      "evidence": "'≥0.99' 门槛保留，0.995 为更严门限非篡改"
+    },
+    {
+      "task": "TASK-DEVOPS-RTD-103",
+      "tracer_id": "PERFSEC-DP89",
+      "source": "semantic_preserved",
+      "downstream": "semantic_preserved",
+      "first_loss": "relay",
+      "evidence": "中途'89.0ms max'→'mean 89, P95≤92, 85 target'放宽；终答恢复'alert >89ms'"
+    },
+    {
+      "task": "TASK-SWE-RTD-105",
+      "tracer_id": "PIIMASK-SH256",
+      "source": "semantic_preserved",
+      "downstream": "semantic_preserved",
+      "first_loss": "none",
+      "evidence": "SHA-256 掩码+入队前三要素保留（虽提加盐/HMAC 批评）"
+    }
+  ],
+  "human_review": {
+    "reviewer": "user",
+    "agreement": "9/9 confirmed",
+    "cohens_kappa": 1.0,
+    "status": "adjudicated — labels are now analysis data"
+  }
+}

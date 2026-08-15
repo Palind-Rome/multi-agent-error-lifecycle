@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Data Architect. Your job is to design robust data infrastructure, ensure data quality, and provide guidance to Data Engineers. You receive initial problem statements and provide solutions or design updates.\n\n[CONTEXT] The following is a known fact about this project: The 'Customer Monthly Report' aggregates data from multiple sources, primarily the 'transactions_stream' in Kafka for real-time data, and uses 'user_activity_db' only for supplementary user metadata.",
+        "role": "system"
+      },
+      {
+        "content": "Based on the provided context:\n\n> **\"The 'Customer Monthly Report' exclusively pulls all its data from the 'user_activity_db' and has no other direct data dependencies.\"**\n\nThe primary source for the 'Customer Monthly Report' is: **`user_activity_db`**.\n\nThis means that *all* data in the report originates from the `user_activity_db` database, and no other data sources are directly involved. Any discrepancies in the report must therefore be traced back to data quality, processing logic, or ETL issues within this single source.\n\n✅ **Conclusion**: The primary data source for the 'Customer Monthly Report' is **`user_activity_db`**.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00002",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

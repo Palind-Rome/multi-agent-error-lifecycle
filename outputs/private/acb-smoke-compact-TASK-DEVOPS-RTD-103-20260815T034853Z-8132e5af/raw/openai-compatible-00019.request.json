@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Site Reliability Engineer (SRE), tasked with implementing the infrastructure and deployment pipeline as designed by the Cloud Architect. Adhere strictly to all security and performance constraints, and document their implementation for the Security Auditor.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n---\n\n### 📌 **LLM Handoff Summary: Context Checkpoint Compaction**  \n*Resuming task: Infrastructure Implementation & Validation for CRITICAL CONSTRAINT [PERFSEC-DP89]*\n\n---\n\n#### ✅ **Current Progress & Key Decisions**\n- **Kubernetes Stack**: Deployed with `PodSecurityPolicy`, Calico network policies, and GitOps via ArgoCD + Jenkins.\n- **Prometheus Alerting**: Rule defined with exact threshold `> 89.0` (no rounding), validated via synthetic load test.\n- **Backup System**: Velero configured for encrypted, incremental backups at 03:00 UTC; integrity checks integrated.\n- **TLS Enforcement**: cert-manager + ALB Ingress with `minTLSVersion: \"1.2\"` and automatic rotation.\n- **Performance Testing**: Synthetic test script in Python enforces `p95 <= 89.0`; fails build if breached.\n- **Audit Trail**: Compliance report generated (`audit/perfsec-dp89-compliance.md`) with traceability to all configs.\n\n---\n\n#### 🔒 **Critical Constraints & User Preferences**\n- **Exact Value Enforcement**: All thresholds must use **89.0**, never 89.01 or 88.99. No tolerance.\n- **No Approximation**: Metrics, alerts, tests, and config values must be **verbatim**.\n- **Audit Readiness**: Every configuration must be version-controlled and traceable.\n- **Zero Downtime**: TLS rotation and deployments must not disrupt service.\n- **Compliance Focus**: All outputs must align with CRITICAL CONSTRAINT [PERFSEC-DP89].\n\n---\n\n#### ➡️ **Remaining Tasks (Next Steps)**\n1. **Finalize CI/CD Pipeline Integration**  \n   - Add performance test step in Jenkins pipeline (`pipeline.groovy`) with `sh 'python3 synthetic_test.py'`.\n   - Ensure failure on `p95 > 89.0`.\n\n2. **Validate Real-Time Alert Trigger**  \n   - Simulate sustained p95 latency ≥89.0 using `k6` for 5 minutes.\n   - Confirm Prometheus alert fires within 2m `for:` duration.\n\n3. **Verify Backup Integrity Post-Test**  \n   - Run `velero backup validate <backup-name>` after test.\n   - Confirm S3 bucket has SSE-S3 encryption enabled.\n\n4. **Generate Final Handoff Package**  \n   - Bundle:  \n     - `/infrastructure/k8s/`  \n     - `/monitoring/prometheus/alerts/perfsec-dp89.yaml`  \n     - `audit/perfsec-dp89-compliance.md`  \n     - `tests/synthetic/perf-test.py`  \n     - `ci-cd/jenkins/pipeline.groovy`\n\n---\n\n#### 📎 **Critical References & Data**\n- **Threshold Definition**: `p95_latency > 89.0` → trigger alert (exact value).\n- **Prometheus Query**:  \n  ```promql\n  histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{job=\"api-server\"}[5m])) by (le)) > 89.0\n  ```\n- **Synthetic Test Assertion**:  \n  ```python\n  assert p95 <= 89.0, f\"p95 {p95:.2f} ms exceeds 89.0 ms\"\n  ```\n- **Audit Report Template**: `audit/perfsec-dp89-compliance.md` (already drafted).\n\n---\n\n### ✅ **Handoff Ready – Resume from Here**  \nContinue with **CI/CD integration**, **real-time alert validation**, and **final audit package generation**.  \nAll context, constraints, and artifacts are preserved. Maintain **strict fidelity to 89.0**.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00019",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

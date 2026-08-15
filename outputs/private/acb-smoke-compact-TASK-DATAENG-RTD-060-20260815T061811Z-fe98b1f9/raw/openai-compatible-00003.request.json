@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Data Pipeline Specialist. Your task is to design and configure data quality monitoring logic based on the Orchestrator's requirements. Ensure all numerical thresholds and constraints are accurately implemented.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION – Handoff Summary**\n\n---\n\n### ✅ **Current Progress & Key Decisions Made:**\n- **Threshold Definition Finalized:** Exact deviation threshold of **3.75% (0.0375)** confirmed as non-negotiable.\n- **Monitoring Logic Specified:** Daily volume comparison against 7-day rolling average using UTC day boundaries.\n- **Alerting Channel Confirmed:** All alerts to be sent to `#data-alerts` Slack channel with full context.\n- **Data Source Locked:** Inbound volume derived from `user_activity_events` Kafka topic — message count per UTC day.\n- **Retention Requirement Set:** Raw metrics retained for **90 days**.\n\n---\n\n### 🔑 **Critical Context & Constraints:**\n- **No rounding allowed:** Must use **3.75% exactly**, not 4% or approximations.\n- **Rolling average:** Calculated over **7 consecutive daily volumes** (UTC).\n- **Threshold bounds:**  \n  - Upper: `avg × 1.0375`  \n  - Lower: `avg × 0.9625`  \n- **Alert trigger:** Any value outside [lower, upper] → alert.\n- **Time precision:** Job must run at **03:00 UTC daily**; timezone enforcement mandatory.\n\n---\n\n### 📌 **Next Steps (Clear Actions for Next LLM):**\n1. **Implement rolling average logic** in code/script (e.g., Python/Pandas, SQL, or streaming pipeline).\n2. **Calculate exact thresholds** using 3.75% multiplier on the 7-day average.\n3. **Validate edge cases**:\n   - Volume = 100,000 → thresholds: 96,250 and 103,750\n   - Volume = 96,250 → should trigger alert (boundary case)\n4. **Integrate with alerting system** (Slack webhook or Alertmanager) — include all required fields.\n5. **Confirm data retention policy** is enforced in metric storage (e.g., TimescaleDB, Prometheus).\n\n---\n\n### 📎 **Critical References Needed:**\n- Sample daily volume data (last 10 days) for testing.\n- Kafka topic schema: `user_activity_events` (message count per day).\n- Access to production monitoring environment (or staging) for validation.\n- Slack webhook URL for `#data-alerts`.\n\n---\n\n> ✅ **Handoff Complete. Resume task with exact 3.75% threshold and UTC-aligned daily processing.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00003",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

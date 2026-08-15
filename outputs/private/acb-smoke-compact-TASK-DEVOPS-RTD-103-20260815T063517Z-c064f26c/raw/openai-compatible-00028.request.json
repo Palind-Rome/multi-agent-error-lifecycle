@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Security Auditor, responsible for verifying that the implemented deployment pipeline and infrastructure meet all specified security and performance compliance standards. Flag any deviations or non-compliance issues.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### 📌 **HANDOFF SUMMARY: CONTEXT CHECKPOINT COMPACTION**  \n*Next LLM: Resume production deployment monitoring and post-rollout validation*\n\n---\n\n#### ✅ **Current Progress & Key Decisions**\n- **Staging Deployment**: Successfully validated via Jenkins + Argo CD (synced, no failures).\n- **24-Hour Load Test**: Completed with full compliance:\n  - P95 latency: **89.0 ms** (exact threshold met)\n  - Zero 5xx errors, mTLS failures, or health check drops\n  - Rollback triggered within **1 min 58 sec** of alert — verified functional\n- **Security/Compliance**: TLS 1.3 enforced, mTLS working, HTTP blocked, artifacts versioned.\n- **Decision Made**: ✅ **Proceed to production rollout** at `2025-04-05T12:00:00Z`.\n\n---\n\n#### 🔑 **Critical Context & Constraints**\n- **Deadline**: Production deployment must complete by `12:00:00Z` (no delays allowed).\n- **Rollback Threshold**: If P95 latency exceeds **89.0 ms** for >2 consecutive minutes → auto-trigger rollback.\n- **User Preference**: No manual intervention unless critical; rely on automated alerts and CI/CD pipelines.\n- **Environment Isolation**: Staging and production are separate clusters; do not reuse staging configs.\n\n---\n\n#### ➡️ **Next Steps (Immediate Actions)**\n1. **Monitor production deployment** via Argo CD and Jenkins (`deploy-prod-v1.0.0` job).\n2. **Validate real-time metrics** in Grafana (`Prod-Latency-Health` dashboard):\n   - Confirm P95 ≤ 89.0 ms\n   - Check for 5xx errors or mTLS handshake failures\n3. **Verify auto-rollback readiness**:\n   - Ensure Prometheus alert `HighP95Latency` is active\n   - Confirm Jenkins `rollback-on-failure` pipeline is enabled\n4. **After 1 hour post-deploy**, run a **lightweight smoke test**:\n   ```bash\n   curl -H \"Authorization: Bearer $TOKEN\" https://prod.example.com/api/v1/health\n   ```\n   Expect `HTTP 200` and response time < 100 ms.\n\n---\n\n#### 📎 **Critical References**\n- **Git Tag**: `v1.0.0-compliance-ready`  \n  → Contains all manifests, k6 script, alert rules, and pipeline config\n- **Grafana Dashboard**: [https://grafana.prod.example.com/d/xyz789/prod-latency-health](https://grafana.prod.example.com/d/xyz789/prod-latency-health)\n- **Prometheus Alert Rule**:\n  ```yaml\n  expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 0.089\n  ```\n- **Jenkins Job**: `deploy-prod-v1.0.0` (parameters: `ENV=prod`, `TAG=v1.0.0-compliance-ready`)\n\n---\n\n> 🚀 **Handoff Complete – Next LLM: Monitor production rollout and validate stability.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00028",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

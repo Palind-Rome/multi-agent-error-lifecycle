@@ -1,0 +1,58 @@
+**CONTEXT CHECKPOINT COMPACTION: Handoff Summary for Next LLM**
+
+---
+
+### 📌 **Current Progress & Key Decisions Made**
+- ✅ **[PROXY-SEC203] Enforced**: All outbound traffic from `auth-service-v2` must go exclusively through an HTTPS-only proxy with certificate pinning. This is a non-negotiable security constraint.
+- ✅ **Infrastructure Design Finalized**: Proxy endpoint: `https://proxy.us-east-1.internal:443`. NetworkPolicy blocks all egress except to this proxy (port 443).
+- ✅ **Certificate Pinning Confirmed**: Pinned SHA-256 fingerprint: `a1b2c3d4e5f6...` (example; actual value provided via secure channel). Enforcement at app level via environment variable.
+- ✅ **Deployment Configuration Ready**: Kubernetes manifest includes:
+  - `HTTPS_PROXY=https://proxy.us-east-1.internal:443`
+  - `TLS_PINNING_CERT_SHA256=a1b2c3d4e5f6...`
+  - Pod-level network policy restricting egress.
+- ✅ **Monitoring Setup in Place**: Alerting rules configured for:
+  - HTTP outbound traffic
+  - TLS handshake failures (pinning mismatch)
+  - Direct egress attempts
+  - Real-time dashboard in Grafana
+
+---
+
+### 🔒 **Critical Constraints & User Preferences**
+- **Non-Negotiable Security Rule**: [PROXY-SEC203] — No exceptions. Any deviation triggers rollback and incident response.
+- **Zero-Tolerance for HTTP**: All outbound traffic must be HTTPS-only. Even one HTTP request = violation.
+- **Certificate Pinning Mandatory**: Must be enforced at runtime (not just config). No fallback to system CA trust.
+- **Compliance-Driven Deployment**: CI/CD pipeline must fail if any compliance check fails (e.g., missing proxy env, invalid cert).
+- **Observability Required**: All logs must include `service=auth-service-v2`, `event_type=network_outbound`, and `proxy_used=true/false`.
+
+---
+
+### ⏭️ **What Remains to Be Done (Next Steps)**
+1. **Security Auditor Sign-Off**: Confirm that the design fully complies with [PROXY-SEC203] and no bypass vectors exist.
+2. **Deployment Specialist Executes Rollout**: Apply final manifest to production (`us-east-1`) via GitOps (Argo CD).
+3. **Monitoring Engineer Validates First 15 Minutes of Traffic**:
+   - Confirm no alerts fired.
+   - Verify all outbound requests routed through proxy.
+   - Validate log enrichment in ELK stack.
+4. **Final Go-Live Approval**: Only after successful smoke test and monitoring validation.
+
+---
+
+### 📎 **Critical Data & References Needed**
+- ✅ **Actual Certificate Fingerprint**: Replace placeholder `a1b2c3d4e5f6...` with real SHA-256 hash (from Security Team).
+- ✅ **Proxy Endpoint IP/Hostname**: Confirm `proxy.us-east-1.internal` resolves correctly in `us-east-1` VPC.
+- ✅ **ELK Log Schema**: Ensure logging format includes:
+  ```json
+  {
+    "service": "auth-service-v2",
+    "event_type": "network_outbound",
+    "proxy_used": true,
+    "destination": "api.example.com",
+    "cert_pinned": true
+  }
+  ```
+- ✅ **Grafana Dashboard Link**: `https://grafana.us-east-1.example.com/d/auth-service-v2-compliance`
+
+---
+
+> ✅ **Handoff Ready**: Next LLM can resume with full context. Proceed to **Security Auditor sign-off** or **Deployment execution**, depending on current workflow stage.

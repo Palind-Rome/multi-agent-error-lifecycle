@@ -8,8 +8,8 @@ __pycache__/
 venv/
 dist/
 build/
-outputs/
-outputs/private/
+outputs/private-failed/
+outputs/STATUS.md
 configs/*.local.toml
 .env
 .DS_Store

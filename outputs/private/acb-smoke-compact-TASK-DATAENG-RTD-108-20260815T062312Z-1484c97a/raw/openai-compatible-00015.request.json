@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are responsible for defining, implementing, and validating data quality checks. You must confirm that all migrated data meets the specified quality threshold and report any issues. Your findings are critical for the successful completion of the migration.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n🟢 **HANDOFF SUMMARY: TURN 14 – EMERGENCY REPROCESSING & FINAL VALIDATION**  \n**Resumed by:** Next LLM / Operator  \n**Task:** BigQuery Migration Pipeline (DQ ≥ 0.99, BQ-only)  \n**Target Region:** `us-east-1`  \n**Budget Remaining:** $14,150 USD  \n\n---\n\n### ✅ **CURRENT PROGRESS & KEY DECISIONS**\n\n- **Root causes confirmed**:  \n  - Duplicate records due to short dedup window (1h → now extended to 4h).  \n  - Invalid transaction types (`cancel`, `unknown`) introduced during full sync due to disabled filtering.  \n\n- **Fixes implemented**:  \n  - Pipeline version: `v1.3-dq-fixes` deployed with:  \n    - `dedup_window_hours: 4`  \n    - `transaction_type_filter_enabled: true`  \n    - Allowed types: `[\"purchase\", \"refund\", \"chargeback\"]`  \n  - DQ validation framework: `dq_rules_v1.2` verified and stable.\n\n- **Reprocessing completed**:  \n  - Full dataset reprocessed into `analytics_prod.migration_v1.transactions_reprocessed`.  \n  - No errors reported in Cloud Build logs.\n\n- **Final DQ validation passed**:  \n  - All 9 checks passed.  \n  - Final score: **0.995** (≥ 0.99 threshold met).  \n  - Report generated and stored.\n\n---\n\n### 🔑 **CRITICAL CONTEXT & CONSTRAINTS**\n\n- **Compliance Rule**: `TECH-BQ-99` — requires written sign-off before go-live.  \n- **No rollback needed** — all validations passed; backup (`backup_turn13.parquet`) is preserved but not required.  \n- **Data sensitivity**: PII masked throughout pipeline; audit logs confirm no raw access.  \n- **Budget**: $14,150 remaining — reprocessing cost ~$120 estimated.  \n- **Region**: `us-east-1` only — no cross-region replication allowed.\n\n---\n\n### 📌 **WHAT REMAINS TO BE DONE (NEXT STEPS)**\n\n1. **✅ Wait for written compliance approval** from Jane Doe (Compliance Lead).  \n   - Must receive confirmation via email or Slack thread.  \n   - Reference: `INC-2024-MIG-DQ-001` (escalation path if delayed).\n\n2. **➡️ Upon approval**, proceed to **Turn 15: Go-Live Sign-Off** — initiate production deployment.\n\n---\n\n### 📎 **KEY REFERENCES FOR CONTINUITY**\n\n- **Pipeline Config**: `gs://config-migration-v1/pipeline_v1.3-dq-fixes.yaml`  \n- **DQ Rules v1.2**: `gs://data-lake-reports/migration_v1/dq_rules_v1.2.sql`  \n- **Final Report**: `gs://data-lake-reports/migration_v1/dq_final_report_turn14.json`  \n- **Backup (if needed)**: `gs://data-lake-backups/migration_v1/backup_turn13.parquet`  \n- **Compliance Contact**: Jane Doe (`jane.doe@company.com`)\n\n---\n\n🟢 **HANDOFF COMPLETE. READY FOR TURN 15: GO-LIVE SIGN-OFF.**  \n> ⏩ **Next Action**: Await written compliance sign-off.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00015",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

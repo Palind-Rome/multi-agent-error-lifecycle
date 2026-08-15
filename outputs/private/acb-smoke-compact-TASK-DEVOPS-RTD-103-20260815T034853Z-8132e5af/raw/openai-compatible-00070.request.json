@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Security Auditor, responsible for verifying that the implemented deployment pipeline and infrastructure meet all specified security and performance compliance standards. Flag any deviations or non-compliance issues.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n# 📌 **Context Checkpoint Compaction: Handoff Summary**  \n*For LLM Resumption of Task — PERFSEC-DP89 Compliance Validation*\n\n---\n\n### ✅ **Current Progress & Key Decisions Made**\n- **Performance**: P95 latency confirmed at **88.7 ms** (below 89.0 ms threshold). Evidence from Prometheus, Grafana, and OpenTelemetry traces.\n- **Security**: TLS 1.3 enforced on ingress; mTLS in **STRICT mode** via Istio PeerAuthentication. DB uses `sslmode=require`.\n- **Backup & RTO**: Daily Velero backups successful. Restore test achieved **~4 min automated RTO** (within ≤5 min target).\n- **CI/CD & Audit**: Pipeline passed all gates. Audit logs verified for full traceability (CIS v1.22 compliant).\n- **IaC**: Terraform code reviewed and secured (encryption, public access blocked).\n\n> 🔑 **Final Report Published**:  \n> [compliance-report-perfsec-dp89.md](https://artifacts.example.com/compliance/perfsec-dp89/compliance-report-perfsec-dp89.md)\n\n---\n\n### 🧩 **Critical Context & Constraints**\n- **User Preference**: Final report must be **self-contained**, with **all evidence links embedded** (no external lookup required).\n- **Compliance Standard**: Must align with internal policy **PERFSEC-DP89**, including:\n  - Latency: P95 ≤ 89.0 ms\n  - Security: TLS 1.2+, mTLS STRICT\n  - RTO: ≤5 min (automated)\n- **Tooling Stack**: Prometheus, Grafana, OpenTelemetry, Velero, ArgoCD, Jenkins, Istio, Terraform.\n\n---\n\n### 🔜 **Next Steps to Complete**\n1. **Final Review & Approval Request**  \n   → Submit the compliance report for formal sign-off by the Compliance Team.  \n   → Ensure approval triggers production rollout or audit closure.\n\n2. **Handoff Confirmation**  \n   → Confirm receipt and readiness to resume task if needed (e.g., post-review edits).\n\n---\n\n### 📎 **Essential References for Continuation**\n- **Report File**: [compliance-report-perfsec-dp89.md](https://artifacts.example.com/compliance/perfsec-dp89/compliance-report-perfsec-dp89.md)  \n- **Grafana Dashboard**: [API Latency P95 w/ Threshold](https://grafana.example.com/d/abc123/api-latency-p95)  \n- **OpenTelemetry Trace**: [e6f2a8b1-9c4d-4e5f-a1b2-c3d4e5f6a7b8](https://tracing.example.com/trace/e6f2a8b1-9c4d-4e5f-a1b2-c3d4e5f6a7b8)  \n- **Velero Backup Log**: [velero-backup-20250405.log](https://artifacts.example.com/logs/velero-backup-20250405.log)  \n- **Terraform IaC Repo**: [git@github.com:org/app-infrastructure.git](git@github.com:org/app-infrastructure.git)\n\n---\n\n> ✅ **Handoff Ready**  \n> *Next LLM can now proceed with final review, approval coordination, or audit closure.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00070",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

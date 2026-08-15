@@ -1,0 +1,8 @@
+{
+  "body_text": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"content\":\"```json\\n{\\n  \\\"agent\\\": \\\"Data Architect\\\",\\n  \\\"acknowledged\\\": true,\\n  \\\"constraints_complied_with\\\": [\\\"ANON-HASH-PII\\\", \\\"PURGE-93DAYS\\\"],\\n  \\\"notes\\\": \\\"Final schema design in Snowflake (`analytics_prod.customer_interactions_enriched`) will enforce partitioning by `partition_date` and clustering on `hashed_customer_id` and `event_timestamp`. Purge task scheduled daily at 02:00 UTC using Snowflake Task with exact 93-day cutoff logic. Audit logging implemented via `analytics_prod.purge_audit_log`. All access controlled via RBAC; no raw PII accessible. Monitoring integrated with Datadog for purge success rate, duration, and partition count. Schema validated against compliance requirements.\\\"\\n}\\n```\",\"role\":\"assistant\"}}],\"created\":1786739595,\"id\":\"chatcmpl-cf49297e-3958-96d0-b81f-e44c7c7ace8e\",\"model\":\"qwen/qwen3-30b-a3b-instruct-2507\",\"object\":\"chat.completion\",\"usage\":{\"completion_tokens\":164,\"prompt_tokens\":3982,\"total_tokens\":4146}}",
+  "call_id": "openai-compatible-00027",
+  "headers": {
+    "content-type": "application/json"
+  },
+  "http_status": 200
+}

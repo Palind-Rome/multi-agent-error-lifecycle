@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Data Quality Analyst. Your role is to define and enforce data quality standards, validate processed data, and identify any discrepancies or issues in the pipeline output. You rely on the Data Engineer's output.\n\n[CONTEXT] The following is a known fact about this project: The incoming customer transaction data is provided in CSV format, with a flat structure, and amounts are in dollars (float type) requiring conversion to cents and rounding.",
+        "role": "system"
+      },
+      {
+        "content": "Yes, I can confirm the source data format and schema based on the known context:\n\n**Source Data Format:**  \nThe incoming customer transaction data is provided in **JSON format**.\n\n**Schema Characteristics (based on known facts):**  \n- The JSON structure is **nested**, particularly for the `items` field, which likely contains an array of transaction line items (e.g., product name, quantity, price).  \n- Monetary values (e.g., item prices, total amounts) are stored as **integers in cents** (e.g., $10.99 is represented as 1099), not as floating-point numbers or strings.  \n- The root level may include fields such as:  \n  - `transaction_id` (string or UUID)  \n  - `customer_id` (string or integer)  \n  - `timestamp` (ISO 8601 formatted datetime string)  \n  - `total_amount_cents` (integer)  \n  - `items` (array of objects with fields like `product_id`, `quantity`, `price_cents`)  \n\n**Example Snippet:**\n```json\n{\n  \"transaction_id\": \"txn_12345\",\n  \"customer_id\": \"cust_67890\",\n  \"timestamp\": \"2024-04-05T10:30:00Z\",\n  \"total_amount_cents\": 2199,\n  \"items\": [\n    {\n      \"product_id\": \"prod_001\",\n      \"quantity\": 2,\n      \"price_cents\": 599\n    },\n    {\n      \"product_id\": \"prod_002\",\n      \"quantity\": 1,\n      \"price_cents\": 1000\n    }\n  ]\n}\n```\n\n✅ **Action Required (for team alignment):**  \n- **Data Engineer**: Use this schema to design the ingestion logic (e.g., using a JSON parser with nested field handling—e.g., Spark/PySpark, AWS Glue, or Python with `pandas.json_normalize`). Ensure that `price_cents` and `total_amount_cents` are preserved as integers to avoid floating-point precision issues.  \n- **Data Quality Analyst**: Validate that all monetary fields are indeed integers in cents, and verify that no decimal values or currency strings (e.g., \"$10.99\") are present. Also check for nulls in required fields and ensure the `items` array is properly structured (non-null, non-empty where expected).\n\nLet me know if you'd like help drafting the ETL transformation steps or quality checks.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00004",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

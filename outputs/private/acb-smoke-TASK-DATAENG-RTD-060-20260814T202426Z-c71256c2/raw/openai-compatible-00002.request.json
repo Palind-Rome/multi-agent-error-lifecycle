@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Data Pipeline Specialist. Your task is to design and configure data quality monitoring logic based on the Orchestrator's requirements. Ensure all numerical thresholds and constraints are accurately implemented.",
+        "role": "system"
+      },
+      {
+        "content": "**Relay of Critical Constraints to Downstream Agents – Data Pipeline Specialist & Data Platform SRE**\n\n---\n\n**📌 Task:** Implement automated data quality monitoring for the `user_activity_events` Kafka topic ingestion pipeline.  \n**🎯 Objective:** Detect and alert on daily inbound data volume anomalies using a precise deviation threshold.\n\n---\n\n### ✅ **Core Requirement (Non-Negotiable):**\n> **[THRESHOLD-QT91]** The system must flag any daily inbound data volume that deviates by **more than 3.75%** from the 7-day rolling average.\n\n- **Exact value required:** `3.75%` — **no rounding, no generalization, no approximation.**\n- Deviation is calculated as:  \n  `|Daily Volume - 7-Day Rolling Average| / 7-Day Rolling Average > 0.0375`\n- If the condition is met, trigger an alert.\n\n---\n\n### 📊 System Context & Configuration:\n- **Data Source:** `user_activity_events` Kafka topic  \n- **Metric Monitored:** Daily inbound record count (raw volume)  \n- **Rolling Window:** 7-day sliding window (based on calendar days, not UTC timestamps)  \n- **Monitoring Frequency:** Daily at **03:00 UTC**  \n- **Historical Retention:** 90 days of raw volume metrics retained for calculation and audit  \n- **Alert Trigger Logic:** Run daily at 03:00 UTC; compare current day’s volume to the 7-day rolling average (days [t-6] to [t])  \n- **Alert Notification Channel:** `#data-alerts` Slack channel  \n- **Alert Format (Required):**  \n  ```json\n  {\n    \"alert_type\": \"DATA_VOLUME_ANOMALY\",\n    \"source\": \"user_activity_events\",\n    \"metric\": \"inbound_record_count\",\n    \"date\": \"2025-04-05\",\n    \"daily_volume\": 123456,\n    \"rolling_avg_7d\": 120000,\n    \"deviation_percent\": 2.875,\n    \"threshold\": 3.75,\n    \"status\": \"FLAGGED\"\n  }\n  ```\n\n---\n\n### 🔐 Compliance & Integrity Requirements:\n- **No tolerance for rounding** in threshold logic (e.g., do not use `3.8%`, `~3.75%`, or `greater than 3.7%`).  \n- All calculations must use **exact decimal precision**: `0.0375` (i.e., 3.75%) as the comparison threshold.  \n- Alert logic must be version-controlled and auditable.  \n- Any change to the threshold must go through formal review and approval via the Data Platform SRE governance process.\n\n---\n\n### 📣 Action Required:\n- **Data Pipeline Specialist:** Design and implement the monitoring logic with exact adherence to `3.75%`. Ensure the calculation is unit-tested with edge cases (e.g., zero volume, near-threshold values).  \n- **Data Platform SRE:** Deploy and monitor the job. Validate alert fidelity and ensure integration with `#data-alerts`. Confirm retention policy supports 90-day rolling average computation.\n\n---\n\n**⚠️ Final Note:** This constraint is **critical to operational stability**. Miscommunication or approximation of the threshold may lead to false negatives (missed outages) or false positives (alert fatigue), both of which compromise data reliability.  \n\n**All downstream agents must treat `3.75%` as a hard-coded, unrounded threshold.**\n\n---  \n**Relay Complete.**  \n*Orchestrator → Data Pipeline Specialist → Data Platform SRE*  \n✅ Confirmed.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00002",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

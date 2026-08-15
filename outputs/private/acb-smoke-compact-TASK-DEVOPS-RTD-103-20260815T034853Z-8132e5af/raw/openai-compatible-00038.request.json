@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Cloud Architect, responsible for designing the infrastructure for the application deployment based on the Orchestrator's constraints. Ensure all security and performance requirements are incorporated into your design and passed to the SRE.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n---\n\n**CONTEXT CHECKPOINT COMPACTION: HANDOFF SUMMARY**\n\n**Current Progress & Key Decisions Made:**  \n- All critical constraints from **PERFSEC-DP89** have been fully implemented across network, transport, application, and data layers.  \n- Infrastructure-as-Code (IaC) templates (Terraform) and Helm charts are finalized with explicit enforcement of:  \n  - HTTPS-only ingress (TLS 1.3 preferred, min TLS 1.2)  \n  - Database connections encrypted via TLS v1.2+  \n  - Critical API response time ≤89.0 ms (P95) under load  \n- Blue/Green deployment with automated rollback (≤5 min) is operational via Kubernetes Ingress + ArgoCD.  \n- CI/CD pipeline (Jenkins + GitOps) includes pre-deploy validation: security scan (Trivy), linting, and k6 performance test with 89.0 ms threshold.  \n- Monitoring stack (Prometheus + Grafana) and logging (ELK) are deployed and integrated with SLO tracking.\n\n**Important Context & Constraints:**  \n- **Exact value \"89.0\" must be preserved** in all configurations: alert thresholds, SLOs, test scripts, dashboards.  \n- **No deviation allowed**: TLS 1.2 or higher required everywhere; HTTP forbidden.  \n- VPC design: private subnets only; public access restricted via WAF-enabled ALB/API Gateway.  \n- Security: Pod Security Policies enabled, mTLS for DB, certificate pinning enforced.  \n- Audit-ready state: all evidence (IaC, logs, alerts, test results) must be traceable and verifiable.\n\n**What Remains to Be Done (Next Steps):**  \n1. Finalize audit readiness package: compile IaC code snippets, Prometheus alert rules, k6 script outputs, ArgoCD sync logs.  \n2. Validate that **all instances of \"89.0\"** are literal and not approximated (e.g., no rounding to 89).  \n3. Confirm cross-region backup replication and encryption at rest.  \n4. Generate compliance report mapping each constraint to implementation artifact.  \n5. Prepare for external audit review (if applicable).\n\n**Critical Data & References Needed:**  \n- `prometheus_alerts.yaml` – contains `API_Response_Time_Exceeds_89ms` rule  \n- `k6_performance_test.js` – includes `thresholds: { http_req_duration: ['p(95) < 89.0'] }`  \n- `terraform/modules/network/vpc.tf` – enforces private subnets + WAF integration  \n- `helm/charts/api/values.yaml` – sets `tls.min_version: \"1.2\"` and `response_time_slo: 89.0`  \n- `jenkins/pipeline.groovy` – includes `sh 'k6 run --thresholds=http_req_duration=89.0'`\n\n---\n\n✅ **Handoff Complete. Next LLM can resume with full context and exact artifacts.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00038",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

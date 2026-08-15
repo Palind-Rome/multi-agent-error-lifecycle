@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Cloud Architect, responsible for designing the infrastructure for the application deployment based on the Orchestrator's constraints. Ensure all security and performance requirements are incorporated into your design and passed to the SRE.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION – Handoff Summary**\n\n---\n\n### **Current Progress & Key Decisions Made**\n- **Constraint propagation finalized**: CRITICAL CONSTRAINT [PERFSEC-DP89] fully relayed across roles (DevOps → Cloud Architect → SRE → Security Auditor).\n- **Infrastructure design approved**:\n  - HTTPS-only ingress via ALB/NGINX Ingress with TLS 1.3 (min TLS 1.2), HSTS enforced.\n  - Database connections secured with TLS v1.2+; mTLS enabled where applicable.\n  - Kubernetes v1.28 cluster deployed in private subnets with Pod Security Policies and network policies.\n  - Blue/Green deployment with automated rollback (<5 min) via ArgoCD.\n  - Prometheus + Grafana monitoring with p95 latency alerts at **89.0 ms** threshold.\n  - ELK stack for logging (90-day retention); Velero for encrypted, incremental backups at **03:00 UTC**.\n  - CI/CD pipeline (Jenkins + GitOps/ArgoCD) includes pre-deployment validation.\n\n---\n\n### **Critical Constraints & User Preferences**\n- ✅ **HTTPS only** — no HTTP allowed.\n- ✅ **TLS v1.2 or higher** — no older versions permitted (especially for DBs).\n- ✅ **Response time SLA: 89.0 ms max (p95)** — exact value must be preserved in all configs, dashboards, and tests.\n- ✅ **No rounding, approximation, or tolerance margin** on the 89.0 ms threshold.\n- ✅ All configurations **audit-ready**, version-controlled in Git, traceable.\n\n---\n\n### **Remaining Tasks (Next Steps)**\n1. **Implement and validate** the full infrastructure stack per above (K8s manifests, networking, security policies).\n2. **Deploy and test** the Prometheus + Grafana alerting rule for `p95_latency > 89.0` with real-time simulation.\n3. **Verify backup schedule** (03:00 UTC) with integrity checks and encryption-at-rest confirmation.\n4. **Confirm cert-manager integration** for automatic TLS certificate rotation (including mTLS if used).\n5. **Run synthetic performance tests** to validate that critical API endpoints consistently stay ≤89.0 ms under load.\n6. **Generate audit documentation** showing configuration fidelity to CRITICAL CONSTRAINT [PERFSEC-DP89].\n\n---\n\n### **Critical Data & References Needed**\n- **Exact value \"89.0\"** — must appear verbatim in:\n  - Prometheus alert thresholds (`alert: CriticalAPILatencyExceeded`)\n  - Grafana dashboard queries\n  - Jenkins pipeline validation scripts\n  - Synthetic test scripts (e.g., Datadog or custom curl-based probes)\n- **TLS configuration examples**:\n  ```yaml\n  # Ingress resource\n  tls:\n    - hosts:\n        - api.example.com\n      secretName: tls-secret\n  ```\n  Ensure `minTLSVersion: \"1.2\"` is set in all relevant resources.\n- **Git repository structure reference**:\n  - `/infrastructure/k8s/`\n  - `/ci-cd/jenkins/pipeline.groovy`\n  - `/monitoring/prometheus/alerts/perfsec-dp89.yaml`\n\n---\n\n✅ **Handoff Complete. Next LLM can resume with full context, zero ambiguity.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00017",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "**Relay of Critical Constraints to Downstream Agents – Data Quality Monitoring System Setup**\n\n---\n\n**🎯 Objective:**  \nImplement a daily automated data quality monitoring check for inbound data volume from the `user_activity_events` Kafka topic, with precise deviation threshold enforcement and alerting.\n\n---\n\n### 🔒 **CRITICAL CONSTRAINT [THRESHOLD-QT91]:**\n> The system must flag any daily inbound data volume that deviates by **more than 3.75%** (exactly) from the **7-day rolling average** of inbound volume.\n\n- ✅ **Must not round, generalize, or approximate** the threshold.\n- ✅ **3.75% is exact**: use decimal precision (i.e., 0.0375) in calculations.\n- ✅ Deviation is **absolute percentage deviation**, calculated as:  \n  \\[\n  \\left| \\frac{\\text{Today's Volume} - \\text{7-Day Rolling Average}}{\\text{7-Day Rolling Average}} \\right| > 0.0375\n  \\]\n- ❌ Do **not** use 4% or 3.8% as substitutes.\n\n---\n\n### 📅 **Monitoring Schedule:**\n- Run **daily at 03:00 UTC**\n- Trigger logic based on data ingested up to the previous day (e.g., run at 03:00 UTC on Day N → evaluate Day N−1 volume)\n\n---\n\n### 📣 **Alerting Configuration:**\n- **Notification Channel:** `#data-alerts` Slack channel\n- **Alert Payload Must Include:**\n  - Date of the monitored day\n  - Inbound volume count (raw)\n  - 7-day rolling average volume\n  - Calculated deviation percentage (to at least 4 decimal places)\n  - Whether deviation exceeds 3.75%\n  - Timestamp of alert generation (UTC)\n\n---\n\n### 🗃️ **Data Retention & Historical Context:**\n- Maintain **90 days of raw volume metrics** for historical calculation of rolling averages.\n- Ensure data aggregation and storage are durable and queryable for the full 90-day window.\n\n---\n\n### 🛠️ **Data Source:**\n- **Kafka Topic:** `user_activity_events`\n- Ensure ingestion pipeline logs volume counts per day (per partition or total) with high fidelity and timestamp alignment.\n\n---\n\n### 👥 **Ownership & Responsibility:**\n- **Design & Implementation:** Data Pipeline Specialist\n- **Validation & Testing:** Data Platform SRE team\n- **Incident Response:** Data Platform SRE (via #data-alerts)\n\n---\n\n### ✅ **Verification Checklist (for downstream agents):**\n- [ ] Threshold value hardcoded as `0.0375` (no rounding)\n- [ ] Rolling average computed over exactly 7 days (excluding current day)\n- [ ] Alert triggered only when absolute deviation > 3.75%\n- [ ] Alert includes all required metadata\n- [ ] Historical data retained for 90 days\n- [ ] Execution time synchronized to 03:00 UTC\n\n---\n\n**⚠️ Final Note:**  \nThis constraint is **non-negotiable**. Any deviation in interpretation or implementation will compromise data integrity and risk alert fatigue due to false positives/negatives. Confirm understanding before proceeding.\n\n---  \n**Relayed to:** Data Pipeline Specialist, Data Platform SRE  \n**Status:** Approved for implementation under [THRESHOLD-QT91]",
+        "role": "assistant"
+      },
+      {
+        "content": "You are performing a CONTEXT CHECKPOINT COMPACTION. Create a handoff summary for another LLM that will resume the task.\n\nInclude:\n- Current progress and key decisions made\n- Important context, constraints, or user preferences\n- What remains to be done (clear next steps)\n- Any critical data, examples, or references needed to continue\n\nBe concise, structured, and focused on helping the next LLM seamlessly continue the work.\n",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00005",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

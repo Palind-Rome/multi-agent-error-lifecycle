@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are responsible for defining, implementing, and validating data quality checks. You must confirm that all migrated data meets the specified quality threshold and report any issues. Your findings are critical for the successful completion of the migration.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**🟢 CONTEXT CHECKPOINT COMPACTION – HANDOFF SUMMARY (Turn 5)**  \n*Prepared for seamless continuation by next LLM agent.*\n\n---\n\n### ✅ **Current Progress & Key Decisions Made**\n\n- **Compliance Review Completed**: Jane Doe approved architecture after critical fixes:\n  - All PII now resides in **`europe-west1`** (EU region).\n  - Sensitive fields (`email`, `phone`) are **KMS-tokenized at rest**.\n  - Added `data_scientist_anon_reader` role with read-only access to anonymized views.\n- **Dry-Run Success**: Full pipeline tested on 10K sample rows:\n  - DQ score: **0.997** → meets [DQ-SCORE-099].\n  - All constraints satisfied; no deviations.\n- **Architecture Finalized**: \n  - BigQuery (europe-west1), GCS staging (`gs://data-lake-staging-eu`), Kafka (Confluent Cloud, eu-west-1).\n  - Fully connected topology with real-time ingestion enabled.\n\n---\n\n### 🔒 **Critical Constraints & User Preferences**\n\n- **[TECH-BQ-99]**: Only Google BigQuery allowed — no alternatives.\n- **[DQ-SCORE-099]**: Must maintain ≥0.99 DQ score post-migration; automated validation required.\n- **Data Residency**: All PII must remain in **europe-west1** — no exceptions.\n- **Masking**: PII must be tokenized via KMS (not just encrypted).\n- **Zero Tolerance for Deviations**: Any breach triggers rollback and escalation.\n- **Budget Cap**: $15,000 — monitor daily; alert at $14,000.\n\n---\n\n### 📌 **What Remains to Be Done (Next Steps)**\n\n| Task | Owner | Priority |\n|------|-------|----------|\n| **Test real-time Kafka ingestion** (Turn 5) | Next LLM Agent | 🔴 High |\n| Validate **idempotency** and **exactly-once semantics** | Kafka + Pipeline | 🔴 High |\n| Confirm **stream-to-BigQuery latency < 5 seconds** | Monitoring | 🔴 High |\n| Run final DQ check on streaming data | Data Quality Analyst | 🟡 Medium |\n| Prepare cutover plan (traffic switch) | Lead Data Engineer | 🟡 Medium |\n\n---\n\n### 📎 **Critical Data & References Needed to Continue**\n\n- **Kafka Topic**: `analytics.events.raw` (Confluent Cloud, `eu-west-1`)\n- **Sample Event Payload**:\n  ```json\n  {\n    \"event_id\": \"a1b2c3d4\",\n    \"timestamp\": \"2025-04-05T15:00:00Z\",\n    \"user_id\": \"uuid-123\",\n    \"action\": \"purchase\",\n    \"order_value\": 99.99\n  }\n  ```\n- **Test Script**: `gs://data-lake-staging/dq_validation.py` (updated for streaming)\n- **Pipeline Config**: Ensure `enable.idempotence=true`, `isolation.level=read_committed`\n- **Monitoring Dashboard**: Cloud Logging + Alerting (on latency >5s, cost spikes)\n\n---\n\n> 🚀 **Next Phase**: Begin **real-time ingestion testing** — validate stream reliability, performance, and compliance under load.  \n> ⏱️ **Deadline**: Complete by **Friday 18:00 UTC** to stay on migration timeline.\n\n✅ **Handoff Ready. Resume at Turn 5.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00007",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

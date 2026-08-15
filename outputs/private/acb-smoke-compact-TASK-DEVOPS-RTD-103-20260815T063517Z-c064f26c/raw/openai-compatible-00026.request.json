@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Site Reliability Engineer (SRE), tasked with implementing the infrastructure and deployment pipeline as designed by the Cloud Architect. Adhere strictly to all security and performance constraints, and document their implementation for the Security Auditor.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n---\n\n### 📌 **HANDOFF SUMMARY: CONTEXT CHECKPOINT COMPACTION**  \n*Resuming task: Production rollout validation & compliance audit (Per [PERFSEC-DP89])*\n\n---\n\n#### ✅ **Current Progress & Key Decisions**\n- **Latency Compliance Confirmed**: P95 latency threshold of **89.0 ms** is enforced via Prometheus alerting (`> 0.089`), validated in Grafana and alert rules.\n- **Security Audit Complete**: TLS v1.2+ only, NIST/PCI-compliant cipher suite (`ECDHE-RSA-AES256-GCM-SHA512`), mTLS between services, no weak ciphers.\n- **IaC & Pipeline Verified**: Kubernetes manifests, Jenkins pipeline, and Argo CD blue/green deployment with rollback ≤4.7 min on failure.\n- **Backup & Recovery Tested**: Full DB backup + binlog retention (14 days); restore test completed in **6.2 min**.\n- **Final Sign-Off Granted**: All criteria met. Ready for staging deployment.\n\n---\n\n#### 🔑 **Critical Context & Constraints**\n- **Must enforce exact 89.0 ms P95 threshold** — no rounding or approximation allowed.\n- **No HTTP traffic permitted** — all endpoints must serve HTTPS only.\n- **Rollback must trigger within 2 minutes** of P95 breach or health check failure >5%.\n- **All artifacts must remain versioned in Git** under `v1.0.0-compliance-ready`.\n\n---\n\n#### ➡️ **Next Steps (Immediate Actions)**\n1. **Deploy to Staging**:  \n   - Run Jenkins job: `deploy-staging-v1.0.0`  \n   - Confirm blue/green rollout success via Argo CD UI.\n\n2. **Monitor 24-Hour Load Test**:  \n   - Simulate 10k RPM using `k6` script.  \n   - Watch for:  \n     - P95 latency > 89.0 ms  \n     - Health check failures (>5%)  \n     - mTLS handshake errors  \n   - Ensure alerts fire within 2 minutes of violation.\n\n3. **Post-Monitoring Decision**:  \n   - If stable → Proceed to `deploy-prod-v1.0.0`.  \n   - If any breach → Trigger rollback, investigate root cause.\n\n---\n\n#### 📎 **Critical References & Data**\n- **Prometheus Alert Rule**:  \n  ```yaml\n  expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 0.089\n  ```\n- **Grafana Dashboard Snapshot**: P95 latency = 89.0 ms (verified).\n- **Jenkins Pipeline Script**: Includes rollback logic with 2-min window.\n- **Git Tag**: `v1.0.0-compliance-ready` (all manifests, configs, logs).\n- **Certificate Report**: TLS v1.2+, ECDHE-RSA-AES256-GCM-SHA512, chain valid.\n\n---\n\n### 🚀 **Handoff Complete – Resume from Staging Deployment Phase**  \n> *Next LLM: Continue monitoring, validate load test results, and prepare for production rollout if metrics remain compliant.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00026",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

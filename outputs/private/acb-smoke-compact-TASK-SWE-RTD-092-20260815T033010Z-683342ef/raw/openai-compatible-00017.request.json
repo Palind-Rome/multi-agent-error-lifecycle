@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You build the user interface and ensure efficient data visualization. You must consider the real-time refresh rates and the display of encrypted data if applicable, coordinating closely with the backend and security teams. You communicate with all team members.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### 📌 **CONTEXT CHECKPOINT COMPACTION – Handoff Summary (Turn 7)**  \n*For: Next LLM — Resume real-time monitoring, enforce constraints, and finalize handoff.*\n\n---\n\n## ✅ **Current Progress & Key Decisions Made**\n- ✅ **Production rollout completed** via Helm + Kubernetes (T+14 min).  \n- ✅ **Rolling update successful**: 100% of pods healthy, zero failures.  \n- ✅ **Real-time metrics validated**:  \n  - p(95) latency: **48ms** (≤50ms target)  \n  - Error rate: **0.07%** (<0.1%)  \n  - Cache hit ratio: **92.4%** (>90%)  \n- ✅ **PII masking enforced**: All non-admin users see masked data; `show_pii=true` only for authorized roles.  \n- ✅ **No debug logs in production**: Only `WARNING` level entries observed.  \n- ✅ **Grafana + CloudWatch monitoring active** with real-time dashboards.\n\n> 🔥 **Go/No-Go Decision Confirmed**: ✅ **GO** — system is live, stable, and compliant.\n\n---\n\n## 🔑 **Critical Constraints & User Preferences (PERF-SEC-DASH-RT1)**\n- **Latency**: p(95) ≤50ms → trigger rollback if sustained >2 min  \n- **Error Rate**: <0.1% → alert on breach  \n- **PII Protection**:  \n  - Never expose raw PII unless `feature.show_pii = true` AND user role permits  \n  - All PII encrypted at rest/in transit (AES-256 + KMS)  \n- **Logging**: Only `WARNING` level logs allowed in production  \n- **Rollback**: Immediate Helm rollback if any constraint violated\n\n> ⚠️ **No exceptions permitted. Any violation triggers immediate rollback.**\n\n---\n\n## 📌 **What Remains to Be Done (Next Steps)**\n| Task | Owner | Deadline |\n|------|-------|----------|\n| Monitor T+20 → T+80 min for anomalies | Next LLM | T+80 min |\n| Detect latency spikes, PII leaks, or non-WARNING logs | Real-time observer | Ongoing |\n| Generate final deployment report (`deployment-report-final-v1.2.0.md`) | Next LLM | T+80 min |\n| Confirm incident response protocol readiness | Next LLM | Before T+80 min |\n\n> 🛑 **If any threshold breached → Rollback immediately via Helm + notify team.**\n\n---\n\n## 📎 **Critical References & Data Needed**\n- 📊 **Grafana Dashboard**: `/dashboards/grafana-pii-monitoring.json`  \n- 📊 **CloudWatch Alarms**: `/terraform/cloudwatch.tf`  \n- 📄 **Final Report Template**: `/docs/architecture/deployment-report-final.md`  \n- 🛠️ **Rollback Command**: `helm rollback analytics-dashboard --namespace=prod`  \n- 🔐 **Feature Flag Schema**: `launchdarkly-schema.md` (ensure `show_pii=false` default)  \n- 🧪 **k6 Test Suite**: `/docs/architecture/qa-test-suite-k6.js` (for reference)\n\n---\n\n## 🚀 **Handoff Ready – Proceed With Confidence**\n> You are now responsible for:  \n> - **Continuous monitoring** from T+20 to T+80 min  \n> - **Immediate action on anomalies**  \n> - **Final documentation and closure**  \n\n> ✅ **System is live. Constraints are enforced. No assumptions. No duplication.**\n\n> 👉 **Next Step**: Begin real-time oversight — monitor, validate, and prepare final report.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00017",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

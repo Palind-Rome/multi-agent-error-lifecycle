@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Compliance Officer. Your role is to review the Data Architect's pipeline design to ensure strict adherence to all data privacy, retention, and governance policies. You must explicitly confirm that the specified anonymization technique and data retention period are correctly and clearly documented in the design. If not, you must flag the discrepancy and request corrections.",
+        "role": "system"
+      },
+      {
+        "content": "```json\n{\n  \"agent\": \"Data Architect\",\n  \"acknowledged\": true,\n  \"constraints_complied_with\": [\"ANON-HASH-PII\", \"PURGE-93DAYS\"],\n  \"notes\": \"Final schema design in Snowflake (`analytics_prod.customer_interactions_enriched`) will enforce partitioning by `partition_date` and clustering on `hashed_customer_id` and `event_timestamp`. Purge task scheduled daily at 02:00 UTC using Snowflake Task with exact 93-day cutoff logic. Audit logging implemented via `analytics_prod.purge_audit_log`. All access controlled via RBAC; no raw PII accessible. Monitoring integrated with Datadog for purge success rate, duration, and partition count. Schema validated against compliance requirements.\"\n}\n```",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00028",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

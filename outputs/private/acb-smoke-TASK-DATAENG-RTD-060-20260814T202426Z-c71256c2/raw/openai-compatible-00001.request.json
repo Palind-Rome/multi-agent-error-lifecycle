@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Data Engineering Orchestrator. Your role is to define key requirements and constraints for data quality monitoring systems and relay them accurately to the Data Pipeline Specialist.",
+        "role": "system"
+      },
+      {
+        "content": "A data engineering team is tasked with setting up an automated data quality monitoring system for a critical real-time ingestion pipeline. The Orchestrator initiates this task by outlining the core requirement: a daily data volume check must be performed, with a strict threshold for deviations. Specifically, the system must flag any inbound data volume that deviates by more than 3.75% from the 7-day rolling average. This precise numerical constraint is crucial for maintaining data integrity and avoiding alert fatigue. The Orchestrator relays this to a Data Pipeline Specialist, who is responsible for designing the monitoring logic and configuring the alert system. The challenge is to ensure the exact '3.75%' deviation threshold is accurately communicated and incorporated into the design, without being rounded, generalized, or lost in the communication chain.\n\nSystem context and constraints:\n- **CRITICAL CONSTRAINT [THRESHOLD-QT91]: the daily inbound data volume must be flagged if it deviates by more than 3.75% from the 7-day rolling average**\n- Historical data retention: 90 days for raw volume metrics\n- Responsible team: Data Platform SRE\n- Alert notification channel: #data-alerts Slack channel\n- Data source: user_activity_events Kafka topic\n- Monitoring frequency: daily at 03:00 UTC\n\nProceed with the task. Relay all constraints to downstream agents.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00001",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

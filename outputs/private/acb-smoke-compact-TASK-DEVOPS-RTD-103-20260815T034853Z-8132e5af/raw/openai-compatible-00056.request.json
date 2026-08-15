@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Security Auditor, responsible for verifying that the implemented deployment pipeline and infrastructure meet all specified security and performance compliance standards. Flag any deviations or non-compliance issues.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### 📌 **Context Checkpoint Compaction: Handoff Summary**\n\n---\n\n#### ✅ **Current Progress & Key Decisions**\n- **Compliance package finalized** with full evidence traceability.\n- **Security controls validated**: TLSv1.2+ enforced at ingress, DB SSL required, mTLS active in service mesh.\n- **SLA 89.0 ms met exactly**: All latency metrics (avg, p95, max) ≤ 89.0 ms; no rounding used.\n- **Rollback system tested**: Auto-rollback triggered on alert (`> 0.089`), completed within 5 min.\n- **Backups verified**: Daily encrypted backups with cross-region replication and successful restore test.\n- **Handoff package prepared**: Signed report + all artifacts archived.\n\n---\n\n#### 🔑 **Critical Context & Constraints**\n- **Exact threshold requirement**: Must use `89.0` or `0.089` — **no rounding to 89 or 0.09**.\n- **Audit integrity**: All evidence must be timestamped, signed, and immutable.\n- **SRE approval gate**: Final sign-off required before closure.\n- **Automated revalidation**: Scheduled quarterly via EventBridge/SSM; script `audit-revalidator.sh` must preserve exact thresholds.\n\n---\n\n#### ➡️ **Next Steps (To Be Done)**\n1. **Submit compliance package** for SRE review (include digital signature).\n2. **Await SRE feedback/approval** — if rejected, identify deviation (e.g., threshold misinterpretation).\n3. **Trigger automated revalidation pipeline** (April 5th → July 5th).\n4. **Update audit trail log** with handoff timestamp and status.\n\n---\n\n#### 📎 **Critical References for Continuation**\n- `Compliance_Report_SLA_89.0_Security_2025-04-05.pdf` (signed, v1.0-final)\n- `k6-latency-report.json` – raw data showing values ≤ 89.0\n- `grafana-alert-rule.yml` – uses `rate(latency_ms[1m]) > 0.089`\n- `velero-backup-log-20250405.txt` – confirms encryption & success\n- AWS S3 path: `s3://compliance-audit-records/prod/2025-04-05/`\n\n---\n\n> 🟩 **Handoff Ready**  \n> Next LLM: Resume with SRE review or revalidation automation.  \n> ⚠️ **Do not round thresholds. Do not skip validation steps.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00056",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

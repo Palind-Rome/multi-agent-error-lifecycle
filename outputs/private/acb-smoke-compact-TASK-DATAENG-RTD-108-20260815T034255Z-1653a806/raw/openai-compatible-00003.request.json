@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are responsible for designing the cloud infrastructure for the new data warehouse. You must ensure all architectural decisions align with specified technology constraints and support high data quality. You provide architectural insights and recommendations.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION – Handoff Summary**\n\n---\n\n### 📌 **Current Progress & Key Decisions (Turn 1 Completed)**  \n- All agents confirmed receipt of critical constraints.  \n- Migration window: **Friday 10 PM UTC**, 24-hour duration.  \n- **BigQuery-only** analytics stack enforced ([TECH-BQ-99]).  \n- Data quality target: **DQ score ≥ 0.99** ([DQ-SCORE-099]).  \n- Primary contact: **Jane Doe (Compliance Reviewer)** — all artifacts must be reviewed by her.  \n- Infrastructure: **us-east-1**, Google Cloud; Kafka for real-time ingestion approved.  \n- Source system: **PostgreSQL 14** (on-prem or existing cloud).  \n\n---\n\n### 🔑 **Critical Constraints & Preferences**  \n- ✅ **No exceptions allowed** on BigQuery usage or DQ score threshold.  \n- ✅ **Fully connected topology**: Real-time communication between all roles required.  \n- ✅ **Daily cost tracking** — budget cap: **$15,000 USD**.  \n- ✅ **GDPR, SOX, PCI-DSS compliance** embedded in design and data handling.  \n\n---\n\n### 🚧 **What Remains to Be Done (Next Steps – Turn 2–3)**  \n1. **Cloud Architect**: Finalize BigQuery + Cloud Storage + Pub/Sub/Kafka architecture blueprint (include IAM, VPC, flow logs).  \n2. **Database Administrator**: Complete PostgreSQL 14 schema extraction → BigQuery DDL mapping; validate data types and constraints.  \n3. **Data Quality Analyst**: Define DQ metrics (completeness, accuracy, consistency, uniqueness); build validation scripts targeting ≥0.99 score.  \n4. **Lead Data Engineer**: Coordinate team syncs every 2 hours; draft migration timeline with milestones.  \n\n> ⏱️ **Deadline**: Next status update due in **2 hours**.\n\n---\n\n### 📎 **Critical References & Data Needed to Continue**  \n- PostgreSQL 14 schema dump (source)  \n- DQ framework specification document (internal)  \n- BigQuery pricing model (for budget tracking)  \n- Jane Doe’s compliance checklist (access via internal portal)  \n\n---\n\n✅ **Handoff Complete. Next LLM: Resume at Turn 2 with full context.**  \n🟢 **Status: Active – Turn 2 pending.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00003",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Site Reliability Engineer (SRE), tasked with implementing the infrastructure and deployment pipeline as designed by the Cloud Architect. Adhere strictly to all security and performance constraints, and document their implementation for the Security Auditor.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n---\n\n### 📌 **CONTEXT CHECKPOINT COMPACTION: Handoff Summary**\n\n#### ✅ **Current Progress & Key Decisions Made**\n- **Latency SLA Validated:** Synthetic load test confirms 95th percentile latency = **89.0 ms** (exact).\n- **Rollback Automation Verified:** Alert-triggered rollback completed in **4m32s** (<5 min SLO).\n- **Backup Schedule Confirmed:** Daily Velero backup runs at **03:00 UTC**, retains data for **7 days** with cross-region replication.\n- **Security Enforced:** TLS v1.2+, HTTPS-only ingress, HSTS header applied.\n- **Audit Package Assembled:** All evidence, configs, logs, and scripts compiled into `final-audit-package-20250405.tar.gz`.\n\n#### 🔑 **Critical Constraints & User Preferences**\n- ✅ **Non-negotiables:**\n  - Latency must be **exactly 89.0 ms** (no tolerance).\n  - Rollback must complete within **≤5 minutes**.\n  - Backups must run at **03:00 UTC daily**, retain for **7 days**.\n  - Only **TLS v1.2+** allowed; **HTTPS-only** ingress (port 443).\n- ✅ **Audit-readiness required:** All artifacts must be traceable, reproducible, and GPG-signed.\n\n#### 📋 **Remaining Tasks (Next Steps)**\n1. **Final SRE Sign-Off:** Submit audit package to SRE team for approval.\n2. **Production Deployment:** Execute blue-green rollout via Jenkins pipeline (`blue-green-rollout-triggered-by-alert`).\n3. **Post-Deployment Monitoring:** Confirm 95th percentile latency remains ≤89.0 ms over 24h.\n4. **Documentation Update:** Add audit summary to internal compliance wiki.\n\n#### 📎 **Critical Data & References Needed**\n- `final-audit-package-20250405.tar.gz` (SHA256: `d4b3e2a1c5f8e7d6a9b2c1e4f3a8b5c7d6e9f2a1b3c4d5e6f7a8b9c0d1e2f3a4`)\n- GPG key: `cloud-architect@org.com` (for verification)\n- Jenkins job: `blue-green-rollout-triggered-by-alert`\n- Prometheus alert rule: `critical-api-latency-breach.yaml`\n- Velero schedule: `daily-backup.yaml`\n\n---\n\n> 🚀 **Handoff Ready.**  \n> Next LLM: Resume with **SRE sign-off** and **production deployment execution** using the provided audit package and references.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00040",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

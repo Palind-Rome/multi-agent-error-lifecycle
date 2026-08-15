@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Cloud Architect, responsible for designing the infrastructure for the application deployment based on the Orchestrator's constraints. Ensure all security and performance requirements are incorporated into your design and passed to the SRE.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION: Handoff Summary for Next LLM**\n\n---\n\n### ✅ **Current Progress & Key Decisions Made**\n- **[PERFSEC-DP89]** constraint fully defined and enforced across all layers:\n  - HTTPS/TLS 1.2+ mandatory for public services (TLS 1.3 preferred).\n  - Database connections encrypted with TLS 1.2+; `sslmode=require` enforced.\n  - Critical API latency capped at **89.0 ms** (P99) under load.\n- Infrastructure design finalized:\n  - Ingress controllers (NGINX + cert-manager) configured with strict TLS policies.\n  - Kubernetes manifests include resource limits, mTLS where needed, and Prometheus annotations.\n  - Helm chart values explicitly set `latency_threshold: 89.0`.\n- CI/CD pipeline integrated:\n  - ArgoCD + Jenkins GitOps workflow with validation gates.\n  - Blue/green deployments with automated rollback on latency breach.\n- Observability stack deployed:\n  - Prometheus + Grafana dashboards with real-time P99 latency tracking.\n  - ELK logging with `response_time_ms` field in every API log.\n\n---\n\n### 🔑 **Critical Context & Constraints**\n- **Non-negotiable value:** `89.0` (one decimal place). No rounding or approximation allowed.\n- All components must be validated against **exact** performance and security thresholds.\n- **No configuration drift allowed** — any deviation from [PERFSEC-DP89] = non-compliance.\n- Audit must confirm:\n  - TLS 1.2+ handshake success rate ≥ 99.9%\n  - P99 latency ≤ 89.0 ms during synthetic load test\n  - Rollback completes within 5 minutes when triggered\n\n---\n\n### 📌 **Next Steps to Continue**\n1. **Run synthetic load test** using k6 or similar:\n   - Simulate 1,000 concurrent users on critical APIs.\n   - Validate that **P99 response time ≤ 89.0 ms** over 5-minute window.\n2. **Verify TLS enforcement**:\n   - Use network inspection tools (e.g., Wireshark, AWS VPC Flow Logs) to confirm no TLS 1.0/1.1 handshakes.\n3. **Trigger rollback simulation**:\n   - Artificially induce latency >89.0 ms → verify auto-rollback activates within 5 minutes.\n4. **Generate audit report**:\n   - Compile evidence: logs, metrics, config snapshots, test results.\n   - Format as compliance package with timestamped proof of adherence.\n\n---\n\n### 📎 **Critical References & Data Needed**\n- Helm chart values.yaml (`latency_threshold: 89.0`)\n- Prometheus query: `histogram_quantile(0.99, rate(http_request_duration_seconds_bucket{endpoint=\"critical-api\"}[5m]))`\n- Grafana dashboard link (with alert thresholds set at 85.0 / 89.0 ms)\n- k6 test script (sample: 1k RPS, 10s duration, target endpoint: `/api/v1/data`)\n- SRE deployment manifest bundle (YAML files with TLS and resource constraints)\n\n---\n\n🔁 **Handoff Complete. Resume task with full context. Ensure zero tolerance for deviation from [PERFSEC-DP89].**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00010",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

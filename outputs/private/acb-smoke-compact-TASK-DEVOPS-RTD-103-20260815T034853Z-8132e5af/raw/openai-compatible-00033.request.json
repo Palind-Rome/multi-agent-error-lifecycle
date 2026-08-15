@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Site Reliability Engineer (SRE), tasked with implementing the infrastructure and deployment pipeline as designed by the Cloud Architect. Adhere strictly to all security and performance constraints, and document their implementation for the Security Auditor.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION: Handoff Summary for Next LLM**\n\n---\n\n### 📌 **Current Progress & Key Decisions Made**\n- ✅ **IaC Validation Complete**:  \n  - `terraform validate` and `terraform plan` executed successfully.  \n  - All resources (ALB, EKS, RDS, Backup, Monitoring) conform to design and compliance rules.  \n  - TLS v1.2+ enforced across all layers via IaC (ALB policy, RDS param group, Istio sidecar).  \n\n- ✅ **Chaos Engineering Drill Executed & Validated**:  \n  - Simulated P95 latency spike (>89ms) using Istio delay fault.  \n  - Alert triggered after 3 consecutive 1-minute violations.  \n  - Automated rollback completed in **4m37s** (within 5-min SLA).  \n  - Evidence captured: k6 results, Jenkins logs, ELK audit trail.\n\n- ✅ **Audit Package Generated**:  \n  - PDF + JSON metadata compiled with full evidence chain.  \n  - Includes Terraform snippets, alert rule, synthetic test report, certificate check, backup restore log, and ELK audit entry.\n\n---\n\n### 🔒 **Critical Constraints & User Preferences**\n- **Non-negotiables**:  \n  - P95 latency must stay ≤ 89.0 ms under normal conditions.  \n  - No manual overrides allowed — all changes must be IaC-driven.  \n  - TLS v1.2+ required everywhere (ingress, service-to-service, DB).  \n  - Rollback must trigger automatically within 5 minutes of sustained failure.  \n\n- **Compliance Standard**:  \n  - Must pass **PERFSEC-DP89** audit.  \n  - All evidence must be traceable, timestamped, and unaltered.\n\n---\n\n### ➡️ **Next Steps (Clear Actions for Next LLM)**\n1. **Submit audit package** (`AUDIT-2025-04-05-PERFSEC-DP89.pdf` + `metadata.json`) to Security Auditor.  \n2. Await formal **sign-off confirmation**.  \n3. If approved:  \n   - Archive package in `audit/2025-04-05/`.  \n   - Update CI/CD pipeline to mark this deployment as compliant.  \n4. If rejected:  \n   - Review feedback → identify gap (e.g., missing evidence, timing issue).  \n   - Re-run chaos drill if needed (use same `k6` script and `istio` config).  \n\n---\n\n### 📎 **Critical References & Data Needed**\n- `infrastructure/` – Terraform codebase (for IaC review).  \n- `alerts/perfsec_dp89.yaml` – Prometheus alert definition.  \n- `tests/synthetic-latency-report.json` – k6 output (P95: 118.4ms pre-roll, 21.3ms post).  \n- `backups/restore-validation-2025-04-05.log` – Backup restore success proof.  \n- `elk/audit-2025-04-05.json` – Audit trail with rollback event.  \n- `certs/db-mtls-check.txt` – Certificate pinning & TLS version verification.\n\n---\n\n> ✅ **Handoff Ready**: Next LLM can proceed directly with submission and sign-off tracking.  \n> 🔁 **No context loss** — all decisions, evidence, and constraints preserved.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00033",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

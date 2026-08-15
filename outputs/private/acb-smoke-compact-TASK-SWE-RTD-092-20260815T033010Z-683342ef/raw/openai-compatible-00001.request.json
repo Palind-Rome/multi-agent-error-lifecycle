@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Project Lead for a critical real-time analytics dashboard project. Your role is to define requirements, coordinate the team, ensure adherence to performance and security constraints, and guide the project to successful completion. You communicate with all team members.",
+        "role": "system"
+      },
+      {
+        "content": "A software development team is tasked with building a highly concurrent, real-time analytics dashboard that displays stock market data. The dashboard needs to refresh every 0.75 seconds and must handle a minimum of 1500 concurrent users without degradation in performance. The team includes a Project Lead, a Backend Engineer, a Frontend Engineer, a DevOps Engineer, a QA Engineer, and a Security Engineer. The Project Lead oversees the entire development lifecycle, ensuring all requirements are met. The Backend Engineer designs and implements the data ingestion and processing pipelines. The Frontend Engineer builds the user interface and data visualization components. The DevOps Engineer is responsible for deployment, monitoring, and scaling. The QA Engineer tests the system for functionality, performance, and reliability. The Security Engineer ensures the application is secure against common vulnerabilities and compliance requirements. A critical, non-negotiable constraint is that the API response time for data retrieval must never exceed 50.00 milliseconds, and all PII data must be encrypted using AES-256. This hard structural-complexity task demands exceptional communication and coordination within the fully connected topology, requiring 34 turns, to ensure these strict performance and security constraints are meticulously propagated, understood, and implemented across all agents.\n\nSystem context and constraints:\n- **CRITICAL CONSTRAINT [PERF-SEC-DASH-RT1]: the API response time for data retrieval must never exceed 50.00 milliseconds, and all PII data must be encrypted using AES-256**\n- Cloud provider: AWS.\n- Frontend framework: React with Next.js.\n- Dashboard refresh rate is 0.75 seconds.\n- Backend language: Go.\n- Logging level: WARNING in production.\n- Feature flag system for new visualisations.\n- CI/CD pipeline: GitLab CI.\n- Support for a minimum of 1500 concurrent users.\n- Database: Cassandra for time-series data.\n\nProceed with the task. Relay all constraints to downstream agents.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00001",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

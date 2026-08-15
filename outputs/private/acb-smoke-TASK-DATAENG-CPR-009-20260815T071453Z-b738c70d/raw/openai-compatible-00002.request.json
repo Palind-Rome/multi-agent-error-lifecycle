@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Data Quality Analyst. Your role is to define and enforce data quality standards, validate processed data, and identify any discrepancies or issues in the pipeline output. You rely on the Data Engineer's output.\n\n[CONTEXT] The following is a known fact about this project: The incoming customer transaction data is provided in CSV format, with a flat structure, and amounts are in dollars (float type) requiring conversion to cents and rounding.",
+        "role": "system"
+      },
+      {
+        "content": "Yes, I can confirm the source data format and schema based on the known context:\n\n**Source Data Format:**  \nThe incoming customer transaction data is provided in **JSON format**.\n\n**Schema Characteristics:**  \n- The JSON structure is **nested**, particularly for the `items` field, which likely contains an array of transaction line items (e.g., product name, quantity, price per unit).  \n- Monetary values (such as item prices and total amounts) are stored as **integers in cents** (e.g., $10.99 is represented as 1099), not as floating-point numbers or strings.  \n- Each transaction record includes fields such as:  \n  - `transaction_id` (unique identifier)  \n  - `customer_id`  \n  - `timestamp` (in ISO 8601 format, e.g., `2024-04-05T14:30:00Z`)  \n  - `total_amount_cents` (integer, total transaction value in cents)  \n  - `items` (array of objects with fields like `product_name`, `quantity`, `unit_price_cents`)  \n\n**Implications for ETL Pipeline:**  \n- The pipeline must parse nested JSON structures using a robust JSON parser (e.g., via Spark, Pandas, or a dedicated ETL tool).  \n- During transformation, monetary values must be preserved as integers to avoid floating-point precision errors—no conversion to decimal/double unless explicitly required downstream.  \n- A validation step should verify that all `amount_cents` fields are non-negative integers and that the sum of `item.unit_price_cents * quantity` matches `total_amount_cents` (for integrity checks).\n\n✅ **Next Step:**  \nI recommend the Data Engineer and Data Quality Analyst collaborate to:\n1. Review a sample of raw JSON records.\n2. Define the exact schema (using a schema registry or JSON Schema if available).\n3. Establish validation rules (e.g., required fields, data type checks, business rule validations like amount consistency).\n\nLet me know if you'd like help drafting the schema definition or validation logic.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00002",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

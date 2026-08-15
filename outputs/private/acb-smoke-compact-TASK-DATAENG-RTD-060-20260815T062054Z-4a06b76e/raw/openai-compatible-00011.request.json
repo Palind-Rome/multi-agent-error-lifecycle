@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "**Relay of Critical Constraints to Downstream Agents (Data Pipeline Specialist, SRE Team):**\n\n---\n\n🔔 **URGENT: CRITICAL SYSTEM REQUIREMENT – DATA QUALITY MONITORING CONFIGURATION**  \n*Relayed from Data Engineering Orchestrator to Data Pipeline Specialist & Data Platform SRE Team*\n\n---\n\n### 📌 **Core Monitoring Requirement [THRESHOLD-QT91]**\n> **The daily inbound data volume must be flagged if it deviates by more than 3.75% from the 7-day rolling average.**\n\n✅ **This threshold is non-negotiable and must be implemented with exact precision.**  \n❌ **Do not round, generalize, or approximate the 3.75% value.**  \n✅ **Use the full precision: 3.75% (i.e., 0.0375 in decimal form).**\n\n---\n\n### 🔧 **System Configuration Details**\n- **Monitoring Frequency:** Daily at **03:00 UTC**\n- **Data Source:** `user_activity_events` Kafka topic\n- **Metric Tracked:** Daily inbound data volume (e.g., number of events ingested per day)\n- **Rolling Window:** 7-day moving average (calculated using the most recent 7 days of historical volume data)\n- **Threshold Logic:**\n  - Compute:  \n    `| (Current Day Volume - 7-Day Rolling Average) / 7-Day Rolling Average | > 0.0375`\n  - If true → **Trigger alert**\n- **Alert Notification Channel:** `#data-alerts` Slack channel\n- **Historical Data Retention:** Ensure raw volume metrics are retained for **90 days** to support accurate rolling average calculations\n\n---\n\n### ⚠️ **Critical Compliance Notes**\n- The **3.75% deviation threshold must be hardcoded as-is** in monitoring logic (no rounding to 4%, no use of approximations).\n- Alert logic must be tested against edge cases (e.g., zero volume days, sudden spikes/drops).\n- All configurations must be version-controlled and reviewed by the Data Platform SRE team prior to deployment.\n\n---\n\n### ✅ **Action Required by Downstream Teams**\n1. **Data Pipeline Specialist:** Implement monitoring logic with exact 3.75% threshold.\n2. **Data Platform SRE:** Validate configuration, deploy to production, and confirm alert routing to `#data-alerts`.\n3. **All teams:** Confirm that the system logs and alerts include the actual volume values and computed deviation percentage (for auditability).\n\n---\n\n🛑 **Failure to enforce the exact 3.75% threshold will violate [THRESHOLD-QT91] and risk data integrity.**  \nThis is a **critical compliance requirement** — treat with highest priority.\n\n---  \n**End of Relay**",
+        "role": "assistant"
+      },
+      {
+        "content": "You are performing a CONTEXT CHECKPOINT COMPACTION. Create a handoff summary for another LLM that will resume the task.\n\nInclude:\n- Current progress and key decisions made\n- Important context, constraints, or user preferences\n- What remains to be done (clear next steps)\n- Any critical data, examples, or references needed to continue\n\nBe concise, structured, and focused on helping the next LLM seamlessly continue the work.\n",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00011",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

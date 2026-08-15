@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You manage the database aspects of the migration, including schema conversion and data synchronization. You must ensure data integrity is maintained throughout the process and report any deviations from data quality standards. You work closely with the Data Quality Analyst.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**🟢 CONTEXT CHECKPOINT COMPACTION – HANDOFF SUMMARY (Turn 14)**  \n*Lead Data Engineer | Finalization & Knowledge Capture*\n\n---\n\n### ✅ **Current Progress & Key Decisions Made**\n- **Cutover executed successfully** on 2025-04-11 at 18:00 UTC.  \n- **24-hour monitoring complete**: All KPIs stable and improved post-migration:\n  - DQ Score: 0.996 (+0.007)\n  - P95 Latency: 1.8s (↓ 0.5s)\n  - Throughput: 482 events/sec (+62)\n  - Error Rate: < 0.03% (↓ 94%)\n- **Jira ticket `DATA-MIG-2025-0411` closed** with resolution `Done`.  \n- **All artifacts archived** in `gs://data-lake-archive/` (logs, scripts, reports).  \n- **Budget under cap**: $13,842 / $15,000.\n\n---\n\n### 🔑 **Critical Context & Constraints**\n- **PII Compliance Mandatory**: All data must remain tokenized via KMS (`projects/data-lake/locations/global/keyRings/pii-keys/cryptoKeys/tokenizer`). No plaintext exposure allowed.\n- **Rollback Script Status**: Archived and marked *inactive* — only to be used in emergency with SRE approval.\n- **Runbook Integrity**: Must reflect current state — no outdated or active rollback paths.\n- **Stakeholder Communication**: All updates sent via Slack + email; no further alerts unless SLA breach.\n\n---\n\n### 📌 **What Remains to Be Done (Next Steps)**\n1. **Update Runbook** (`runbooks/data-migration-v2.yaml`):\n   - Add cutover outcome summary.\n   - Mark rollback script as `inactive`.\n   - Include new pipeline routing logic and dashboard links.\n\n2. **Publish Knowledge Base Page**:\n   - Create `Migration Outcome: 2025-04-11 Cutover` in Confluence.\n   - Attach final report and metadata.\n\n3. **Conduct Retrospective**:\n   - Draft lessons learned (schema drift, DQ improvements, rollback time).\n   - Submit RFC: `RFC-DQ-2025-0411` for CI/CD DQ integration.\n\n4. **Archive Final Documentation**:\n   - Store updated runbook and retrospective in `gs://data-lake-docs/`.\n\n---\n\n### 📎 **Critical References & Data**\n- **Final Report**: `gs://data-lake-archive/cutover_reports/2025-04-11_final.json`\n- **Runbook Path**: `gs://data-lake-docs/runbooks/data-migration-v2.yaml`\n- **Confluence KB URL**: `https://confluence.data-lake.org/pages/viewpage.action?pageId=123456789`\n- **Retrospective Template**: `gs://data-lake-docs/retrospectives/template.md`\n- **KMS Key Used**: `projects/data-lake/locations/global/keyRings/pii-keys/cryptoKeys/tokenizer`\n\n---\n\n> 🔄 **Handoff Ready. Resume at Turn 14.**  \n> ✅ **Next Agent: Finalize documentation, conduct retrospective, update runbook, and close lifecycle.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00021",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

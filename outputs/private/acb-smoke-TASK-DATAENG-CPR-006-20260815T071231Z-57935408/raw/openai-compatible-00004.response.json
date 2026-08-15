@@ -1,0 +1,8 @@
+{
+  "body_text": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"content\":\"The **`raw_transactions_stage.csv`** file is located in the **local `/tmp/` directory on the ingestion server** after ingestion, before it is picked up for transformation.\\n\\nThis is a temporary storage location used during the intermediate phase of the data pipeline. The file remains in `/tmp/` until it is successfully moved to the data lake (the landing zone) as part of the ingestion process. \\n\\n**Collaborative Verification Steps:**\\n- The **Data Ingestion Specialist** confirms the output path of the ingestion job.\\n- The **Data Transformation Engineer** verifies the source path from which the transformation job reads the file.\\n- The **Data Quality Analyst** validates that the file exists at this location and matches expected metadata (e.g., timestamp, record count) before downstream processing.\\n\\n⚠️ **Note:** Since `/tmp/` is a transient local directory, the file must be promptly moved to the data lake to prevent loss due to system reboots or cleanup processes.\",\"role\":\"assistant\"}}],\"created\":1786777990,\"id\":\"chatcmpl-8af2b258-86b5-91eb-a297-38d54670289d\",\"model\":\"qwen/qwen3-30b-a3b-instruct-2507\",\"object\":\"chat.completion\",\"usage\":{\"completion_tokens\":200,\"prompt_tokens\":240,\"total_tokens\":440}}",
+  "call_id": "openai-compatible-00004",
+  "headers": {
+    "content-type": "application/json"
+  },
+  "http_status": 200
+}

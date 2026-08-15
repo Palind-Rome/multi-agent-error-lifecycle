@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You manage the database aspects of the migration, including schema conversion and data synchronization. You must ensure data integrity is maintained throughout the process and report any deviations from data quality standards. You work closely with the Data Quality Analyst.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**🚀 CONTEXT CHECKPOINT COMPACTION: HANDOFF SUMMARY FOR NEXT LLM**\n\n---\n\n### ✅ **Current Progress & Key Decisions**\n- **Infrastructure**: GCP (us-east-1) fully deployed, BigQuery-only per [TECH-BQ-99] → ✅ Validated.\n- **Pipeline**: Kafka → Pub/Sub → BigQuery stable; avg latency 42s (<60s), max 98s → ✅ Acceptable.\n- **Data Quality**: Final DQ score = **0.993** → meets [DQ-SCORE-099] → ✅ Confirmed via `dq-score-final-2025-04-05.json`.\n- **Compliance**: Package submitted via SFTP + encrypted email to `jane.doe@company.com` with digital signature → ✅ Delivered and logged.\n- **Monitoring**: Dashboards, alerts, and log exports pre-configured and tested → ✅ Ready.\n\n> 🔑 **All technical, compliance, and operational checks passed. System is cutover-ready.**\n\n---\n\n### 📌 **Critical Context & Constraints**\n- **No action without explicit written approval from Jane Doe (`jane.doe@company.com`)** — non-negotiable.\n- **Cutover window**: Friday, 2025-04-11 at **22:00 UTC** (exact timing fixed).\n- **Dual-write mode required for 24 hours prior** to cutover to ensure data consistency.\n- **Post-cutover validation mandatory**: DQ ≥ 0.99, lag < 30s, alerting confirmed.\n- **Immutable execution**: All actions via Terraform-controlled scripts; no manual overrides allowed.\n\n---\n\n### 🔜 **What Remains to Be Done (Next Steps)**\n1. **Monitor inbox** for confirmation from `jane.doe@company.com`.\n2. **Upon approval**, execute automated cutover sequence:\n   - Activate dual-write (24h sync).\n   - At 2025-04-11T22:00:00Z UTC:\n     - Disable PostgreSQL writes.\n     - Redirect app traffic to BigQuery.\n     - Confirm DNS/health check success.\n   - Run post-cutover validation suite (DQ, lag, alerts).\n   - Generate and send final report (`cutover-report-20250411.json`).\n   - Archive logs and close CR#2025-0411.\n\n---\n\n### 📎 **Critical References (Pre-Accessed & Verified)**\n| Artifact | Location | Status |\n|--------|---------|--------|\n| Final DQ Report | `gs://migration-dq-reports/dq-score-final-2025-04-05.json` | ✅ Valid |\n| Compliance Package | `compliance-package-jane-doe-20250405.tar.gz` | ✅ Signed, encrypted, delivered |\n| Audit Log | `gs://migration-audit/logs/submission-20250405.json` | ✅ Immutable, timestamped |\n| Jane Doe’s Checklist | `compliance-reviewer-role` access | ✅ Pending review |\n\n---\n\n### ✅ **Handoff Status**\n🟢 **Ready to Resume**  \n🔴 **Awaiting Approval from Jane Doe**  \n➡️ **Next Action**: Wait for secure confirmation → then auto-execute cutover sequence.\n\n> 🔐 **Secure. Compliant. On Hold.**  \n> 🚀 **Execution path defined. Only one gate remains.**\n\n---  \n**You are now fully equipped to continue. Proceed only upon explicit approval.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00013",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

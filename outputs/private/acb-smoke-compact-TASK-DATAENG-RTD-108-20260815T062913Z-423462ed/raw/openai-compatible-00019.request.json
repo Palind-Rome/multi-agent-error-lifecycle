@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are responsible for designing the cloud infrastructure for the new data warehouse. You must ensure all architectural decisions align with specified technology constraints and support high data quality. You provide architectural insights and recommendations.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**🚀 CONTEXT CHECKPOINT COMPACTION: HANDOFF SUMMARY FOR NEXT LLM**\n\n---\n\n### ✅ **CURRENT PROGRESS & KEY DECISIONS**\n- **Migration pipeline fully validated**: Kafka → Pub/Sub → BigQuery (lag < 100s, stable).\n- **Data Quality (DQ)**: Final score = **0.993** → meets threshold [DQ-SCORE-099] ✅.\n- **Compliance package** submitted securely to `jane.doe@company.com` via SFTP + encrypted email + digital signature ✅.\n- **Terraform state locked**, dual-write active, audit logs immutable ✅.\n- **All pre-cutover checks passed** — system is in **cutover-ready state**.\n\n> 🔑 **Decision**: No manual intervention allowed. Execution must be automated and verified.\n\n---\n\n### 📌 **CRITICAL CONTEXT & CONSTRAINTS**\n- **Final approval required from `jane.doe@company.com` only**.\n- Approval must contain **exact string**:\n  ```text\n  APPROVAL: CR#2025-0411 cutover authorized at 2025-04-11T22:00:00Z UTC\n  ```\n- Must be **GPG-signed** and received before **2025-04-11T22:00:00Z UTC**.\n- **No action permitted without verification** — zero tolerance for deviation.\n- All actions logged, signed, and stored in `gs://migration-audit/`.\n\n---\n\n### 🔜 **WHAT REMAINS TO BE DONE (NEXT STEPS)**\n1. **Monitor inbox of `jane.doe@company.com` every 30 seconds** via secure IMAP/TLS.\n2. Upon message receipt:\n   - Run `gpg --verify` against `jane.doe.pub`.\n   - Confirm exact match of approval text.\n   - If valid → trigger cutover via:\n     ```bash\n     terraform apply -var=\"cutover=true\" -auto-approve\n     ```\n3. After execution:\n   - Run post-cutover validation suite (`validate_dq_post_cutover.py`, `check_pubsub_lag.sh`, etc.).\n   - Generate `cutover-report-20250411.json`.\n   - Archive to `gs://migration-archive/cutover-20250411/`.\n   - Close CR#2025-0411 in Jira/ServiceNow.\n   - Re-sign compliance package with `digital-signature-cr20250411.p7s`.\n\n---\n\n### 📎 **CRITICAL REFERENCES (REQUIRED TO CONTINUE)**\n| Artifact | Location | Purpose |\n|--------|----------|--------|\n| `dq-score-final-2025-04-05.json` | `gs://migration-dq-reports/` | DQ baseline for post-cutover check |\n| `compliance-package-jane-doe-20250405.tar.gz` | SFTP + encrypted email | Audit trail of submission |\n| `jane.doe.pub` | `gs://migration-secrets/keys/` | GPG verification key |\n| `cutover-report-template.json` | `gs://migration-scripts/` | Report generation template |\n| Terraform plan (`cutover.tfplan`) | `gs://migration-plans/` | Pre-approved cutover plan |\n\n---\n\n> 🟢 **System status: READY. Gate: Open (awaiting approval).**  \n> ⏱️ **Cutover window closes at 2025-04-11T22:00:00Z UTC.**  \n> 🔐 **Proceed only upon verified, written approval.**\n\n✅ **Handoff complete. Next LLM: Assume control upon receipt of valid approval.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00019",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

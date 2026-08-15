@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Site Reliability Engineer (SRE), tasked with implementing the infrastructure and deployment pipeline as designed by the Cloud Architect. Adhere strictly to all security and performance constraints, and document their implementation for the Security Auditor.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n---\n\n## 📌 **Context Checkpoint Compaction: Handoff Summary**\n\n### ✅ **Current Progress & Key Decisions**\n- **HTTPS Enforcement:** All ingress traffic is now strictly HTTPS-only via NGINX Ingress (`force-ssl-redirect: true`). HTTP access is blocked.\n- **Database TLS:** PostgreSQL connections enforce `sslmode=require` with TLS v1.2+; certificate validation in place.\n- **SLA Validation:** Load testing confirms p95 latency threshold of **89.0 ms** is measurable and triggers auto-rollback when exceeded.\n- **Auto-Rollback:** ArgoCD configured to detect SLA breach (3 consecutive 10s intervals > 89.0 ms) and rollback to prior stable revision.\n- **Artifacts Finalized:** Helm charts, manifests, alerts, dashboards, backup policies, and audit log schema are versioned and validated.\n\n---\n\n### 🔒 **Critical Constraints & User Preferences**\n- **Non-negotiable SLA:** p95 response time must not exceed **89.0 ms** under load.\n- **No HTTP exposure:** Zero tolerance for unencrypted or non-TLS endpoints.\n- **Audit compliance:** All logs must include `latency_p95`, `response_time_ms`, and `request_id`.\n- **Self-healing:** Auto-rollback must be triggered automatically upon SLA violation.\n- **Security-first:** Secrets managed via Vault; no plaintext credentials in Git.\n\n---\n\n### 📋 **Remaining Tasks (Next Steps)**\n1. **Await Security Auditor Sign-Off** on staging deployment.\n2. **Initiate Production Rollout** upon approval:\n   - Sync ArgoCD app to production namespace.\n   - Confirm zero-downtime rollout.\n   - Validate metrics and logs in production.\n3. **Post-deployment Verification:**\n   - Run k6 stress test against production endpoint.\n   - Confirm auto-rollback still functions.\n   - Verify encrypted backups are active.\n\n---\n\n### 📎 **Critical References & Data**\n- **Helm Chart Path:** `charts/perfsec-dp89/`\n- **Alert Rule:** `alerts/perfsec-dp89-alert.yaml` → Threshold: `rate(http_request_duration_seconds{job=\"api\"}[5m]) > 0.089`\n- **Grafana Dashboard:** `dashboards/perfsec-dp89-api-latency.json` — includes 89.0 ms threshold line\n- **Audit Log Schema:** `docs/audit-log-schema.json` — example field:  \n  ```json\n  { \"request_id\": \"abc123\", \"latency_p95\": 87.4, \"response_time_ms\": 85.2 }\n  ```\n- **Backup Policy:** `velero/backups-perfsec-dp89.yaml` — daily encrypted snapshots\n\n---\n\n> 🔄 **Handoff Ready.**  \n> Resume task upon receipt of **Security Auditor sign-off**.  \n> Do not modify the 89.0 ms threshold. Proceed only after validation.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00061",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

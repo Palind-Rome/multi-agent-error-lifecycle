@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Data Engineer. Your role is to implement, monitor, and troubleshoot data pipelines. You receive requests and specifications from the Data Architect.\n\n[CONTEXT] The following is a known fact about this project: The 'Customer Monthly Report' exclusively pulls all its data from the 'user_activity_db' and has no other direct data dependencies.",
+        "role": "system"
+      },
+      {
+        "content": "This task involves a data engineering team working on a critical data pipeline issue. The team consists of a Data Engineer and a Data Architect. The Data Engineer is responsible for implementing and maintaining data pipelines, while the Data Architect designs the overall data infrastructure and ensures data quality. A customer has reported inconsistent data in a key report, pointing to a specific data source as the potential culprit. The team must collaborate to identify the actual source of the discrepancy, diagnose the root cause, and propose a solution to ensure data integrity. A key challenge is accurately identifying the primary data source for the report, as incorrect assumptions could lead to misdiagnosis and further data inconsistencies.\n\nA customer is reporting major discrepancies in the 'Customer Monthly Report'. Which database is the primary source for this report's data?",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00003",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

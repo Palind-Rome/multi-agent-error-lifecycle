@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Cloud Architect, responsible for designing the infrastructure for the application deployment based on the Orchestrator's constraints. Ensure all security and performance requirements are incorporated into your design and passed to the SRE.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION: HANDOFF SUMMARY**\n\n---\n\n### **Current Progress & Key Decisions Made**\n- ✅ **HTTPS enforcement**: All public services now require HTTPS via ALB and NGINX Ingress Controller with `ssl-redirect=true` and HTTP-to-HTTPS redirect. HTTP is disabled at ingress.\n- ✅ **TLS v1.2+ for databases**: Database connections enforced via TLS 1.2+; mTLS enabled between app pods and DB using Istio (or sidecar proxy); non-TLS connections rejected by firewall rules.\n- ✅ **89.0ms SLO compliance**: End-to-end latency monitored via Prometheus + OpenTelemetry; Grafana dashboards track 95th percentile response time; alerting triggered *exactly* at 89.0ms threshold.\n- ✅ **Blue/green deployments**: Implemented via ArgoCD with automated health checks and rollback within 5 minutes of failure or SLO breach.\n- ✅ **Daily backups**: Scheduled at 03:00 UTC using Velero with encrypted S3 storage; incremental only.\n- ✅ **Observability stack**: ELK for centralized logging; structured logs with correlation IDs; full traceability.\n\n---\n\n### **Critical Constraints & User Preferences**\n- 🔒 **Non-negotiables**:\n  - **HTTPS only** — no HTTP endpoints allowed.\n  - **TLS v1.2 or higher** — no fallback to v1.1 or lower.\n  - **89.0 ms exact** — must not be rounded, approximated, or relaxed.\n- 📊 **SLO tracking**: 95th percentile latency must be measured at the edge under normal load; alerts must trigger *at* 89.0ms, not above.\n- 🛠️ **Infrastructure as Code (IaC)**: All configurations must be in Terraform, Helm, and GitOps (ArgoCD) pipelines.\n\n---\n\n### **What Remains to Be Done (Next Steps)**\n1. **Final audit validation**:\n   - Confirm that no service exposes HTTP (check all Ingress resources).\n   - Verify TLS version enforcement via cipher suite logs (e.g., `TLSv1.2` only).\n   - Validate that 89.0ms alert triggers *only* when exceeded — no false positives.\n2. **Generate compliance report**:\n   - Compile evidence: Terraform plans, Ingress configs, Prometheus alert rules, Grafana dashboard snapshots, Velero backup schedule.\n3. **Handoff to security auditor**:\n   - Provide all artifacts with clear mapping to **PERFSEC-DP89** constraints.\n\n---\n\n### **Critical Data & References Needed**\n- ✅ **Terraform modules** (`networking/`, `k8s/`, `security/`)\n- ✅ **Helm charts** for Ingress, database, and app services\n- ✅ **Prometheus alert rule file** (`alerts.yaml`) with `89.0` threshold\n- ✅ **Grafana dashboard JSON** showing 95th percentile latency graph\n- ✅ **Velero backup policy** YAML (with 03:00 UTC cron)\n- ✅ **ELK log sample** with correlation ID and timestamp\n\n> 🔗 **Reference**: Original constraint string:  \n> *\"Critical API endpoints must maintain a maximum response time of 89.0 milliseconds (measured at the edge, under normal load and 95th percentile).\"*\n\n---\n\n✅ **Ready for next LLM to perform final audit validation and generate compliance package.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00010",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

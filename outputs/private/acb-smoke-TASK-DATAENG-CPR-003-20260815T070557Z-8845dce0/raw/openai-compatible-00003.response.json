@@ -1,0 +1,8 @@
+{
+  "body_text": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"content\":\"Based on the provided context:\\n\\n> \\\"The 'Customer Monthly Report' exclusively pulls all its data from the 'user_activity_db' and has no other direct data dependencies.\\\"\\n\\n**The primary source for the 'Customer Monthly Report' is the 'user_activity_db' database.**\\n\\nThis means that any discrepancies in the report must be traced back to data quality, ingestion, transformation, or schema issues within the 'user_activity_db', as no other data sources are involved in the report's data pipeline.\",\"role\":\"assistant\"}}],\"created\":1786777573,\"id\":\"chatcmpl-5cd365b7-1cb8-959d-857e-87ab0d0c6cb2\",\"model\":\"qwen/qwen3-30b-a3b-instruct-2507\",\"object\":\"chat.completion\",\"usage\":{\"completion_tokens\":99,\"prompt_tokens\":237,\"total_tokens\":336}}",
+  "call_id": "openai-compatible-00003",
+  "headers": {
+    "content-type": "application/json"
+  },
+  "http_status": 200
+}

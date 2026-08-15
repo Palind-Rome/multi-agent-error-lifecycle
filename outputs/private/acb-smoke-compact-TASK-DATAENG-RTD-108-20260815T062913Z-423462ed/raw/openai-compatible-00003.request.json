@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are responsible for designing the cloud infrastructure for the new data warehouse. You must ensure all architectural decisions align with specified technology constraints and support high data quality. You provide architectural insights and recommendations.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION – HANDOFF SUMMARY**\n\n---\n\n### 📌 **Current Progress & Key Decisions Made (Turn 6/14)**\n\n- ✅ **Infrastructure Provisioned**: GCP project in `us-east-1` created with VPC, IAM roles, and BigQuery datasets.  \n- ✅ **Schema Mapping Finalized**: PostgreSQL schema (v14) mapped to BigQuery; data types standardized (e.g., `TIMESTAMP` → `TIMESTAMP`, `JSONB` → `STRING` with JSON parsing).  \n- ✅ **Initial Load Pipeline Deployed**: Using **Cloud Dataflow + Debezium + Kafka + Pub/Sub** for initial full load into BigQuery.  \n- ✅ **DQ Framework Defined**: Validation logic set: completeness (>99.5%), accuracy (match rate ≥ 0.99), consistency (no duplicates), uniqueness (PK enforcement), timeliness (<1 min lag).  \n- ⚠️ **Real-Time Sync Active**: Kafka stream ingests changes from PostgreSQL; messages routed via Pub/Sub to BigQuery via streaming inserts.\n\n---\n\n### 🔒 **Critical Constraints & User Preferences (Must Be Enforced)**\n\n- **[TECH-BQ-99]**: Only Google BigQuery allowed — no alternative warehouses.  \n- **[DQ-SCORE-099]**: Final DQ score must be **exactly ≥ 0.99** — any lower triggers rework.  \n- **Compliance**: Jane Doe must approve all configurations before go-live.  \n- **Budget**: ≤ $15,000 USD total cost.  \n- **Data Sensitivity**: Financial data — encryption at rest/in transit mandatory.  \n- **Region**: All resources in `us-east-1`.  \n\n---\n\n### 🔜 **Remaining Tasks (Next Steps – Turns 7–14)**\n\n| Turn | Task |\n|------|------|\n| 7–8 | Continue real-time sync; monitor latency and error rates in Kafka/Pub/Sub pipeline |\n| 9–10 | Run full DQ validation suite across all tables; report score ≥ 0.99 |\n| 11–12 | Submit audit logs, access controls, encryption config to **Jane Doe** for compliance review |\n| 13 | Obtain formal approval; perform final cutover (zero-downtime switch) |\n| 14 | Post-migration monitoring: alerting setup, DQ score stability tracking |\n\n---\n\n### 📎 **Critical References & Data Needed**\n\n- ✅ **PostgreSQL Schema Dump** (for reference during validation)  \n- ✅ **BigQuery Dataset ID**: `migration-fin-data-prod`  \n- ✅ **Kafka Topic**: `pg-changelog-topic`  \n- ✅ **Pub/Sub Subscription**: `bigquery-ingest-sub`  \n- ✅ **DQ Validation Script Template**: [Link to shared GCS bucket]  \n- ✅ **Compliance Checklist**: [Link to Jane Doe’s shared doc]  \n\n> 🔑 **Key Reminder**: Any deviation from [DQ-SCORE-099] or [TECH-BQ-99] halts migration. Prioritize data quality and compliance over speed.\n\n---\n\n✅ **Handoff Complete** — Next LLM: Resume from Turn 7 with real-time sync monitoring and DQ validation prep.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00003",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

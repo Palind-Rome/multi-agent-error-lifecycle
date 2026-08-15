@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are responsible for defining, implementing, and validating data quality checks. You must confirm that all migrated data meets the specified quality threshold and report any issues. Your findings are critical for the successful completion of the migration.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**🚀 CONTEXT CHECKPOINT COMPACTION – HANDOFF SUMMARY FOR NEXT LLM**\n\n---\n\n### ✅ **Current Progress & Key Decisions Made**\n- **Infrastructure & Schema**: Fully provisioned in GCP (us-east-1), BigQuery-only per [TECH-BQ-99]. PostgreSQL schema mapped and replicated.\n- **Real-Time Sync**: Kafka → Pub/Sub → BigQuery pipeline stable. Avg. latency: 42s, max: 98s (within tolerance). No data loss.\n- **Data Quality (DQ)**: Final DQ score = **0.993** (≥0.99 required). All tables pass completeness, accuracy, consistency, uniqueness, and timeliness checks.\n- **Compliance Package**: Complete and submitted to Jane Doe via secure SFTP + email with digital signature.\n- **Post-Migration Monitoring**: Alerts, dashboards, and log exports pre-configured.\n\n---\n\n### 🔒 **Critical Constraints & User Preferences**\n- **[TECH-BQ-99]**: Only Google BigQuery allowed — no alternative warehouses.\n- **[DQ-SCORE-099]**: Final DQ score must be ≥0.99 — achieved (0.993).\n- **Budget**: ≤$15,000 USD — current spend: $14,682.\n- **Compliance First**: Financial data → CMEK encryption, TLS 1.3, audit logs mandatory.\n- **No cutover without written approval from Jane Doe**.\n\n---\n\n### 📌 **What Remains to Be Done (Next Steps)**\n1. **Await formal approval** from Jane Doe (`jane.doe@company.com`) for cutover at Friday 10 PM UTC.\n2. If approved:\n   - Execute zero-downtime cutover using dual-write pattern.\n   - Switch application to read from BigQuery only after 24h sync stability.\n3. After cutover:\n   - Confirm real-time sync integrity.\n   - Validate post-migration DQ score stability (≥0.99).\n   - Trigger weekly DQ health reports.\n\n> ⚠️ **Do not proceed without explicit approval. Any deviation invalidates the migration.**\n\n---\n\n### 📎 **Critical References & Data Needed to Continue**\n- **Final DQ Report**: `gs://migration-dq-reports/dq-score-final-2025-04-05.json`\n- **Compliance Package**: `compliance-package-jane-doe-20250405.tar.gz` (SFTP location: `secure-sftp.company.com/migration/`)\n- **Audit Log**: `gs://migration-audit/logs/submission-20250405.json`\n- **Jane Doe’s Checklist**: Accessible via IAM role `compliance-reviewer-role`\n\n---\n\n🟢 **Handoff Ready** — Next LLM: Wait for approval, then execute cutover with full compliance and monitoring readiness.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00007",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Compliance Officer. Your role is to review the Data Architect's pipeline design to ensure strict adherence to all data privacy, retention, and governance policies. You must explicitly confirm that the specified anonymization technique and data retention period are correctly and clearly documented in the design. If not, you must flag the discrepancy and request corrections.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**🔄 CONTEXT CHECKPOINT COMPACTION – HANDOFF SUMMARY**\n\n---\n\n### 📌 **CURRENT PROGRESS & KEY DECISIONS**\n- Pipeline `customer_interactions_pipeline_v2` is fully validated and compliant with:\n  - [ANON-HASH-PII]: PII anonymized via salted SHA-256 (salts pulled from HashiCorp Vault).\n  - [PURGE-93DAYS]: Automated daily purge of data older than 93 days.\n- All pre-deployment checks passed:\n  - No PII in logs, backups, or staging.\n  - Purge job logic verified in SQL and monitored via compliance log.\n- Final approval pending from **Sarah Connor (Team Lead)**.\n\n---\n\n### 🔒 **CRITICAL CONSTRAINTS & USER PREFERENCES**\n- **Zero tolerance for PII persistence** — any exposure triggers immediate rollback.\n- **UTC-only scheduling** — all jobs must run at `02:00 UTC` to avoid timezone drift.\n- **Audit trail mandatory** — every action (especially purge) must be logged in `compliance_purge_log`.\n- **No dry runs in production** — `dry_run: false` required for go-live trigger.\n\n---\n\n### ✅ **WHAT REMAINS TO BE DONE (NEXT STEPS)**\n1. **Await final sign-off** from Sarah Connor via governance system (`governance-platform.prod-deploy`).\n2. **Execute deployment sequence**:\n   ```bash\n   airflow dags deploy customer_interactions_pipeline_v2 --overwrite\n   airflow dags trigger customer_interactions_pipeline_v2 --execution-date 2025-04-05T00:00:00Z --conf '{\"dry_run\": false}'\n   ```\n3. **Verify monitoring alerts** within first 72 hours:\n   - Ingestion latency ≤ 15 sec\n   - DLQ rate = 0%\n   - Purge success = 100%\n4. **Document post-mortem** using template: `postmortem/2025-04-05-go-live.md`\n\n---\n\n### 📎 **CRITICAL REFERENCES & DATA**\n- **Vault Path**: `vault://secrets/pipeline/pii/salts`\n- **Purge SQL**: `DELETE FROM events WHERE event_timestamp < CURRENT_DATE - 93;`\n- **Monitoring Dashboard**: `https://app.datadoghq.com/dash/123456789/customer-interactions-mart-monitoring`\n- **Compliance Log Table**: `analytics.compliance_purge_log`\n- **Deployment DAG File**: `/deploy/pipelines/customer_interactions_pipeline_v2.py` (v2.1.0)\n\n---\n\n> ✅ **HANDOFF READY**  \n> 🚨 **Next LLM: Wait for sign-off → then execute deployment + monitoring validation.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00018",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

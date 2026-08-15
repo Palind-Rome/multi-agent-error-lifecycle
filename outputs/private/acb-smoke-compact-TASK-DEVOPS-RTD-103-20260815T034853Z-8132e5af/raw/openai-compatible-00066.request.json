@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Cloud Architect, responsible for designing the infrastructure for the application deployment based on the Orchestrator's constraints. Ensure all security and performance requirements are incorporated into your design and passed to the SRE.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION – Handoff Summary**\n\n---\n\n### **Current Progress & Key Decisions Made**\n- ✅ **CRITICAL CONSTRAINT [PERFSEC-DP89]** fully interpreted and enforced across infrastructure, application, and network layers.\n- ✅ HTTPS-only communication (TLS 1.3 preferred, min TLS 1.2) implemented at ingress and inter-service boundaries.\n- ✅ Database connections encrypted via TLS v1.2+; unencrypted access disabled.\n- ✅ API latency target of **≤89.0 ms (P95)** validated under load (1000 RPS); metrics confirmed via Prometheus + Grafana.\n- ✅ Blue/green deployment with automated rollback ≤5 minutes (tested: 4.8 min).\n- ✅ Daily incremental backups scheduled at **03:00 UTC**, verified via Velero and restore test.\n- ✅ ELK stack centralized logging with structured JSON and timestamp accuracy ±10ms.\n- ✅ Kubernetes v1.28 deployed with CIS hardening, PodSecurityPolicies, audit logging, and image scanning in CI/CD.\n\n---\n\n### **Critical Context & Constraints**\n- **Non-negotiable numerical threshold:** `89.0 ms` must be preserved exactly in all monitoring, alerting, and test reports — no rounding or approximation.\n- **TLS enforcement:** Must be active at every connection point (ingress, egress, internal services); no exceptions.\n- **Compliance focus:** All configurations must be version-controlled (Terraform), auditable, and traceable to the original constraint.\n- **Observability requirement:** OpenTelemetry traces must capture end-to-end latency for critical APIs.\n\n---\n\n### **Remaining Tasks (Next Steps)**\n1. **Final compliance validation report** — compile evidence showing:\n   - TLS 1.2+ enforcement at all layers\n   - P95 latency ≤89.0 ms in production-like environment\n   - Backup job logs and restore test results\n   - Audit trail from ArgoCD, Jenkins, and Kubernetes\n2. **Generate formal compliance artifact** (PDF/Markdown) including:\n   - Configuration snippets (Terraform, Ingress, Prometheus rules)\n   - Grafana dashboard screenshots with threshold markers\n   - Test result logs (latency, backup, rollback)\n3. **Hand off to compliance team** for sign-off.\n\n---\n\n### **Critical Data & References Needed**\n- ✅ Terraform IaC codebase (with security and performance guardrails)\n- ✅ Prometheus query: `http_request_duration_ms{job=\"api\", quantile=\"0.95\"}`\n- ✅ Grafana dashboard URL and snapshot link\n- ✅ Sample OpenTelemetry trace ID showing 89.0 ms response time\n- ✅ Backup job log snippet from Velero (timestamped 03:00 UTC)\n- ✅ Rollback test log (ArgoCD + health check failure → auto-rollback)\n\n---\n\n**Ready for next LLM to generate compliance package and finalize handoff.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00066",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}
