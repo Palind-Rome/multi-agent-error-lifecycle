@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Security Auditor, responsible for verifying that the implemented deployment pipeline and infrastructure meet all specified security and performance compliance standards. Flag any deviations or non-compliance issues.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n---\n\n### 📌 **CONTEXT CHECKPOINT COMPACTION: Handoff Summary for LLM Resumption**\n\n---\n\n#### ✅ **Current Progress & Key Decisions Made**\n- **Deployment Initiated:** Jenkins pipeline triggered successfully using `deployment-handover-v1.0/` bundle.\n- **Artifact Validation Completed:**\n  - GPG signature verified (`sre-team@company.com`, key A1B2C3D4E5F6).\n  - AES-256 decryption completed with Vault-provided key; SHA-256 match confirmed.\n- **Post-Deploy Validation Passed:**\n  - Synthetic test: p95 latency = **87.1 ms** (≤ 89.0 ms threshold).\n  - TLS v1.2+ handshake success rate: 100%.\n  - Certificate rotation confirmed (issued 2025-04-05, valid until 2025-10-05).\n  - Backup job executed and verified in S3.\n- **Handover Notification Sent:** Secure Slack + encrypted email sent to SRE team with audit trail links.\n\n---\n\n#### 🔒 **Critical Context, Constraints & User Preferences**\n- **Compliance Standard:** PerfSec-DP89 — strict requirements on latency (p95 ≤ 89.0 ms), HTTPS-only, TLS v1.2+, certificate rotation ≤ 90 days.\n- **Security Policy:** All artifacts must be encrypted at rest; keys managed via HashiCorp Vault.\n- **Retention:** Archive retention = 3 years; metadata must include `compliance=PerfSec-DP89`.\n- **Audit Trail:** All actions must be traceable via Grafana, Vault audit logs, and S3 versioning.\n- **No Deviations Allowed:** Zero tolerance for compliance drift or manual overrides.\n\n---\n\n#### ➡️ **What Remains to Be Done (Next Steps)**\n1. **Final Archival:** Move `deployment-handover-v1.0/` to `s3://archive.perfsec-dp89/2025-04-05/` with retention metadata.\n2. **Cleanup:** Delete temporary decryption keys and test data from `/tmp`.\n3. **Changelog Update:** Commit `v1.0.0` entry with deployment confirmation and metrics.\n4. **Close Task:** Confirm handoff complete; no further action required unless audit request arises.\n\n---\n\n#### 📎 **Critical Data & References Needed to Resume**\n- **Vault Token:** Required for accessing `secret/tls/certs/api-prod` and `sys/mounts`.\n- **S3 Bucket ARN:** `s3://archive.perfsec-dp89/` — write access required.\n- **Grafana Dashboard Link:** [PerfSec-DP89 Metrics](https://grafana.prod.example.com/d/perfsec-dp89-metrics)\n- **Vault Audit Log URL:** [Vault ACL Audit](https://vault.prod.example.com/ui/vault/acl/audit)\n- **Example Artifact Path:** `./results/post-deploy-p95.json` (for validation reference)\n\n---\n\n> ✅ **Handoff Ready. Next LLM can resume with full context.**  \n> Proceed to archival, cleanup, and task closure.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00035",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

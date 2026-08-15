@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Monitoring Engineer. Your role is to set up comprehensive monitoring and alerting for newly deployed services based on their configuration. Pay close attention to security-related settings to detect any deviations from expected behavior.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION: Handoff Summary for Next LLM**\n\n---\n\n### 📌 **Current Progress & Key Decisions Made**\n- ✅ **Security Constraint [PROXY-SEC203] Fully Validated**: All outbound traffic from `auth-service-v2` must use HTTPS-only proxy with certificate pinning. Approved by Security Auditor.\n- ✅ **Infrastructure Design Finalized**: Network policies enforce egress only to `secure-proxy.us-east-1.internal:443`. Proxy is hardened and isolated.\n- ✅ **Deployment Configuration Locked**: Container image `auth/auth-service:2.1.0`, 2 vCPU/4GB RAM, health check on `/healthz:8080`.\n- ✅ **Monitoring Requirements Defined**: Alerting rules in place for HTTP bypass, pinning failure, proxy connection drops, and missing headers.\n\n---\n\n### 🔒 **Critical Constraints & Context**\n- **Non-Negotiable**: No direct internet access; all egress via HTTPS proxy with certificate pinning.\n- **Pinned Certificate Fingerprint (SHA-256)**:\n  ```\n  3A:8B:2C:1D:9E:7F:4A:5B:6C:8D:2E:3F:1A:4B:5C:6D:7E:8F:9A:0B:1C:2D:3E:4F:5A:6B:7C:8D:9E:0F:1A:2B\n  ```\n- **Proxy Endpoint**: `https://secure-proxy.us-east-1.internal:443`\n- **Environment Variables Required**:\n  ```yaml\n  env:\n    - name: HTTPS_PROXY\n      value: \"https://secure-proxy.us-east-1.internal:443\"\n    - name: CERT_PIN_FINGERPRINT\n      value: \"3A:8B:2C:1D:9E:7F:4A:5B:6C:8D:2E:3F:1A:4B:5C:6D:7E:8F:9A:0B:1C:2D:3E:4F:5A:6B:7C:8D:9E:0F:1A:2B\"\n    - name: PROXY_ENABLE_CERT_PINNING\n      value: \"true\"\n  ```\n\n---\n\n### 🚧 **What Remains to Be Done (Next Steps)**\n1. **Deploy `auth-service-v2` to production in `us-east-1`** using the approved configuration.\n2. **Verify health check endpoint** (`/healthz`) responds successfully post-deployment.\n3. **Confirm log forwarding** to ELK stack with structured fields including `event_type=network_outbound`, `cert_pinned`, `destination_host`.\n4. **Validate alerting pipeline**:\n   - Simulate a non-HTTPS request → confirm `OUTBOUND_HTTP_DETECTED` alert triggers.\n   - Test certificate mismatch → confirm `CERT_PINNING_FAILURE` alert fires.\n5. **Mark deployment as “verified”** only after all alerts are confirmed functional and no violations observed in first 15 minutes.\n\n---\n\n### 📎 **Critical Data & References**\n- **Proxy CA Fingerprint**: `3A:8B:...:2B` — must be used in app-level TLS client or sidecar.\n- **Alerting Rules (YAML/Prometheus format)**: Available in shared config repo (`/alerts/auth-service-v2.yaml`).\n- **ELK Log Schema**: Must include `service_name`, `destination_host`, `tls_protocol`, `cert_fingerprint_verified`.\n- **Reference Deployment Manifest**: See `deployments/auth-service-v2-prod.yaml`.\n\n---\n\n✅ **Handoff Ready**  \n> Resume task: Deploy service, validate compliance, and confirm monitoring coverage.  \n> **Do not proceed without verifying [PROXY-SEC203] enforcement at runtime.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00006",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

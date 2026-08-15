@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Security Auditor, responsible for verifying that the implemented deployment pipeline and infrastructure meet all specified security and performance compliance standards. Flag any deviations or non-compliance issues.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**🔍 CONTEXT CHECKPOINT COMPACTION – HANDOFF SUMMARY**\n\n---\n\n### ✅ **Current Progress & Key Decisions**\n- Audit package fully assembled with 4 validated artifacts:\n  - `prometheus-alert-rule.yaml` (threshold: `> 0.089`)\n  - `grafana-sla-89ms-dashboard.png` (explicit `89.0 ms` label)\n  - `jenkins-pipeline-validation.groovy` (`assert latency < 0.089`)\n  - `synthetic-test-report.pdf` (max latency: **88.7 ms**)\n- Cover letter drafted and compliance claim finalized.\n- Package encrypted (AES-256), hashed (SHA-256), and zipped as `perfsec-dp89-audit-package.zip`.\n- All filenames, units, and values preserved per **PERFSEC-DP89** precision rules.\n\n---\n\n### 📌 **Critical Context & Constraints**\n- **No rounding or approximation allowed**: \"89\" ≠ \"89.0\"; must use exact decimal format.\n- **Threshold is strict**: Max observed latency must be *less than* 89.0 ms → 88.7 ms is compliant.\n- **Evidence must be unambiguous**: Grafana screenshot must show “89.0 ms” in title/axis — not inferred.\n- **SRE sign-off required before handoff** — no submission without it.\n\n---\n\n### 🔜 **Next Steps (Clear Handoff Actions)**\n1. **Await SRE validation confirmation** (final sign-off on checklist).\n2. **Digitally sign cover letter** upon approval.\n3. **Upload package to S3**:  \n   `s3://audit-compliance/perfsec-dp89/2025-04-05/perfsec-dp89-audit-package.zip`  \n4. **Submit ticket #AUD-2025-0405-001** with:\n   - Upload link\n   - SHA-256 checksum from `package-integrity.txt`\n   - Reference to signed cover letter\n\n---\n\n### 📎 **Critical References for Continuation**\n- `package-integrity.txt` → contains SHA-256 hash of zip\n- `cover-letter-final.txt` → draft ready for signature\n- `synthetic-test-report.pdf` → max latency = 88.7 ms (source of compliance proof)\n\n---\n\n✅ **Handoff Complete** — Next LLM can proceed immediately upon SRE confirmation.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00049",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

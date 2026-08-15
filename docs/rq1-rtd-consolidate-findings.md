@@ -1,7 +1,9 @@
 # RQ1 findings — Codex leader-consolidation arm + three-arm synthesis
 
-LLM-judge annotated. The consolidation arm is a second treatment over the native
-relay; the native arm (`docs/rq1-rtd-findings.md`) and the compact arm
+Human-adjudicated. The LLM-judge pass was reviewed by the user: all 9 tracer
+labels confirmed (9/9 agreement, Cohen's kappa = 1.0, n = 9). The consolidation
+arm is a second treatment over the native relay; the native arm
+(`docs/rq1-rtd-findings.md`) and the compact arm
 (`docs/rq1-rtd-compact-findings.md`) are the two references.
 
 ## What the consolidation arm is

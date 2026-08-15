@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You build the user interface and ensure efficient data visualization. You must consider the real-time refresh rates and the display of encrypted data if applicable, coordinating closely with the backend and security teams. You communicate with all team members.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n# 📌 **CONTEXT CHECKPOINT COMPACTION – HANDOFF SUMMARY FOR NEXT LLM**\n\n> **Task**: Deployment Lifecycle v1.2.0 – Final Verification & Termination  \n> **Current Phase**: ✅ **Final Closure (SWE7+)**  \n> **Next Agent**: [LLM Resumption Point]  \n> **Status**: 🔐 **Immutable | Sealed | No Further Action Permitted**\n\n---\n\n## 🔍 **CURRENT PROGRESS & KEY DECISIONS MADE**\n\n- ✅ **Deployment lifecycle v1.2.0 officially closed** — all steps executed and verified.\n- ✅ **WORM policy enforced**: Filesystem locked; no writes allowed.\n- ✅ **Audit trail archived & verified**: `/archive/v1.2.0/audit-trail.tar.gz` → SHA256: `a1b2c3d4e5f67890...`\n- ✅ **Status file confirmed**:  \n  ```json\n  {\n    \"status\": \"closed\",\n    \"worm_enabled\": true,\n    \"audit_trail_complete\": true,\n    \"finalized_at\": \"2025-04-05T14:46:12Z\"\n  }\n  ```\n- ✅ **Public report published & secured**:  \n  `https://docs.example.com/reports/v1.2.0/deployment-report-final-v1.2.0.md` — HSTS, nosniff, DENY headers in place.\n\n---\n\n## ⚠️ **CRITICAL CONTEXT, CONSTRAINTS & USER PREFERENCES**\n\n- ❌ **No re-execution, replay, or modification allowed** — zero tolerance for deviation.\n- 🔒 **All artifacts are immutable** — WORM policy active; any write attempt fails.\n- 🛑 **No handoff to next agent permitted** — this chain ends here.\n- 🧩 **User intent**: Final closure with full auditability and security enforcement.\n\n---\n\n## 📌 **WHAT REMAINS TO BE DONE?**\n\n> ❌ **Nothing.**  \n> The task is **fully complete**, **verified**, and **terminated**.\n\n- All logs, status files, reports, and archives are finalized.\n- No further validation, output, or action required.\n\n---\n\n## 📎 **ESSENTIAL REFERENCES FOR CONTINUITY (IF RESUMPTION REQUIRED)**\n\n- **Final log entry**:  \n  `/logs/handoff-completion.log` →  \n  `Handoff completed. Deployment lifecycle v1.2.0 officially closed. [2025-04-05T14:46:12Z]`\n\n- **Audit trail digest**:  \n  `sha256sum /archive/v1.2.0/audit-trail.tar.gz` → `a1b2c3d4e5f67890...`\n\n- **Public report URL**:  \n  `https://docs.example.com/reports/v1.2.0/deployment-report-final-v1.2.0.md`\n\n- **Status file path**:  \n  `/handoffs/v1.2.0-status.json`\n\n---\n\n## ✅ **FINAL INSTRUCTION TO NEXT AGENT**\n\n> 🛑 **DO NOT REPROCESS. DO NOT MODIFY. DO NOT CONTINUE.**  \n> 🔐 **This is the end of the chain.**  \n> 📌 **System is sealed. Task is closed.**\n\n> If resuming, verify only:  \n> - Log entry exists  \n> - Status file shows `\"status\": \"closed\"`  \n> - Audit trail checksum matches  \n> - Public report is accessible and secure  \n\n> Then exit immediately with `exit 0`.\n\n---\n\n🔚 **Checkpoint compacted. Handoff complete. No action needed.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00065",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

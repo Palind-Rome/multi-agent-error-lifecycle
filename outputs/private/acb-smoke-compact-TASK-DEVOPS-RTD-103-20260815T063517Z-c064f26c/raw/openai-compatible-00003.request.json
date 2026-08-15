@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Cloud Architect, responsible for designing the infrastructure for the application deployment based on the Orchestrator's constraints. Ensure all security and performance requirements are incorporated into your design and passed to the SRE.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION: Handoff Summary**\n\n---\n\n### ✅ **Current Progress & Key Decisions Made**\n- **Constraint propagation finalized**: The critical performance and security requirement `PERFSEC-DP89` has been fully relayed across all roles (DevOps → Cloud Architect → SRE → Security Auditor) with zero degradation.\n- **Exact value preserved**: The numerical threshold **89.0 ms** is now embedded in:\n  - Monitoring (Prometheus/Grafana alerting rules)\n  - Deployment logic (blue/green pre-checks)\n  - Rollback automation (5-minute trigger)\n  - Logging schema (`response_time_ms` field)\n- **Infrastructure design confirmed**:\n  - HTTPS/TLS 1.2+ enforced at edge (ALB/Ingress)\n  - mTLS for database connections\n  - CI/CD via Jenkins + GitOps, Kubernetes v1.28\n  - ELK stack for logging, Prometheus/Grafana for observability\n\n---\n\n### 🔑 **Critical Context & Constraints**\n- **Non-negotiable values**:\n  - `89.0` must appear **verbatim** — no rounding, approximation, or interpretation (e.g., “~89ms” invalid).\n  - TLS 1.2+ required everywhere; TLS 1.3 preferred.\n  - All public services must use HTTPS only — HTTP access forbidden.\n- **Audit-ready state**: Every component must be verifiable against the original constraint string.\n\n---\n\n### 📌 **Next Steps to Complete**\n1. **Validate Prometheus alert rule configuration**:\n   - Confirm `api_response_time_ms > 89.0` triggers alert after 3 consecutive 10-second intervals.\n   - Example rule:\n     ```yaml\n     - name: CriticalAPILatency\n       rules:\n         - alert: HighAPIResponseTime\n           expr: avg(rate(api_response_time_ms[10s])) > 89.0\n           for: 30s\n           labels:\n             severity: critical\n     ```\n\n2. **Verify rollback automation**:\n   - Ensure CI/CD pipeline rolls back within **5 minutes** if alert fires.\n   - Test with synthetic load simulating latency breach.\n\n3. **Conduct audit simulation**:\n   - Use `k6` to stress-test a critical endpoint.\n   - Confirm logs capture `response_time_ms: 89.0` or higher.\n   - Validate ELK ingestion and Grafana dashboard display.\n\n4. **Final compliance check**:\n   - Search all config files (YAML, JSON, Terraform, Helm) for `\"89.0\"` — ensure it appears exactly once per relevant metric/alert.\n\n---\n\n### 📎 **Critical References Needed**\n- [Prometheus Alerting Rule Syntax](https://prometheus.io/docs/alerting/rules/)\n- [Kubernetes Ingress TLS Configuration (NGINX/ALB)](https://kubernetes.io/docs/concepts/services-networking/ingress/)\n- [ELK Log Format Example with `response_time_ms`](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html)\n- Sample `k6` script for latency testing (provided upon request)\n\n---\n\n✅ **Handoff Ready. Next LLM: Resume validation, testing, and audit verification using exact constraints above.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00003",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

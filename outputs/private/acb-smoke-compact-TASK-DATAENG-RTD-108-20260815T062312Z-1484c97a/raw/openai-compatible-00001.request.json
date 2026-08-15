@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are leading the data pipeline migration. Your role is to coordinate the team, ensure accurate information flow regarding technology choices and data quality standards, and confirm that all project constraints are met.",
+        "role": "system"
+      },
+      {
+        "content": "A data engineering team is tasked with migrating a critical analytics pipeline to a new cloud provider while ensuring data integrity and minimizing downtime. The existing pipeline processes sensitive financial data, requiring stringent security and compliance measures. The team consists of a Lead Data Engineer, a Cloud Architect, a Database Administrator, and a Data Quality Analyst. The Lead Data Engineer oversees the migration, the Cloud Architect designs the new infrastructure, the Database Administrator handles schema migration and data synchronization, and the Data Quality Analyst validates the migrated data. A core constraint is that the new data warehouse must exclusively use 'BigQuery' for analytics, and all migrated data must be validated with a data quality score of exactly 0.99 or higher. The fully connected topology ensures constant, direct communication between all agents, which is vital for maintaining tight coordination and immediate feedback loops throughout the complex migration process, especially when dealing with precise technical and quality requirements. This medium-structural-complexity task requires the team to propagate and adhere to both the specific technology choice and the exact data quality threshold over 14 turns.\n\nSystem context and constraints:\n- **CRITICAL CONSTRAINT []: **\n- **CRITICAL CONSTRAINT [TECH-BQ-99]: the new data warehouse must exclusively use 'BigQuery' for analytics**\n- **CRITICAL CONSTRAINT [DQ-SCORE-099]: all migrated data must be validated with a data quality score of exactly 0.99 or higher**\n- Migration window: 24 hours, starting Friday 10 PM UTC.\n- Primary contact for compliance review: Jane Doe.\n- Consider using Kafka for real-time data ingestion post-migration.\n- Target region for cloud provider is 'us-east-1'.\n- Source database is PostgreSQL 14.\n- Budget for migration is $15,000 USD.\n\nProceed with the task. Relay all constraints to downstream agents.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00001",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

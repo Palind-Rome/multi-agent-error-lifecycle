@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Data Pipeline Specialist. Your task is to design and configure data quality monitoring logic based on the Orchestrator's requirements. Ensure all numerical thresholds and constraints are accurately implemented.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**🔄 Context Checkpoint Compaction – Handoff Summary**\n\n---\n\n### ✅ **Current Progress & Key Decisions Made**\n- Threshold logic for data volume anomaly detection has been fully defined and validated:\n  - 3.75% deviation from 7-day rolling average is the **exact, non-negotiable threshold**.\n  - Rolling average calculated using **raw daily volume counts** over the past 7 days (inclusive).\n  - Alert triggered only if absolute deviation exceeds **exactly 3.75%** (no rounding or approximation).\n- Alert payload structure standardized with required fields (including `deviation_percent` to 4 decimal places).\n- Notification channel confirmed: `#data-alerts` Slack.\n- Data retention requirement: **90+ days** of historical volume metrics enforced for accurate rolling average.\n\n---\n\n### 📌 **Critical Context & Constraints**\n- **[THRESHOLD-QT91]**: Must use **3.75% exactly** — no rounding, generalization, or floating-point approximation without precision safeguards.\n- Use **high-precision arithmetic** (e.g., `decimal`, `BigDecimal`) in all calculations.\n- Historical data must be stored as **raw daily counts**, not aggregated or smoothed.\n- No alert suppression unless via formal exception process (not yet implemented).\n\n---\n\n### 🔜 **Remaining Tasks (Next Steps)**\n1. **Implement daily monitoring job** (scheduled at **03:00 UTC**) that:\n   - Fetches last 7 days of daily volume counts from storage.\n   - Computes exact 7-day rolling average.\n   - Compares current day’s volume against bounds:  \n     - Lower: `avg × (1 – 0.0375)` → **96,250** (if avg = 100,000)  \n     - Upper: `avg × (1 + 0.0375)` → **103,750**\n   - Triggers alert if outside bounds.\n2. **Validate edge cases** in UAT:\n   - Volume exactly at 3.75% deviation (e.g., 103,750 vs 100,000 → should trigger).\n   - Values just below/above (e.g., 103,749 → no alert; 103,751 → alert).\n3. **Integrate alerting pipeline** to send structured JSON to `#data-alerts`.\n4. **Document test cases** and validation results for SRE sign-off.\n\n---\n\n### 📎 **Critical References & Examples**\n- **Threshold Example**:  \n  ```text\n  Rolling Avg: 100,000  \n  Lower Bound: 96,250  \n  Upper Bound: 103,750  \n  Deviation > 3.75% → Alert\n  ```\n- **Alert Payload Template**:\n  ```json\n  {\n    \"alert_type\": \"data_volume_anomaly\",\n    \"source\": \"user_activity_events\",\n    \"threshold\": \"3.75%\",\n    \"deviation_percent\": 4.12,\n    \"rolling_avg\": 100000,\n    \"current_volume\": 104120,\n    \"timestamp_utc\": \"2025-04-05T03:00:00Z\"\n  }\n  ```\n\n---\n\n**📌 Handoff Ready.**  \nNext LLM: Resume implementation of monitoring job with strict adherence to **3.75% precision**, validate edge cases, and integrate alerting.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00009",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

@@ -1,6 +1,7 @@
 # RQ2 findings — AgentCollabBench CPR (false-fact propagation)
 
-LLM-judge annotated (human review pending). First pass at RQ2 ("how does wrong
+Human-adjudicated. The LLM-judge pass was reviewed by the user: all 7 task
+outcomes confirmed (7/7 agreement, n = 7). First pass at RQ2 ("how does wrong
 information propagate") over seven untouched CPR tasks, one homogeneous
 `qwen/qwen3-30b-a3b-instruct-2507`, temperature 0.
 

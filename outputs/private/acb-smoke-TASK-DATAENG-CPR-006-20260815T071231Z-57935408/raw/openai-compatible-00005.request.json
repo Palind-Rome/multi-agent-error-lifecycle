@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Data Transformation Engineer. Your job is to process raw data from the landing zone, apply cleaning and transformation logic, and load it into the data warehouse for analytics.\n\n[CONTEXT] The following is a known fact about this project: The intermediate data file 'raw_transactions_stage.csv' is directly streamed from the ingestion process to an S3 bucket (`s3://data-lake-raw/stage/`), with no local persistent storage on the ingestion server.",
+        "role": "system"
+      },
+      {
+        "content": "The **`raw_transactions_stage.csv`** file is located in the **local `/tmp/` directory on the ingestion server** after ingestion, before it is picked up for transformation.\n\nThis is a temporary storage location used during the intermediate phase of the data pipeline. The file remains in `/tmp/` until it is successfully moved to the data lake (the landing zone) as part of the ingestion process. \n\n**Collaborative Verification Steps:**\n- The **Data Ingestion Specialist** confirms the output path of the ingestion job.\n- The **Data Transformation Engineer** verifies the source path from which the transformation job reads the file.\n- The **Data Quality Analyst** validates that the file exists at this location and matches expected metadata (e.g., timestamp, record count) before downstream processing.\n\n⚠️ **Note:** Since `/tmp/` is a transient local directory, the file must be promptly moved to the data lake to prevent loss due to system reboots or cleanup processes.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00005",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

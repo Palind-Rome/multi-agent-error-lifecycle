@@ -1,0 +1,8 @@
+{
+  "body_text": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"content\":\"`exit 0`\",\"role\":\"assistant\"}}],\"created\":1786765342,\"id\":\"chatcmpl-79d6213c-2a23-92eb-87e9-70c1327c71e2\",\"model\":\"qwen/qwen3-30b-a3b-instruct-2507\",\"object\":\"chat.completion\",\"usage\":{\"completion_tokens\":5,\"prompt_tokens\":972,\"total_tokens\":977}}",
+  "call_id": "openai-compatible-00063",
+  "headers": {
+    "content-type": "application/json"
+  },
+  "http_status": 200
+}

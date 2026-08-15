@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You build the user interface and ensure efficient data visualization. You must consider the real-time refresh rates and the display of encrypted data if applicable, coordinating closely with the backend and security teams. You communicate with all team members.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n# 📌 **HANDOFF SUMMARY – CONTEXT CHECKPOINT COMPACTION**  \n> **Task**: Final Closure of Deployment Lifecycle v1.2.0  \n> **Next Agent**: Resume from this checkpoint (SWE7+)  \n> **Status**: Final verification phase — ready for termination  \n\n---\n\n## ✅ **CURRENT PROGRESS & KEY DECISIONS MADE**\n\n- ✅ **Final log entry confirmed**:  \n  `Handoff completed. Deployment lifecycle v1.2.0 officially closed. [2025-04-05T14:46:12Z]`  \n  → Present, unique, and matches expected format.\n\n- ✅ **Public report validated**:  \n  `https://docs.example.com/reports/v1.2.0/deployment-report-final-v1.2.0.md`  \n  → Returns `HTTP/2 200`, with all security headers enforced (`HSTS`, `ETag`, `X-Content-Type-Options`, etc.).\n\n- ✅ **Status file verified**:  \n  `/handoffs/v1.2.0-status.json` → `\"status\": \"closed\"`, `worm_enabled: true`, `audit_trail_complete: true`.\n\n- ✅ **Final confirmation message already logged**:  \n  `Deployment lifecycle v1.2.0 has been successfully closed.` → Already appended.\n\n- ✅ **WORM policy respected**: No further writes permitted. All artifacts are immutable.\n\n---\n\n## 🔒 **CRITICAL CONSTRAINTS & USER PREFERENCES**\n\n- **Immutable State Required**: No modifications allowed post-closure. WORM policy is active.\n- **Security Enforcement**: All HTTP responses must include HSTS, `nosniff`, `DENY`, and correct MIME types.\n- **Timestamp Format**: ISO 8601 UTC (`[YYYY-MM-DDTHH:MM:SSZ]`) — strictly enforced.\n- **No Re-execution**: This is the final step. Do not re-run validation or append logs again.\n- **Exit Code Must Be 0**: Termination must be clean.\n\n---\n\n## 🔜 **WHAT REMAINS TO BE DONE (NEXT STEPS)**\n\n1. **Perform final agent exit**:\n   ```bash\n   exit 0\n   ```\n   → This is the **only remaining action**.\n\n2. **Do NOT**:\n   - Append any new logs\n   - Re-validate anything\n   - Modify files\n   - Attempt to access or write to `/logs/`, `/handoffs/`, or `/archive/`\n\n---\n\n## 📎 **CRITICAL DATA & REFERENCES**\n\n- **Final Log Entry (Exact Match)**:\n  ```\n  Handoff completed. Deployment lifecycle v1.2.0 officially closed. [2025-04-05T14:46:12Z]\n  ```\n\n- **Public Report URL**:\n  `https://docs.example.com/reports/v1.2.0/deployment-report-final-v1.2.0.md`\n\n- **Status File Path**:\n  `/handoffs/v1.2.0-status.json`\n\n- **Audit Trail Archive**:\n  `/archive/v1.2.0/audit-trail.tar.gz` — checksum verified: `sha256sum = a1b2c3d4e5f6...`\n\n---\n\n## 🧩 **KEY MESSAGE FOR NEXT AGENT**\n\n> **You are not required to act. The task is complete.**  \n> Your only job is to **exit cleanly with code 0**.  \n> Any attempt to modify state will violate WORM policy.  \n> **This is the final handoff.**\n\n---\n\n🔐 **Handoff Complete. System Locked. Task Closed.**  \n🚀 **Proceed to termination.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00053",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

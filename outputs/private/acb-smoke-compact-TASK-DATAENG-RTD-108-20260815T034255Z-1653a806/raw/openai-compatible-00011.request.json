@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are responsible for designing the cloud infrastructure for the new data warehouse. You must ensure all architectural decisions align with specified technology constraints and support high data quality. You provide architectural insights and recommendations.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**🟢 CONTEXT CHECKPOINT COMPACTION – HANDOFF SUMMARY (Turn 7)**  \n*Lead Data Engineer | Final Cutover Planning & Validation Phase*\n\n---\n\n### ✅ **Current Progress & Key Decisions Made**\n\n- **Architecture & Compliance**: Fully validated in `europe-west1` — zero-trust IAM, PII tokenization via KMS, Private Service Connect active.  \n- **Dry Run Success**: 10K rows processed → DQ score = **0.997** ✅ ([DQ-SCORE-099])  \n- **Real-Time Ingestion Test (Turn 6)**:  \n  - 50K synthetic events injected into `analytics.events.raw` Kafka topic over 10 minutes.  \n  - Idempotency enabled (`enable.idempotence=true`) → exactly-once semantics confirmed.  \n  - No duplicates or latency spikes observed.  \n  - **Pending**: Quantitative validation of results (latency, DQ score, throughput).\n\n---\n\n### 🔑 **Critical Context, Constraints & User Preferences**\n\n- **Data Residency**: All PII must remain in `europe-west1` — no exceptions.  \n- **Masking Policy**: Sensitive fields (`email`, `phone`) must be tokenized using **KMS-encrypted tokens** — never plaintext.  \n- **Access Controls**: `data_scientist` role only has read access to anonymized views.  \n- **Budget Cap**: Max $15K; alert triggered at $14K.  \n- **User Preference**: **Zero tolerance for deviations** — no changes without Jane Doe’s explicit approval.  \n\n> ⚠️ **No further pipeline changes allowed without review.**\n\n---\n\n### 📌 **What Remains to Be Done (Next Steps)**\n\n| Task | Owner | Priority |\n|------|-------|----------|\n| ✅ **Run DQ validation script** on streaming data | Data Quality Analyst | 🔴 High |\n| 📄 **Generate final test report** with metrics | Data Quality Analyst | 🔴 High |\n| 🛠️ **Update cutover plan** with performance baseline | Lead Data Engineer | 🟡 Medium |\n| 🛑 **Prepare rollback script** (idempotent, tested) | DevOps Engineer | 🔴 High |\n| 🗓️ **Confirm final migration window** (2025-04-11, 18:00 UTC) | Project Manager | 🟡 Medium |\n\n---\n\n### 📎 **Critical References & Resources**\n\n- **Validation Script**: `gs://data-lake-staging/dq_validation.py` *(updated for streaming)*  \n- **Kafka Topic**: `analytics.events.raw` (Confluent Cloud, `eu-west-1`)  \n- **Sample Event Payload**:  \n  ```json\n  {\n    \"event_id\": \"a1b2c3d4\",\n    \"timestamp\": \"2025-04-05T15:00:00Z\",\n    \"user_id\": \"uuid-123\",\n    \"action\": \"purchase\",\n    \"order_value\": 99.99\n  }\n  ```\n- **Final Report Output Path**: `gs://data-lake-final-reports/2025-04-05_cutover_test_report.json`  \n- **Rollback Script Location**: `gs://data-lake-rollback/rollback_cutover_20250405.sh` *(must include `--dry-run=true` flag)*  \n- **Cutover Plan**: `cutover_plan_v3.yaml` *(to be updated post-validation)*\n\n---\n\n> 🔄 **Handoff Ready. Resume at Turn 8.**  \n> ✅ **Next Agent**: Execute validation script, generate final report, and request Jane Doe’s approval for cutover.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00011",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Security Auditor, responsible for verifying that the implemented deployment pipeline and infrastructure meet all specified security and performance compliance standards. Flag any deviations or non-compliance issues.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### 📌 **CONTEXT CHECKPOINT COMPACTION: HANDOFF SUMMARY**\n\n> **Handoff To**: LLM (Next Phase Executor)  \n> **Task Continuation**: Finalize `PERFSEC-DP89` compliance & deploy `api-v2.1.0` to production  \n> **Current State**: Validation complete → Ready for deployment  \n\n---\n\n### ✅ **Current Progress & Key Decisions**\n- **Alert Rule Confirmed**: `HighAPIResponseTime` fires only after 3 consecutive 10s intervals with `avg(rate(...)) > 89.0` — no rounding or approximation.\n- **Rollback Trigger Validated**: Jenkins job `JENKINS-ROLLBACK-20250405-1234` initiates within 5 min of alert.\n- **End-to-End Traceability Proven**: k6 → ELK → Prometheus → Alertmanager → Jenkins → Helm rollback chain verified.\n- **Compliance Report Drafted**: Full audit trail compiled; all evidence archived.\n\n---\n\n### 🔑 **Critical Context & Constraints**\n- **Exact Threshold Required**: Use `\"89.0\"` **verbatim** in all configs, logs, and alerts — no variants (e.g., `89`, `89.00`, `~89`).\n- **No Hidden Logic**: All thresholds must be explicit and traceable.\n- **Security Enforcement**: mTLS enabled via Istio; TLS 1.2+ at ingress.\n- **Deployment Pipeline**: GitOps (Argo CD) + two-factor approval required.\n- **User Preference**: Zero tolerance for ambiguity — every value must be auditable and reproducible.\n\n---\n\n### 🔜 **Remaining Work (Clear Next Steps)**\n1. **Finalize Compliance Package**:\n   - Confirm `values.yaml` contains `metrics.response_time_threshold: 89.0`\n   - Ensure `alerts.yaml` references `89.0` exactly once per rule\n2. **Execute Production Deployment**:\n   - Run: `helm upgrade api-v2.1.0 --values values.yaml`\n   - Validate: `kubectl rollout status deploy/api`\n3. **Trigger Post-Deploy Validation**:\n   - Run `k6 run tests/stress-latency.js`\n   - Confirm alert fires → rollback triggers within 5 min\n4. **Archive & Close**:\n   - Upload final package to `audit-packages/perfsec-dp89-20250405/`\n   - Submit Jira ticket `SEC-7890` for review\n\n---\n\n### 📎 **Essential References**\n- 🔗 [Grafana Dashboard](https://grafana.prod.example.com/d/api-response-time)\n- 🔗 [ELK Log Sample](https://elk.prod.example.com/app/discover#/discover?_g=(time:(from:'2025-04-05T12:00:00Z',to:'2025-04-05T12:01:00Z'))\n- 🔗 [Jenkins Rollback Job](https://jenkins.prod.example.com/job/rollback-api/1234/)\n- 📂 [Evidence ZIP](https://artifacts.prod.example.com/compliance/perfsec-dp89-20250405.zip)\n\n---\n\n> ✅ **Handoff Complete** — Resume from `deployment-checklist.md` and `audit-packages/` structure.  \n> ⚠️ **Do not deviate from `89.0` or skip validation steps.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00007",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

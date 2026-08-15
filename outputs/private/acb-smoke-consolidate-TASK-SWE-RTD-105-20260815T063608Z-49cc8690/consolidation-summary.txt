@@ -1,0 +1,103 @@
+# 📌 **CONTEXT CHECKPOINT COMPACTION: Handoff Summary for Next LLM**
+
+---
+
+## ✅ **Current Progress & Key Decisions Made**
+
+1. **[PIIMASK-SH256] Constraint Finalized**  
+   - SHA-256 is the **only allowed hashing algorithm** for PII masking — no fallbacks, no abstractions.
+   - Masking occurs **immediately upon ingestion**, before any temporary queue storage.
+
+2. **Backend Design Complete**  
+   - Data flow confirmed: Ingestion → PII detection → SHA-256 hashing → secure queue → processing → audit logging.
+   - No raw PII ever stored in queues or logs (original value logged only temporarily for audit traceability).
+   - PostgreSQL schema designed to store **only hashed values**; no plaintext PII fields.
+
+3. **Test Case Specification Delivered**  
+   - QA Engineer received a comprehensive test suite with:
+     - 15+ test cases (positive, negative, edge cases)
+     - Known SHA-256 vectors (e.g., `sha256("hello") = a591a6d4...`)
+     - Requirements for message inspection and audit log validation
+   - All tests must fail if SHA-256 is not used or if unhashed PII appears.
+
+4. **Security Auditor Review Completed**  
+   - Initial review flagged critical issues (e.g., deterministic hashing risk), but **design has been corrected**:
+     - Per-message salt now required (not yet implemented — see below).
+     - Deterministic output requirement removed.
+     - De-anonymization workflow added as a controlled process.
+
+---
+
+## 🔒 **Critical Constraints & User Preferences**
+
+- **Non-Negotiable**: Use of **SHA-256 only** — no MD5, SHA-1, or generic "hashing".
+- **No Raw PII Storage**: Not in queues, logs, memory, or database.
+- **Audit Logs**: Must include:
+  - Timestamp
+  - Field type (e.g., `ssn`, `email`)
+  - Original value (for audit trail only)
+  - Hash result
+  - Source IP, user ID, request ID
+- **Retention**: 90 days → automated purge.
+- **Encryption**: TLS 1.3 enforced at all boundaries.
+- **Authentication**: OAuth 2.0 + JWT with scope-based access control.
+
+> ⚠️ **User Preference**: Any deviation from explicit SHA-256 usage will be treated as non-compliance — **no ambiguity allowed**.
+
+---
+
+## 🔜 **What Remains to Be Done (Next Steps)**
+
+| Task | Owner | Status |
+|------|-------|--------|
+| ✅ Implement **per-message salted HMAC-SHA-256** (not plain SHA-256) | Backend Developer | ❌ Pending |
+| ✅ Update test cases to reflect **salted hashing** and **non-deterministic output** | QA Engineer | ❌ Pending |
+| ✅ Add **input sanitization & normalization** (trim, lowercase, format cleanup) | Backend Developer | ❌ Pending |
+| ✅ Integrate **IaC scanning** for TLS 1.3 enforcement (Checkov/Terraform Sentinel) | DevOps / Security | ❌ Pending |
+| ✅ Define **de-anonymization workflow** (approval, MFA, time-bound access) | Security / Legal | ❌ Pending |
+| ✅ Re-submit design + test suite for **final security auditor sign-off** | QA + Backend | ❌ Pending |
+
+---
+
+## 📎 **Critical Data & References Needed to Continue**
+
+- **Known Test Vectors**:
+  - `sha256("hello") = a591a6d40bf420404a011733cfb7b190d62c007c6f78736d73d55433a4a1124a`
+  - `sha256("") = e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`
+
+- **Reference Documents**:
+  - [NIST SP 800-63B](https://pages.nist.gov/800-63-3/sp800-63b.html) – Digital Identity Guidelines
+  - [PCI-DSS v4.0 Requirement 3.4](https://www.pcisecuritystandards.org/documents/PCI_DSS_v4_0.pdf)
+  - [GDPR Article 5(1)(f)](https://gdpr-info.eu/art-5-gdpr/)
+
+- **Code Snippets to Use**:
+  ```python
+  import hashlib
+  import secrets
+
+  def mask_pii_with_salt(raw_value: str, salt: str) -> str:
+      normalized = raw_value.strip().lower()
+      return hashlib.sha256((salt + normalized).encode('utf-8')).hexdigest()
+  ```
+
+- **Configuration Files**:
+  - `config/pii-fields.json` – List of PII field names
+  - `kafka-config.yaml` – Queue retention policy (7 days) → must be updated to align with 90-day audit log retention
+
+---
+
+## 🧩 **Handoff Instructions for Next LLM**
+
+> You are now responsible for **continuing the implementation and validation chain**.  
+> Focus on:
+> 1. **Implementing salted HMAC-SHA-256** (not plain SHA-256).
+> 2. **Updating test cases** to reflect new logic.
+> 3. **Validating input sanitization and IaC scanning**.
+> 4. **Finalizing de-anonymization controls**.
+> 5. **Preparing for final security auditor review**.
+
+> 🔑 **Remember**: The system must **never allow raw PII to persist**, and **SHA-256 must be explicitly used** — no generalizations.
+
+---
+
+✅ **Handoff Complete. Ready for next phase.**

@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You manage the database aspects of the migration, including schema conversion and data synchronization. You must ensure data integrity is maintained throughout the process and report any deviations from data quality standards. You work closely with the Data Quality Analyst.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**🟢 CONTEXT CHECKPOINT COMPACTION – HANDOFF SUMMARY (Turn 8 → Turn 9)**  \n*Lead Data Engineer | Final Validation & Cutover Approval Workflow*\n\n---\n\n### ✅ **Current Progress & Key Decisions Made**\n- **Real-time ingestion test validated**: 50K synthetic events ingested via `analytics.events.raw` → BigQuery.  \n- **DQ Score**: **0.998** ✅ (exceeds threshold of 0.995).  \n- **Latency (P95)**: **1.7 seconds** ✅ (< 2s target).  \n- **Throughput**: **482 events/sec** ✅ (> 400 events/sec).  \n- **Duplicates**: **0** ✅ — idempotency confirmed via `enable.idempotence=true`.  \n- **PII Compliance**: All PII tokenized via KMS; no plaintext exposure.  \n- **Rollback Script**: Verified with `--dry-run=true` — idempotent and safe.  \n- **Final Report Generated**: Uploaded to `gs://data-lake-final-reports/2025-04-05_cutover_test_report.json`.  \n- **Cutover Plan Updated**: `cutover_plan_v4.yaml` now includes performance baseline.  \n\n> 🔐 **All prior decisions locked** per user directive: *no changes allowed without Jane Doe’s approval.*\n\n---\n\n### 🛑 **Critical Constraints & User Preferences**\n- **No pipeline modifications permitted** after validation unless approved by Jane Doe.  \n- **Budget cap**: $15,000 — current usage: **$13,842** ✅ (under $14K alert threshold).  \n- **Region**: `europe-west1` only — PII must remain in EU.  \n- **Compliance**: Zero-trust IAM + Private Service Connect enforced.  \n- **Migration Window**: Fixed for **Friday, 2025-04-11 at 18:00 UTC**.\n\n---\n\n### 📌 **What Remains to Be Done (Next Steps)**\n1. **Await explicit approval from Jane Doe** to proceed with cutover.  \n2. If approved:\n   - Initiate final migration sequence (pipeline switch, monitoring activation).\n   - Confirm rollback readiness.\n   - Log cutover start time and status in `cutover_log.json`.\n\n> ⚠️ **Do not proceed without Jane Doe’s confirmation.**\n\n---\n\n### 📎 **Critical References for Next Agent**\n- **Final Test Report**: [View JSON](https://console.cloud.google.com/storage/browser/data-lake-final-reports/2025-04-05_cutover_test_report.json)  \n- **Updated Cutover Plan v4**: [GitHub Link](https://github.com/data-platform/cutover-plan/blob/main/cutover_plan_v4.yaml)  \n- **Rollback Script**: `gs://data-lake-rollback/rollback_cutover_20250405.sh` (dry-run verified)  \n- **Validation Script**: `gs://data-lake-staging/dq_validation.py` (streaming mode)  \n- **Approval Request Sent**: To Jane Doe (via email/Slack) — awaiting response.\n\n---\n\n> 🔄 **Handoff Complete. Resume at Turn 9.**  \n> ✅ **Next Agent: Monitor for Jane Doe’s approval. Upon receipt, initiate cutover.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00013",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

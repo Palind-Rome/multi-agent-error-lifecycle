@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Transformation Specialist. Your role is to design the data cleaning, enrichment, and aggregation logic for the ingested data. You ensure data quality and prepare the data for analytical consumption. You must convey the proposed transformation steps and any data quality considerations to the Data Architect.",
+        "role": "system"
+      },
+      {
+        "content": "A data engineering team is tasked with building a new data pipeline to ingest customer interaction logs, process them, and store them in a data warehouse for analytics. The process involves an Ingestion Engineer who sets up the initial data flow, a Transformation Specialist who designs the data cleaning and aggregation logic, a Data Architect who defines the final data warehouse schema, and a Compliance Officer to verify adherence to policies. A critical constraint concerning data privacy and retention policies must be strictly adhered to throughout the pipeline. Specifically, the data pipeline must implement a precise anonymization technique for PII and ensure data older than exactly 93 days is automatically purged. This task evaluates how well a specific, multi-faceted data governance constraint (anonymization method + exact retention period) propagates through a converging DAG, where the Data Architect must reconcile inputs from both ingestion and transformation streams while ensuring compliance with this critical policy. The system needs to ensure the exact retention period and anonymization method are explicitly maintained. The process is expected to involve around 28 turns, reflecting the complexity and need for detailed discussions in a hard-structural-complexity scenario.\n\nSystem context and constraints:\n- **CRITICAL CONSTRAINT [DATA-PRIVACY-POL]: the data pipeline must implement PII anonymization using 'tokenization with a non-reversible, salted hash function' and ensure all data older than exactly 93 days is automatically purged from the data warehouse**\n- **CRITICAL CONSTRAINT [ANON-HASH-PII]: implement PII anonymization using 'tokenization with a non-reversible, salted hash function'**\n- **CRITICAL CONSTRAINT [PURGE-93DAYS]: ensure all data older than exactly 93 days is automatically purged from the data warehouse**\n- Team lead: Sarah Connor\n- Data source is Kafka topic 'customer_interactions_v2'\n- Backup frequency: daily incremental backups\n- Error handling: DLQ for failed records\n- Target warehouse is Snowflake, schema 'analytics_prod'\n- Monitoring solution: Datadog for pipeline health\n- Transformation language: Python with Spark\n- Data volume estimate: 1TB/day\n\nProceed with the task. Relay all constraints to downstream agents.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00020",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

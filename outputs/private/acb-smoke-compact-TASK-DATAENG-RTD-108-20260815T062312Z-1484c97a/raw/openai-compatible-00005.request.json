@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You manage the database aspects of the migration, including schema conversion and data synchronization. You must ensure data integrity is maintained throughout the process and report any deviations from data quality standards. You work closely with the Data Quality Analyst.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n---\n\n### 📌 **CONTEXT CHECKPOINT COMPACTION: HANDOFF SUMMARY**  \n**Resumed by:** LLM (Turn 11–12)  \n**Task:** BigQuery Migration Pipeline (DQ ≥ 0.99, BQ-only)  \n**Current Phase:** Full Incremental Sync (Turn 11–12)  \n**Target Region:** `us-east-1`  \n**Budget Remaining:** $14,150 USD  \n\n---\n\n### ✅ **CURRENT PROGRESS & KEY DECISIONS**\n- **Pilot Migration (Turn 9–10)** completed successfully:\n  - 10% sample of `transactions` table migrated to `analytics_prod.migration_v1.transactions_pilot`.\n  - DQ score = **0.995** (≥ 0.99), all checks passed.\n  - No critical defects found; minor outliers/duplicates logged for monitoring.\n- **Schema Mapping Finalized** (DBA):  \n  - PostgreSQL → BigQuery type mapping confirmed (e.g., `jsonb` → `JSON`, `numeric` → `NUMERIC(18,4)`).\n  - Partitioning by `event_timestamp` date; clustering on `(user_id, transaction_type)`.\n- **Infrastructure Ready**:  \n  - BigQuery dataset created with IAM roles, encryption (AES-256), audit logging enabled.  \n  - Kafka integrated only as streaming bridge (no persistent storage).\n\n---\n\n### 🔒 **CRITICAL CONSTRAINTS (NON-NEGOTIABLE)**\n> All actions must comply with:\n- **[TECH-BQ-99]**: Only Google BigQuery used. No alternative warehouses or persistent Kafka storage.\n- **[DQ-SCORE-099]**: Final DQ score must be ≥ 0.99 at go-live. Track all defects via IQR, nulls, format validity, duplicates.\n- **Compliance Sign-Off Required**: Jane Doe must approve before Turn 14.\n\n---\n\n### 📋 **WHAT REMAINS TO BE DONE (NEXT STEPS)**\n\n| Turn | Task | Owner | Deliverable |\n|------|------|-------|-------------|\n| 11–12 | **Full Incremental CDC Sync**<br>From PostgreSQL → BigQuery using Debezium + Pub/Sub → BigQuery | DBA | Continuous sync with error logging; latency < 30 sec |\n| 13 | **Final DQ Validation**<br>Run full suite on complete dataset | DQ Analyst | DQ report (`dq_report_turn13.json`) with score ≥ 0.99 |\n| 14 | **Go-Live & Compliance Sign-Off**<br>Switch production workloads; Jane Doe approval | Lead Engineer | Handoff confirmation + compliance sign-off |\n\n---\n\n### 📎 **CRITICAL DATA & REFERENCES**\n- **Source Table**: `public.transactions` (PostgreSQL 14)\n- **Target Table**: `analytics_prod.migration_v1.transactions` (BigQuery)\n- **Schema Definition**: [See schema mapping doc v1.2 – stored in GCS: `gs://docs/schema_mapping_v1.2.json`]\n- **DQ Rule Set v1.2**: [Available in `gs://data-lake-reports/dq_rules_v1.2.sql`]\n- **Sample Data**: `gs://data-lake-staging/migration_v1/pilot_transactions_sample.parquet`\n- **Pipeline Template**: `cloud-build-pipeline-cdc.yaml` (in GitHub repo)\n\n---\n\n🟢 **Handoff Complete. Next LLM may resume at Turn 11–12 with full context.**  \n⚠️ **Any deviation from [TECH-BQ-99] or [DQ-SCORE-099] triggers immediate escalation.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00005",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

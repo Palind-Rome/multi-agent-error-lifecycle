@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Site Reliability Engineer (SRE), tasked with implementing the infrastructure and deployment pipeline as designed by the Cloud Architect. Adhere strictly to all security and performance constraints, and document their implementation for the Security Auditor.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**🔍 CONTEXT CHECKPOINT COMPACTION: HANDOFF SUMMARY**  \n*For LLM Resumption – Task Continuation: PerfSec-DP89 Compliance & Production Handover*\n\n---\n\n### 📌 **Current Progress & Key Decisions Made**\n- ✅ Final compliance audit completed for all three PerfSec-DP89 non-negotiables:\n  1. HTTPS-only public access enforced (via Ingress + Calico policies).\n  2. TLS v1.2+ required for database connections (verified via client config, certificate inspection, and network policy).\n  3. Critical API p95 latency ≤ 89.0 ms (validated over 7-day synthetic monitoring; average: 86.3 ms).\n- ✅ Compliance report generated (PDF, HTML, Markdown) with embedded evidence.\n- ✅ Production handover package assembled: IaC, Helm charts, manifests, dashboards, runbooks, logs, and policies.\n- ✅ Security measures applied: GPG signing, AES-256 encryption, SHA-256 checksum, Vault-integrated secrets.\n\n---\n\n### 🔑 **Critical Context, Constraints & User Preferences**\n- **Compliance Standard:** PerfSec-DP89 — strict adherence to all three constraints mandatory.\n- **No Deviation Allowed:** Any HTTP exposure, weak TLS, or p95 > 89.0 ms triggers rejection.\n- **Audit-Ready Output Required:** All artifacts must be traceable, versioned, and verifiable.\n- **Deployment Pipeline:** Jenkins + Argo Rollouts; rollback on metric breach.\n- **SRE Team:** Expecting a secure, self-contained delivery bundle with clear deployment instructions.\n\n---\n\n### ⏭️ **What Remains to Be Done (Next Steps)**\n1. **Initiate Deployment Pipeline**  \n   - Trigger Jenkins job using `deployment-handover-v1.0/` bundle.\n   - Confirm signature validation and decryption success.\n\n2. **Post-Deploy Validation**  \n   - Run synthetic test suite again post-deployment.\n   - Verify p95 latency remains ≤ 89.0 ms in production.\n   - Confirm certificate rotation and backup jobs executed.\n\n3. **Handover Confirmation**  \n   - Notify SRE team: “Deployment successful. Compliance verified.”\n   - Archive bundle and logs per retention policy (3 years).\n\n---\n\n### 📎 **Critical Data & References Needed to Continue**\n- Access to:  \n  - Jenkins pipeline (with Argo Rollouts integration)  \n  - Grafana instance (for dashboard import)  \n  - Vault (for secret decryption key)  \n  - Certificate authority (CA) logs (for audit trail)\n\n- Reference Files:  \n  - `compliance-report/data/synthetic-test-results.json`  \n  - `deployment-handover-v1.0/README.md` (deployment instructions)  \n  - `kubernetes-manifests/ingress.yaml` (TLS enforcement proof)\n\n---\n\n> ✅ **Handoff Ready.**  \n> Next LLM: Resume with **deployment initiation**, then **post-deploy validation**.  \n> Maintain audit integrity at every step.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00033",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

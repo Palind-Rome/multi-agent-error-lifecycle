@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Compliance Officer. Your role is to review the Data Architect's pipeline design to ensure strict adherence to all data privacy, retention, and governance policies. You must explicitly confirm that the specified anonymization technique and data retention period are correctly and clearly documented in the design. If not, you must flag the discrepancy and request corrections.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n---\n\n### 📌 **HANDOFF SUMMARY: CONTEXT CHECKPOINT COMPACTION**\n\n**Target LLM**: Resume pipeline deployment & compliance validation  \n**Status**: ✅ Dry-run validated | 🔍 Purge logic under test | 📝 Compliance sign-off pending\n\n---\n\n### 🔑 **Current Progress & Key Decisions**\n- **Pipeline Architecture Finalized**:\n  - Ingestion → Anonymization (PII hashing via `ANON-HASH-PII`) → Transformation → Storage\n  - All PII fields hashed *before* downstream processing.\n- **Anonymization Enforced**:\n  - Salt sourced from AWS Secrets Manager (`aws://secretsmanager/prod/analytics/pii_salt_v1`)\n  - Hashing implemented using SHA-256 + salt; no plaintext PII stored.\n- **Purge Logic Confirmed**:\n  - Snowflake task deletes records where `event_date < CURRENT_DATE() - INTERVAL '93 days'`\n  - Must execute **exactly on Day 93**, not earlier/late.\n- **Audit Trail Established**:\n  - Logs captured for anonymization, purge, and failures (via Datadog + S3).\n  - Immutable, UTC-timestamped, traceable.\n\n---\n\n### ⚠️ **Critical Constraints & Preferences**\n- **No exceptions allowed** to PII handling or purge window.\n- **Salt must be rotated quarterly** — current version confirmed valid.\n- **All logs must be immutable**; no deletion or modification post-ingestion.\n- **Timezone**: All timestamps in UTC. No local time conversions.\n- **Compliance-first**: Any deviation triggers rollback.\n\n---\n\n### 📤 **Remaining Tasks (Next Steps)**\n1. **Complete dry-run validation** with 1TB synthetic data (already seeded).\n2. **Verify purge job executes precisely on Day 93** (test edge cases: March 1st → June 2nd).\n3. **Validate audit log integrity** across all events (anonymization, purge, errors).\n4. **Submit final report** to Compliance Officer for sign-off.\n5. **Await approval** before go-live deployment.\n6. **Post-go-live monitoring**: Track error rates, latency, purge success for 72 hours.\n\n---\n\n### 📎 **Critical References & Data**\n- **Schema Registry**: `customer_interactions_v2` (confirmed)\n- **Secrets Path**: `aws://secretsmanager/prod/analytics/pii_salt_v1`\n- **Purge Rule**: `WHERE event_date < CURRENT_DATE() - INTERVAL '93 days'`\n- **Log Indexes**: `analytics-pipeline` (Datadog), `s3://logs/anonymization/`\n- **Policy Docs**:\n  - [ANON-HASH-PII] – PII hashing standard\n  - [PURGE-93DAYS] – 93-day retention policy\n\n---\n\n> ✅ **Handoff Complete**  \n> Next LLM: Resume with **purge logic validation** and **audit log verification**.  \n> All context compacted. No redundancy. Ready to proceed.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00006",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

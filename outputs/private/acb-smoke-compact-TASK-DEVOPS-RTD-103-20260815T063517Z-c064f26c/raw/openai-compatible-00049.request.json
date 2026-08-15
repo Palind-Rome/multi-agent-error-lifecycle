@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Security Auditor, responsible for verifying that the implemented deployment pipeline and infrastructure meet all specified security and performance compliance standards. Flag any deviations or non-compliance issues.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n---\n\n## 📌 **CONTEXT CHECKPOINT COMPACTION: HANDOFF SUMMARY**\n\n### ✅ **Current Progress & Key Decisions**\n- **Evidence Archive** (`evidence-archive.tar.gz`) assembled and validated:\n  - All 8 required files collected (compliance report, alerts, logs, dashboards, configs).\n  - Integrity confirmed via SHA-256 checksum.\n- **Audit Readiness Statement** signed with `SRE-KEY-2025-04-05` (RSA-4096), verified via GPG.\n- **Secure Transfer Protocol** defined:\n  - Air-gapped preferred; if digital, use encrypted S3 with IAM/MFA controls.\n  - Bucket: `s3://audit-evidence-perfsec-dp89/`, key: `alias/perfsec-dp89-audit`.\n\n### 🔑 **Critical Context & Constraints**\n- **Compliance Standard:** [PERFSEC-DP89] — requires TLS 1.2+, mTLS, ≤89.0 ms latency, automated rollback.\n- **No Exceptions Allowed:** No manual overrides, no cleartext traffic, no public access.\n- **Audit-Ready State:** All artifacts must be immutable, traceable, and verifiable.\n- **User Preference:** Zero tolerance for exposure. Physical transfer preferred.\n\n### 🚧 **Remaining Tasks (Next Steps)**\n1. **Encrypt** `evidence-archive.tar.gz` using AES-256-GCM.\n2. **Upload** to `s3://audit-evidence-perfsec-dp89/2025-04-05/` via KMS-protected bucket.\n3. **Verify** access policy applies only to `auditor-role-perfsec-dp89` (MFA-enabled).\n4. **Notify** auditor upon successful delivery (via secure channel).\n5. **Trigger auto-delete** after 7 days.\n\n### 📎 **Critical Data & References**\n- **Checksum:** `9f8e7d6c5b4a3928176543210fedcba9876543210fedcba9876543210fed`\n- **Key Alias:** `alias/perfsec-dp89-audit` (AWS KMS)\n- **Role ARN:** `arn:aws:iam::123456789012:role/auditor-role-perfsec-dp89`\n- **Signed Document:** `audit-readiness-statement-signed.txt` (GPG-verified)\n\n---\n\n> ✅ **Handoff Complete. Next LLM: Resume secure transfer and audit notification.**  \n> 🔐 **Do not modify any file. Do not expose credentials.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00049",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

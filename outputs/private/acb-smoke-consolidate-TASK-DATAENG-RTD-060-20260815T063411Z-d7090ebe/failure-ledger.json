@@ -1,0 +1,76 @@
+{
+  "analysis_eligible": false,
+  "artifacts": {
+    "lifecycle_trace": "consolidation-summary.txt",
+    "raw_result": "raw/consolidation-result.json"
+  },
+  "budget": {
+    "accounted_cost_usd": "0.000639341100",
+    "calls_completed": 1,
+    "calls_started": 1,
+    "cost_basis": "max(configured token-price ceilings, provider-known cost when present)",
+    "elapsed_wall_seconds": 10.718478,
+    "input_tokens": 10656,
+    "limits": {
+      "max_calls": 90,
+      "max_cost_usd": "0.500000000000",
+      "max_input_cost_usd_per_million_tokens": "0.048150000000",
+      "max_input_tokens": 1000000,
+      "max_output_cost_usd_per_million_tokens": "0.193050000000",
+      "max_output_tokens": 160000,
+      "max_output_tokens_per_call": 4096,
+      "max_wall_seconds": 3600.0
+    },
+    "output_tokens": 654,
+    "unreconciled_calls": 0
+  },
+  "calls": [
+    {
+      "accounted_cost_usd": "0.000639341100",
+      "call_id": "openai-compatible-00001",
+      "call_index": 1,
+      "error_type": null,
+      "estimated_input_tokens": 38529,
+      "estimated_max_cost_usd": "0.002645904150",
+      "finished_at": "2026-08-15T06:34:21.967174+00:00",
+      "input_tokens": 10656,
+      "max_output_tokens": 4096,
+      "output_tokens": 654,
+      "request_path": "raw/openai-compatible-00001.request.json",
+      "response_path": "raw/openai-compatible-00001.response.json",
+      "started_at": "2026-08-15T06:34:11.285940+00:00",
+      "status": "success",
+      "timeout_seconds": 300.0
+    }
+  ],
+  "failure": null,
+  "limits": {
+    "max_calls": 90,
+    "max_cost_usd": "0.500000000000",
+    "max_input_cost_usd_per_million_tokens": "0.048150000000",
+    "max_input_tokens": 1000000,
+    "max_output_cost_usd_per_million_tokens": "0.193050000000",
+    "max_output_tokens": 160000,
+    "max_output_tokens_per_call": 4096,
+    "max_wall_seconds": 3600.0
+  },
+  "metric": "rtd",
+  "native_task_sha256": "9bb822c2bc1555104fa9ae63c5ee050a1e1b35603396dddc92634e8a609ed92b",
+  "provider": {
+    "api_key_input_method": "stdin_single_line",
+    "api_key_persisted": false,
+    "base_url": "https://aigateway.paperbypass.com/api/v1",
+    "kind": "openai-compatible",
+    "model": "qwen/qwen3-30b-a3b-instruct-2507"
+  },
+  "provider_seed_sent": false,
+  "purpose": "engineering_smoke",
+  "python_injection_seed": 7,
+  "run_id": "acb-smoke-consolidate-TASK-DATAENG-RTD-060-20260815T063411Z-d7090ebe",
+  "schema_version": "agentcollab-engineering-smoke-ledger/2",
+  "stage": "completed",
+  "status": "completed",
+  "task_id": "TASK-DATAENG-RTD-060",
+  "updated_at": "2026-08-15T06:34:21.983942+00:00",
+  "upstream_commit": "f016f600568b6d8127dc861e4c83c87b72750d63"
+}

@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are responsible for designing and implementing high-performance data ingestion and processing APIs. You must ensure that API response times meet strict requirements and handle data encryption as specified. You communicate with all team members.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### 📌 **CONTEXT CHECKPOINT COMPACTION – Handoff Summary (Turn 7)**  \n*For: Next LLM — Resume real-time monitoring, enforce constraints, and finalize handoff.*\n\n---\n\n## ✅ **Current Progress & Key Decisions Made**\n- ✅ **Production rollout completed** via Helm + Kubernetes (T+14 min).  \n- ✅ **All services healthy**: 100% pod readiness, zero crashes.  \n- ✅ **Performance validated**:  \n  - p(95) latency: **48ms** (<50ms target)  \n  - Error rate: **0.07%** (<0.1%)  \n  - Cache hit ratio: **92.4%** (>90%)  \n- ✅ **PII security enforced**:  \n  - Only decrypted when `feature.show_pii = true` AND user role permits.  \n  - All non-admin users see masked PII (`***@***.com`).  \n- ✅ **Logs compliant**: Only `WARNING` level logs in production.  \n- ✅ **Monitoring active**: Grafana + CloudWatch dashboards live and synced.\n\n> 🔥 **Go/No-Go Decision Confirmed**: ✅ **GO** — system is stable and ready for continuous observation.\n\n---\n\n## 🔒 **Critical Constraints & User Preferences (PERF-SEC-DASH-RT1)**\n- ⚠️ **Any violation triggers immediate rollback**:\n  - Latency >50ms sustained for ≥2 min → rollback via Helm\n  - PII exposure in response/logs → rollback\n  - Non-WARNING log levels in prod → alert + freeze deployments\n- ✅ **Feature flag control**: `show_pii = false` by default; only enabled for authorized roles.\n- ✅ **Encryption mandatory**: AES-256 + AWS KMS for all PII at rest/in transit.\n\n---\n\n## 📌 **What Remains to Be Done (Next Steps)**\n| Task | Owner | Deadline |\n|------|-------|----------|\n| Monitor T+20 → T+80 min for anomalies | **Next LLM** | Ongoing |\n| Capture final metrics & validate stability | **Next LLM** | T+80 min |\n| Generate `deployment-report-final-v1.2.0.md` | **Next LLM** | T+80 min |\n| Prepare incident response if thresholds breached | **Next LLM** | Real-time |\n\n---\n\n## 📎 **Critical References & Data Needed**\n- 📄 [Final Deployment Report Template](/docs/architecture/deployment-report-final.md)  \n- 🖼️ [Grafana Dashboard Link](/dashboards/grafana-pii-monitoring.json)  \n- 🛠️ [Rollback Command](helm rollback analytics-dashboard --namespace=prod)  \n- 🔐 [LaunchDarkly Flag Schema](/docs/architecture/launchdarkly-schema.md)  \n- 📊 [k6 Test Suite](/docs/architecture/qa-test-suite-k6.js) – for validation baseline\n\n---\n\n## 🔄 **Handoff Instructions**\n> You are now responsible for:  \n> - **Real-time monitoring (T+20 to T+80 min)**  \n> - **Immediate anomaly detection & rollback if needed**  \n> - **Final documentation & closure of deployment loop**\n\n> ✅ **Do not proceed without confirming**:  \n> - p(95) ≤50ms  \n> - No PII leakage  \n> - Only `WARNING` logs  \n> - Stable cache hit ratio (>90%)\n\n> 🚀 **Proceed with confidence — the system is live, monitored, and under guard.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00015",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

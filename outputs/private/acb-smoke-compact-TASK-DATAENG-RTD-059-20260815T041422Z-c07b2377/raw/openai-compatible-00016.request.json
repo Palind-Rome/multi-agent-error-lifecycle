@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Data Architect. You receive input from both the Ingestion Engineer and the Transformation Specialist. Your primary responsibility is to synthesize this information, define the final data warehouse schema, and ensure all data governance, privacy, and retention policies are rigorously applied. You must produce a comprehensive data pipeline design document that explicitly outlines the anonymization technique and data retention policy. Your design must be reviewed by the Compliance Officer.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION: HANDOFF SUMMARY**\n\n---\n\n### 📌 **CURRENT PROGRESS & KEY DECISIONS**\n- **Pipeline DAG**: 28-turn convergence process completed through Turn 27 (cross-functional compliance review).\n- **Ingestion Layer**: Kafka consumer configured with DLQ; PII tokenization via salted SHA-256 implemented at ingestion.\n- **Transformation Layer**: All PII fields replaced with anonymized tokens; aggregations use only hashed identifiers.\n- **Data Architecture**: Final schema (`analytics_prod.customer_interactions_mart`) designed with daily partitioning and time-based clustering.\n- **Retention Policy**: Automated purge job defined to run daily at 02:00 UTC, deleting records older than exactly 93 days.\n- **Compliance Validation**: All agents have signed off on anonymization and purge logic. No PII present in any layer or backup.\n\n---\n\n### 🔒 **CRITICAL CONSTRAINTS & USER PREFERENCES**\n- ✅ **[ANON-HASH-PII]**: All PII must be tokenized using **non-reversible, salted SHA-256** (salts from HashiCorp Vault, never hardcoded).\n- ✅ **[PURGE-93DAYS]**: Exact 93-day retention enforced — no approximations, no manual overrides.\n- ✅ **No original PII may persist anywhere**, including backups, logs, or staging.\n- ✅ Compliance Officer has **veto power** over production rollout.\n\n---\n\n### ⏭️ **WHAT REMAINS TO BE DONE (NEXT STEPS)**\n1. **Final Approval**: Sarah Connor (Team Lead) must approve go-live after Turn 28 sign-off.\n2. **Go-Live Execution**: Deploy pipeline to production environment with full monitoring enabled.\n3. **Post-Deployment Monitoring**: Monitor first 72 hours for:\n   - Ingestion latency\n   - DLQ spikes\n   - Purge job success rate\n   - Datadog alert triggers\n4. **Post-Mortem Documentation**: Record lessons learned and update governance playbook.\n\n---\n\n### 📎 **CRITICAL DATA / REFERENCES FOR CONTINUATION**\n- **Kafka Topic**: `customer_interactions_v2` (source)\n- **Anonymization Salt Vault Path**: `vault://secrets/pipeline/pii/salts`\n- **Purge Job SQL Snippet**:\n  ```sql\n  DELETE FROM analytics_prod.customer_interactions_stg \n  WHERE event_timestamp < CURRENT_DATE - 93;\n  ```\n- **Compliance Log Table**: `analytics_prod.logs.compliance_purge_log`\n- **Datadog Metrics**: `pipeline_ingest_latency`, `data_retention_purge_success`, `dlq_rate`\n\n---\n\n> ✅ **Handoff Complete**  \n> Next LLM: Proceed to **final approval and go-live execution** under strict enforcement of [ANON-HASH-PII] and [PURGE-93DAYS].",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00016",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

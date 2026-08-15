@@ -1,0 +1,8 @@
+{
+  "body_text": "{\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"message\":{\"content\":\"> **I have received and will enforce [ANON-HASH-PII] and [PURGE-93DAYS] in my role.**  \\n> *— Data Architect, Analytics Warehouse Design & Governance*\",\"role\":\"assistant\"}}],\"created\":1786739191,\"id\":\"chatcmpl-644e3d16-6134-959b-81f0-e9738e22829a\",\"model\":\"qwen/qwen3-30b-a3b-instruct-2507\",\"object\":\"chat.completion\",\"usage\":{\"completion_tokens\":45,\"prompt_tokens\":3809,\"total_tokens\":3854}}",
+  "call_id": "openai-compatible-00003",
+  "headers": {
+    "content-type": "application/json"
+  },
+  "http_status": 200
+}

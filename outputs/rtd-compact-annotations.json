@@ -1,0 +1,77 @@
+{
+  "schema": "rq1-rtd-compact-semantic-annotations/1",
+  "protocol": "codex-compact-handoff",
+  "model": "qwen/qwen3-30b-a3b-instruct-2507",
+  "n_tracers": 9,
+  "annotators": "llm-judge + human review",
+  "tracers": [
+    {
+      "task_id": "TASK-DATAENG-RTD-060",
+      "tracer_id": "THRESHOLD-QT91",
+      "compaction": "semantic_preserved",
+      "downstream": "semantic_preserved",
+      "first_loss_stage": "none"
+    },
+    {
+      "task_id": "TASK-SWE-RTD-092",
+      "tracer_id": "PERF-SEC-DASH-RT1",
+      "compaction": "semantic_preserved",
+      "downstream": "omitted",
+      "first_loss_stage": "downstream"
+    },
+    {
+      "task_id": "TASK-SWE-RTD-105",
+      "tracer_id": "PIIMASK-SH256",
+      "compaction": "semantic_preserved",
+      "downstream": "semantic_preserved",
+      "first_loss_stage": "none"
+    },
+    {
+      "task_id": "TASK-DEVOPS-RTD-165",
+      "tracer_id": "PROXY-SEC203",
+      "compaction": "semantic_preserved",
+      "downstream": "semantic_preserved",
+      "first_loss_stage": "none"
+    },
+    {
+      "task_id": "TASK-DATAENG-RTD-108",
+      "tracer_id": "TECH-BQ-99",
+      "compaction": "semantic_preserved",
+      "downstream": "omitted",
+      "first_loss_stage": "downstream"
+    },
+    {
+      "task_id": "TASK-DATAENG-RTD-108",
+      "tracer_id": "DQ-SCORE-099",
+      "compaction": "semantic_preserved",
+      "downstream": "semantic_preserved",
+      "first_loss_stage": "none"
+    },
+    {
+      "task_id": "TASK-DATAENG-RTD-059",
+      "tracer_id": "ANON-HASH-PII",
+      "compaction": "semantic_preserved",
+      "downstream": "semantic_preserved",
+      "first_loss_stage": "none"
+    },
+    {
+      "task_id": "TASK-DATAENG-RTD-059",
+      "tracer_id": "PURGE-93DAYS",
+      "compaction": "semantic_preserved",
+      "downstream": "semantic_preserved",
+      "first_loss_stage": "none"
+    },
+    {
+      "task_id": "TASK-DEVOPS-RTD-103",
+      "tracer_id": "PERFSEC-DP89",
+      "compaction": "semantic_preserved",
+      "downstream": "distorted",
+      "first_loss_stage": "downstream"
+    }
+  ],
+  "human_review": {
+    "agreement": "9/9 confirmed",
+    "cohens_kappa": 1.0,
+    "n": 9
+  }
+}

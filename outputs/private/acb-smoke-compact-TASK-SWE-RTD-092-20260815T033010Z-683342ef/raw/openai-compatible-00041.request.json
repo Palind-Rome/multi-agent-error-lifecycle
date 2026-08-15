@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You build the user interface and ensure efficient data visualization. You must consider the real-time refresh rates and the display of encrypted data if applicable, coordinating closely with the backend and security teams. You communicate with all team members.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n# 📌 **HANDOFF SUMMARY – DEPLOYMENT LIFECYCLE v1.2.0 CLOSURE**  \n*For: Next LLM Agent – Resume Task Continuation*\n\n---\n\n## ✅ **CURRENT PROGRESS & KEY DECISIONS MADE**\n\n- **Final report published**:  \n  `https://docs.example.com/reports/v1.2.0/deployment-report-final-v1.2.0.md`  \n  → Publicly accessible, HTTPS + HSTS enforced, `Content-Type: text/markdown`.\n\n- **Immutable archive secured**:  \n  All artifacts (k6 results, Helm state, config files, rollback logs) encrypted via KMS (`alias/prod-deploy-archive`) and stored in `s3://prod-deploy-reports/reports/v1.2.0/`.  \n  → WORM policy applied: **7-year retention**, Governance Mode enabled.\n\n- **Stakeholders notified**:  \n  - Slack: `#prod-deployments` message sent ✅  \n  - Jira: Ticket `DEPLOY-4567` updated and closed ✅\n\n- **Audit trail complete**:  \n  All logs, status files, and verification steps confirmed. No gaps detected.\n\n- **System health verified**:  \n  Grafana, CloudWatch, PagerDuty — all clear at T+85. No active alerts.\n\n---\n\n## 🔑 **CRITICAL CONTEXT & CONSTRAINTS**\n\n- **WORM Policy Enforced**:  \n  No deletions or modifications allowed on `/reports/v1.2.0/` in S3. Any attempt will fail.\n\n- **PII Handling**:  \n  Only `admin_user_001` has `show_pii=true`. All other users: `show_pii=false`.  \n  → Compliance with data privacy policy.\n\n- **Immutable State Required**:  \n  Do **not** re-execute any prior steps. This is a final closure phase — resume from last known state.\n\n- **No Duplication Allowed**:  \n  All actions already validated. Re-running commands will trigger validation errors.\n\n---\n\n## ⏭️ **WHAT REMAINS TO BE DONE (NEXT STEPS)**\n\n1. **Append final handoff confirmation to log**:  \n   ```bash\n   echo \"Handoff completed. Deployment lifecycle v1.2.0 officially closed.\" >> /logs/handoff-completion.log\n   ```\n   - Ensure timestamp is current (ISO 8601 format).\n   - Confirm no duplicate entries.\n\n2. **Verify public report accessibility via `curl -I`**:  \n   Check for:\n   - `HTTP/2 200`\n   - `Strict-Transport-Security`, `ETag`, `Last-Modified`\n   - Valid `Content-Type: text/markdown`\n\n3. **Confirm `/handoffs/v1.2.0-status.json` contains final state**:\n   ```json\n   {\n     \"status\": \"closed\",\n     \"closure_timestamp\": \"2025-04-05T14:45:00Z\",\n     \"worm_enabled\": true,\n     \"audit_trail_complete\": true\n   }\n   ```\n\n4. **Terminate agent after final verification**.\n\n---\n\n## 📎 **KEY REFERENCES & DATA FOR CONTINUATION**\n\n- Final Report URL:  \n  [https://docs.example.com/reports/v1.2.0/deployment-report-final-v1.2.0.md](https://docs.example.com/reports/v1.2.0/deployment-report-final-v1.2.0.md)\n\n- Status File:  \n  `/handoffs/v1.2.0-status.json`\n\n- Log File:  \n  `/logs/handoff-completion.log`\n\n- Archive Location:  \n  `s3://prod-deploy-reports/reports/v1.2.0/` (WORM-enabled)\n\n- Jira Ticket: `DEPLOY-4567` (Closed)\n\n---\n\n> ✅ **Next Agent: Resume from Step 1 above. No rework. No deviation. Final closure only.**  \n> 🔒 **All systems are sealed. Proceed with caution.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00041",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

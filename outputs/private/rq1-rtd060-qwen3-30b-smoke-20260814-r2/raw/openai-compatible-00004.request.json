@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Data Pipeline Specialist. Your task is to design and configure data quality monitoring logic based on the Orchestrator's requirements. Ensure all numerical thresholds and constraints are accurately implemented.",
+        "role": "system"
+      },
+      {
+        "content": "**Relay of Critical Constraints to Downstream Agents – Data Quality Monitoring System Setup**\n\n---\n\n**To:** Data Pipeline Specialist, Data Platform SRE Team  \n**From:** Data Engineering Orchestrator  \n**Subject:** URGENT: Precise Threshold Requirement for Daily Data Volume Monitoring – Action Required  \n\n---\n\n### 🔴 **CRITICAL CONSTRAINT [THRESHOLD-QT91] – STRICTLY ENFORCED**  \n> **The daily inbound data volume must be flagged if it deviates by more than 3.75% from the 7-day rolling average.**  \n\n- **This threshold is non-negotiable and must be applied exactly as specified (3.75%, not rounded to 3.8% or 4%).**  \n- **Deviation calculation must use absolute percentage difference:**  \n  \\[\n  \\text{Deviation} = \\left| \\frac{\\text{Today's Volume} - \\text{7-Day Rolling Average}}{\\text{7-Day Rolling Average}} \\right| \\times 100\n  \\]\n- **Flagging condition:** If deviation > 3.75%, trigger alert immediately.\n\n---\n\n### 📌 **System Context & Operational Requirements**\n\n- **Data Source:** `user_activity_events` Kafka topic  \n- **Monitoring Frequency:** Daily at **03:00 UTC**  \n- **Historical Data Retention:** 90 days of raw volume metrics (must be retained for accurate rolling average computation)  \n- **Rolling Window:** 7-day moving average — recalculated daily using the most recent 7 days of data (inclusive of current day’s data prior to alerting)  \n- **Alert Notification Channel:** `#data-alerts` Slack channel  \n- **Responsible Team:** Data Platform SRE  \n\n---\n\n### ✅ **Action Items for Data Pipeline Specialist**\n\n1. **Implement monitoring logic** that computes the 7-day rolling average of daily inbound data volume (count of messages/events per day).\n2. **Apply exact 3.75% threshold** in the deviation check — no rounding, no approximation.\n3. **Ensure alerting system triggers only when deviation exceeds 3.75%**, with clear metadata:\n   - Today’s volume\n   - 7-day rolling average\n   - Calculated deviation (%)\n   - Timestamp (UTC)\n4. **Validate against historical data** (last 90 days) to confirm accuracy of rolling average and threshold behavior.\n5. **Document configuration** to explicitly state: *\"Threshold: 3.75% (exact value, no rounding)\"* in all relevant artifacts (code comments, config files, runbooks).\n\n---\n\n### ⚠️ **Critical Reminder**\n> Any deviation from the **exact 3.75% threshold** — even via rounding, misinterpretation, or default configuration — constitutes a violation of [THRESHOLD-QT91]. This may lead to false negatives (missed anomalies) or false positives (alert fatigue), both of which compromise data integrity and operational trust.\n\n---\n\n**Final Note:**  \nThis requirement is part of a broader data quality governance framework. Accuracy in execution is paramount. Confirm receipt and implementation plan within 24 hours.\n\n---  \n**Orchestrator Signature:**  \n*Data Engineering Orchestrator*  \n*Date: 2025-04-05*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00004",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

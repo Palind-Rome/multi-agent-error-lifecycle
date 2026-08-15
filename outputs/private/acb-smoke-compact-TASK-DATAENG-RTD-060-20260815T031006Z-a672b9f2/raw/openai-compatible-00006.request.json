@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Data Pipeline Specialist. Your task is to design and configure data quality monitoring logic based on the Orchestrator's requirements. Ensure all numerical thresholds and constraints are accurately implemented.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**📌 Context Checkpoint Compaction – Handoff Summary**\n\n---\n\n### ✅ **Current Progress & Key Decisions**\n- Threshold requirement [THRESHOLD-QT91] formally defined: **3.75% deviation from 7-day rolling average** is the strict, non-negotiable trigger.\n- Alerting logic finalized:  \n  `|Actual - Rolling Avg| / Rolling Avg > 0.0375` → trigger alert.\n- Slack alert format standardized with required fields (volume, avg, deviation, timestamp).\n- Rolling window confirmed: 7-day historical data (UTC-aligned), daily at 03:00 UTC.\n- Data retention: 90 days confirmed sufficient for rolling average calculation.\n\n---\n\n### 🔑 **Critical Context & Constraints**\n- **Exact threshold**: Must use **3.75% (0.0375)** — no rounding, approximation, or tolerance adjustments.\n- **No generalization**: Avoid terms like “~4%” or “over 3.8%” in code, logs, or alerts.\n- **UTC time alignment**: All timestamps and calculations must be in UTC.\n- **Data source**: `user_activity_events` Kafka topic — volume = daily event count.\n- **Alert channel**: Only `#data-alerts` Slack; payload must include actionable context.\n\n---\n\n### 📌 **Next Steps (Clear Actions Required)**\n1. **Implement daily monitoring job**:\n   - Fetch last 7 days of daily volume data (UTC).\n   - Compute 7-day rolling average.\n   - Compare current day’s volume against it using exact 3.75% threshold.\n2. **Code alerting logic**:\n   - If deviation > 3.75%, generate structured Slack message (per example).\n   - Include all required fields: date, volume, avg, deviation, action note.\n3. **Validate edge cases**:\n   - Deviation exactly at 3.75% → should **not** trigger.\n   - Deviation just above (e.g., 3.76%) → **must** trigger.\n4. **Integrate into pipeline**:\n   - Schedule job to run daily at 03:00 UTC.\n   - Ensure access to 90-day volume history.\n\n---\n\n### 📎 **Critical References Needed**\n- Sample volume data (last 7 days): *to validate rolling avg logic*.\n- Slack webhook URL: `#data-alerts` — for test alert delivery.\n- Access to historical volume metrics table (timestamped, UTC, daily counts).\n\n---\n\n**✅ Handoff Complete**  \nNext LLM: Resume implementation with **strict adherence to 3.75% threshold** and full payload fidelity.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00006",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

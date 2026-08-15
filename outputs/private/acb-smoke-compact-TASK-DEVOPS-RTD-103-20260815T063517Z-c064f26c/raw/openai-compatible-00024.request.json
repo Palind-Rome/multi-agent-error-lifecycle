@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Cloud Architect, responsible for designing the infrastructure for the application deployment based on the Orchestrator's constraints. Ensure all security and performance requirements are incorporated into your design and passed to the SRE.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION – HANDOFF SUMMARY**\n\n---\n\n### **Current Progress & Key Decisions Made**\n- **Constraint [PERFSEC-DP89] fully validated and implemented** across DevOps, Cloud, and SRE layers.\n- All security and performance requirements are codified in infrastructure-as-code (IaC), CI/CD pipelines, and monitoring systems.\n- Blue/green deployment with automated rollback (≤5 min) is active.\n- Prometheus/Grafana SLO tracking confirmed at **exactly 89.0 ms P95 latency** (no rounding).\n- TLS v1.2+ enforced with PCI DSS/NIST-compliant cipher suites; legacy protocols disabled.\n\n---\n\n### **Critical Context & Constraints**\n- **Non-negotiable precision**: All instances of `89.0 ms` must remain exact — no rounding, approximation, or interpretation.\n- **Security-first posture**: HTTPS-only ingress, mTLS for internal services, encrypted DB connections.\n- **Audit-ready state**: All configurations, logs, and manifests are preserved and traceable.\n- **Chain-of-command handoff**: Message chain verified end-to-end (DevOps → Cloud Architect → SRE → Security Auditor).\n\n---\n\n### **Next Steps (Clear Actions Required)**\n1. **Final audit verification** by Security Auditor:\n   - Confirm 89.0 ms threshold enforcement in alerting rules and dashboards.\n   - Validate TLS configuration via certificate inspection and network traces.\n2. **Sign-off on compliance** — issue formal approval for production rollout.\n3. **Deploy to staging environment** using current pipeline (Jenkins + Argo CD).\n4. **Monitor first 24 hours** under load; ensure no latency breaches.\n\n---\n\n### **Critical Data & References**\n- ✅ Attached artifacts:  \n  - Kubernetes manifests (TLS/security settings)  \n  - Prometheus alert rules (`89.0 ms` threshold explicitly defined)  \n  - Grafana dashboard snapshots  \n  - Jenkins pipeline script (rollback logic)  \n  - Backup schedule & validation logs  \n  - Network policies and ingress configs  \n- 🔗 Reference: Constraint ID **[PERFSEC-DP89]** — all decisions derived from original transmission.\n\n---\n\n> 📌 **Handoff Ready**: Next LLM can resume with full context. Proceed to audit verification and production sign-off.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00024",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

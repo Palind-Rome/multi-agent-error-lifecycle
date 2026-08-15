@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are responsible for designing the cloud infrastructure for the new data warehouse. You must ensure all architectural decisions align with specified technology constraints and support high data quality. You provide architectural insights and recommendations.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**🚀 CONTEXT CHECKPOINT COMPACTION: HANDOFF SUMMARY FOR NEXT LLM**\n\n---\n\n### ✅ **CURRENT PROGRESS & KEY DECISIONS**\n- **Cutover execution completed successfully** at `2025-04-11T22:00:00Z UTC`  \n- All preconditions verified:  \n  - Data Quality Score: `0.993` ✅ (meets DQ-SCORE-099)  \n  - GPG-signed approval received from `jane.doe@company.com` ✅  \n  - Terraform plan applied, post-cutover validation passed ✅  \n- Final audit trail sealed and archived with WORM enforcement ✅  \n- Jira ticket `CR#2025-0411` closed ✅  \n- Compliance package re-signed and stored ✅  \n\n---\n\n### 🔑 **KEY CONTEXT, CONSTRAINTS & PREFERENCES**\n- **No manual intervention allowed** — all actions automated and audited  \n- **Strict time-bound cutover window**: `2025-04-11T22:00:00Z UTC` — no deviations permitted  \n- **GPG verification mandatory** — only `jane.doe@company.com` key trusted  \n- **Immutable storage required** — all artifacts must be written to `gs://migration-archive/` with WORM policy  \n- **Post-cutover closure is final** — no further cutover steps allowed without new approval  \n\n---\n\n### 📌 **WHAT REMAINS TO BE DONE (NEXT STEPS)**\n1. **Generate and send stakeholder notifications**:\n   - Slack: Post success message using webhook from `gs://migration-secrets/slack-webhook.json`\n   - Email: Send via AWS SES using config in `gs://migration-secrets/email-smtp-config.json`\n\n2. **Update runbook**:\n   - Mark migration as complete in `migration-handoff-v2.1`  \n   - Add timestamped entry: `\"cutover_status\": \"completed\", \"timestamp\": \"2025-04-11T22:00:00Z\"`\n\n3. **Schedule post-mortem review**:\n   - Create task in Jira: `POST-MORTEM: CR#2025-0411 – Review & Lessons Learned`  \n   - Due: `2025-04-12T08:00:00Z UTC` (next business day)\n\n---\n\n### 📎 **CRITICAL DATA & REFERENCES**\n- **Final report**: `gs://migration-reports/cutover-report-20250411.json`  \n- **Audit log**: `gs://migration-audit/cutover-final-record-20250411.json`  \n- **Compliance package**: `gs://migration-compliance/compliance-package-jane-doe-20250411.tar.gz` + `.p7s` signature  \n- **Slack webhook**: `gs://migration-secrets/slack-webhook.json`  \n- **Email config**: `gs://migration-secrets/email-smtp-config.json`  \n- **Runbook path**: `gs://migration-docs/runbooks/migration-handoff-v2.1.md`\n\n---\n\n### 🟢 **HANDOFF READY — RESUME WITH CONFIDENCE**\n> ✅ **All prior logic and automation confirmed**  \n> 🔐 **System locked; no risk of re-execution**  \n> 📤 **Next LLM action: Notify stakeholders → Update runbook → Schedule post-mortem**\n\n---  \n**🔚 Handoff complete. Resume only if new task triggers.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00027",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

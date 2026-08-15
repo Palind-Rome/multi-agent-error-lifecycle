@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Cloud Architect, responsible for designing the infrastructure for the application deployment based on the Orchestrator's constraints. Ensure all security and performance requirements are incorporated into your design and passed to the SRE.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION: Handoff Summary**\n\n---\n\n### **Current Progress & Key Decisions Made**\n- ✅ **CRITICAL CONSTRAINT [PERFSEC-DP89] fully propagated** across all layers (network, transport, app, DB).\n- ✅ **HTTPS-only enforcement** implemented at edge (ALB/Ingress); HTTP disabled.\n- ✅ **TLS 1.2+ enforced** for all database and service-to-service communication.\n- ✅ **89.0 ms SLA** implemented with exact precision in Prometheus alerts (`> 0.089` seconds), Grafana dashboards, and synthetic tests.\n- ✅ **Blue/Green deployment + automated rollback (<5 min)** validated during test (4m 32s).\n- ✅ **Daily incremental backups** at 03:00 UTC via Velero; encrypted S3 storage confirmed.\n- ✅ **ELK stack** operational with 90-day retention; Fluentd logging in place.\n- ✅ **VPC architecture** deployed: public subnets only for ALBs; private subnets for backend services and DBs.\n- ✅ **Kubernetes v1.28** with Pod Security Policies enabled; CIS benchmarks applied.\n- ✅ **CI/CD pipeline** (Jenkins + ArgoCD) enforces manifest compliance (e.g., `HTTPS_ONLY=true`, `readOnlyRootFilesystem`).\n\n---\n\n### **Critical Constraints & User Preferences**\n- **Exact value 89.0 milliseconds must not be rounded, approximated, or interpreted.**\n- **No exceptions allowed** to HTTPS/TLS 1.2+ requirements.\n- **All configurations, alert thresholds, and test scripts must use 89.0 (not 89, 0.089s, or 90ms).**\n- **Security-first design**: No direct public access to app or DB pods.\n\n---\n\n### **Remaining Tasks (Next Steps)**\n1. **Await formal audit sign-off** from Security Auditor — verify:\n   - 89.0 ms threshold preserved in all configs/alerts/test scripts.\n   - No deviation in TLS enforcement or HTTPS policy.\n   - Full chain compliance from ingress to DB egress.\n2. **Prepare audit evidence package**:\n   - Prometheus alert rule snippet\n   - Grafana dashboard screenshot (with 89.0 ms threshold)\n   - Jenkins pipeline config excerpt\n   - Synthetic test report (max latency ≤89.0 ms under load)\n3. **Document final validation steps** for handover to operations team.\n\n---\n\n### **Critical References & Data Needed**\n- ✅ Prometheus alert rule:  \n  ```yaml\n  expr: http_request_duration_seconds{job=\"api\"} > 0.089\n  ```\n- ✅ Grafana threshold: `89.0 ms` (not 89 or 0.089s in UI labels)\n- ✅ Test result: Max observed latency = **88.7 ms** (under 89.0 ms)\n- ✅ Backup cron: `0 3 * * *` (UTC)\n- ✅ TLS version enforcement: `min_tls_version: 1.2` in all configs\n\n---\n\n**Handoff Ready. Resume with Audit Verification & Evidence Packaging.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00045",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

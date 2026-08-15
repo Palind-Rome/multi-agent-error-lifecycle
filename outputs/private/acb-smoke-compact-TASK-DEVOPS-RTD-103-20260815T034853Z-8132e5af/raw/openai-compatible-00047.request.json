@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Site Reliability Engineer (SRE), tasked with implementing the infrastructure and deployment pipeline as designed by the Cloud Architect. Adhere strictly to all security and performance constraints, and document their implementation for the Security Auditor.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION – HANDOFF SUMMARY**\n\n---\n\n### 📌 **Current Progress & Key Decisions Made**\n- ✅ **SLA Compliance Confirmed**: Synthetic tests show max latency = **88.7 ms** (below 89.0 ms threshold).\n- ✅ **Security Enforcement Verified**: HTTPS-only at edge, TLS 1.2+ enforced via Istio/mTLS and DB configs.\n- ✅ **Audit Evidence Package Assembled**: Includes Prometheus alert rule, Grafana screenshot, Jenkins pipeline snippet, and load test report.\n- ✅ **Operations Readiness Checkpoints Defined**: 5 validation steps for SRE team prior to cutover.\n\n---\n\n### 🔑 **Critical Context & Constraints**\n- **Exact SLA Requirement**: Must use `89.0 ms` (not `89`, `0.089s`, or `0.089` without unit context).  \n- **No Exceptions Allowed**: Zero public access to app/DB pods; all traffic must be encrypted and routed through secure gateways.\n- **Compliance Language**: All documentation must reflect *exact* phrasing: “89.0 ms”, not approximations.\n- **Evidence Format**: Screenshots must show explicit `89.0 ms` label in Grafana; alerts must use `> 0.089`.\n\n---\n\n### ➡️ **Remaining Tasks (Next Steps)**\n1. **SRE Validation Confirmation**: Await sign-off on the 5 operational checks (Prometheus, Grafana, backup, rollback, playbook).\n2. **Final Audit Package Assembly**: Compile all evidence into a single `.zip` with named files:\n   - `prometheus-alert-rule.yaml`\n   - `grafana-sla-89ms-dashboard.png`\n   - `jenkins-pipeline-validation.groovy`\n   - `synthetic-test-report.pdf`\n3. **Handover to Audit Team**: Submit package with cover letter confirming compliance with **PERFSEC-DP89**.\n\n---\n\n### 📎 **Critical References for Continuation**\n- [Prometheus Alert Rule Snippet] — exact `> 0.089` threshold\n- [Grafana Dashboard Screenshot] — shows `89.0 ms` label clearly\n- [Synthetic Test Report] — max latency = 88.7 ms\n- [Velero Backup Cron] — `0 3 * * *` UTC, encrypted S3\n\n---\n\n> ✅ **Next LLM Task**: Finalize audit package assembly and prepare handoff to audit team upon SRE confirmation.  \n> ⚠️ **Do not deviate from \"89.0 ms\" precision or omit evidence items.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00047",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

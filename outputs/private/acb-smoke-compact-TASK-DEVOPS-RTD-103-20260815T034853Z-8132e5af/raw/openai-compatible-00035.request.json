@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Security Auditor, responsible for verifying that the implemented deployment pipeline and infrastructure meet all specified security and performance compliance standards. Flag any deviations or non-compliance issues.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**🔄 CONTEXT CHECKPOINT COMPACTION: Handoff Summary**\n\n---\n\n### ✅ **Current Progress & Key Decisions**\n- Audit package (`AUDIT-2025-04-05-PERFSEC-DP89.pdf`) and `metadata.json` successfully prepared.\n- Digital signature generated via `signify` → `AUDIT-2025-04-05-PERFSEC-DP89.pdf.sig`.\n- Submission initiated to `https://audit.securecloud.example.com/v1/submissions` with tracking ID: **`AUDIT-SUB-774291`**.\n- Monitoring loop started: polling `/v1/submissions/AUDIT-SUB-774291/status` every 30s until `APPROVED` or `REJECTED`.\n- All compliance checks passed (TLS v1.2+, P95 ≤ 89ms, rollback in 4m37s, evidence chain complete).\n\n---\n\n### 🔒 **Critical Constraints & Preferences**\n- **No manual changes allowed**: All actions must be IaC-driven.\n- **TLS v1.2+ enforced**: Verified via ALB, RDS, Istio; no exceptions.\n- **Evidence immutability required**: Signed PDF + SHA-256 + timestamped metadata.\n- **Chaos drill results valid**: No re-run needed if rejected due to missing evidence — only metadata fix required.\n- **Slack alerting on approval/rejection**: Must trigger post-decision.\n\n---\n\n### 📌 **Next Steps (To Be Continued by Next LLM)**\n1. **Monitor audit status**:\n   - Poll `https://audit.securecloud.example.com/v1/submissions/AUDIT-SUB-774291/status` every 30s.\n   - Timeout after 15 minutes → escalate via PagerDuty (`alert: audit-submission-timeout`).\n2. **If APPROVED**:\n   - Archive files to `audit/2025-04-05/`.\n   - Update `ci/pipeline-status.yml` with `status: compliant`, `audit_ref`, and `approved_at`.\n   - Trigger CI/CD revalidation.\n   - Send Slack notification with link to audit report.\n3. **If REJECTED**:\n   - Parse `reason` and `evidence_required` from response.\n   - If missing certificate pinning verification:\n     - Add `\"certs/db-mtls-check.txt#fingerprint-match\"` to `evidence_chain`.\n     - Re-sign and resubmit with new ID (`AUDIT-SUB-774292`).\n   - Do **not** re-run chaos drill.\n\n---\n\n### 📎 **Critical References**\n- **Audit Package**: `AUDIT-2025-04-05-PERFSEC-DP89.pdf`\n- **Metadata**: `metadata.json` (contains `evidence_chain`, `submitted_at`, `source`)\n- **Signature**: `AUDIT-2025-04-05-PERFSEC-DP89.pdf.sig`\n- **Submission Endpoint**: `https://audit.securecloud.example.com/v1/submissions`\n- **Tracking ID**: `AUDIT-SUB-774291`\n- **Rejection Example Response**:\n  ```json\n  {\n    \"status\": \"REJECTED\",\n    \"reason\": \"missing certificate pinning verification\",\n    \"evidence_required\": [\"certificate_fingerprint_match\"]\n  }\n  ```\n\n---\n\n> ✅ **Handoff Complete** – Resume monitoring and decision logic.  \n> ⚠️ **Do not re-execute chaos drill or modify infrastructure.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00035",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Backend Developer. Your task is to design the data flow and system architecture based on the Orchestrator's requirements, paying close attention to security constraints. You must communicate your design, including all specific security measures, to the QA Engineer.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n---\n\n### 📌 **CONTEXT CHECKPOINT COMPACTION: Handoff Summary**\n\n#### ✅ **Current Progress & Key Decisions Made**\n- **Security Protocol Finalized:** All PII must be masked using **SHA-256** (deterministic, unsalted) before storage in temporary queues.\n- **System Architecture Confirmed:**  \n  - Data flow includes immediate hashing upon ingestion.  \n  - TLS 1.3 enforced for all data-in-transit.  \n  - Audit logs at `AUDIT` level with 90-day retention.  \n  - OAuth 2.0 + JWT for API authentication with token validation.\n- **Compliance Framework Established:**  \n  - [PIIMASK-SH256] is a non-negotiable requirement across all layers.\n\n#### 🔑 **Critical Context & Constraints**\n- **No alternative hashing allowed:** MD5, SHA-1, bcrypt, or generic \"hashing\" are invalid. Only **SHA-256** is acceptable.\n- **No raw PII in queues/logs:** Even transient exposure is prohibited.\n- **Audit logging required:** Full context (user ID, IP, timestamp, action) for every PII access attempt.\n- **Test cases must validate SHA-256 specifically**, not just “hashing.”\n\n#### 📝 **Next Steps to Complete**\n1. **Backend Developer:**  \n   - Implement SHA-256 masking in data ingestion pipeline.  \n   - Confirm integration with message broker (e.g., Kafka/RabbitMQ) and audit log system.  \n   - Submit design diagram with explicit SHA-256 labeling.\n\n2. **QA Engineer:**  \n   - Write test cases using known SHA-256 vectors (e.g., `\"hello\"` → `a591a6d4...`).  \n   - Validate rejection of raw PII in queues.  \n   - Ensure no PII appears in logs or error messages.\n\n3. **Security Auditor:**  \n   - Review backend design and QA test cases.  \n   - Flag any deviation from [PIIMASK-SH256] as critical risk.  \n   - Approve final compliance package.\n\n#### 📎 **Critical References & Examples**\n- **SHA-256 Test Vector:**  \n  `input: \"john.doe@example.com\"` → `output: 8b7c3f1a2d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1`  \n  *(Use this exact format for validation)*\n- **Regulatory Alignment:** GDPR, CCPA, and internal security policy v3.1 require irreversible PII masking.\n- **Reference Doc:** `SEC-PII-MASKING-PROTOCOL-v2.0.pdf` (available in shared drive).\n\n---\n\n> ✅ **Handoff Ready. Next LLM: Resume with implementation, testing, and audit verification — strictly enforcing SHA-256.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00024",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

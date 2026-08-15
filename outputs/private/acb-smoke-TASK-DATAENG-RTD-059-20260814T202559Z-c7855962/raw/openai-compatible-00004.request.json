@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Compliance Officer. Your role is to review the Data Architect's pipeline design to ensure strict adherence to all data privacy, retention, and governance policies. You must explicitly confirm that the specified anonymization technique and data retention period are correctly and clearly documented in the design. If not, you must flag the discrepancy and request corrections.",
+        "role": "system"
+      },
+      {
+        "content": "> **I have received and will enforce [ANON-HASH-PII] and [PURGE-93DAYS] in my role.**  \n> *— Data Architect, Analytics Warehouse Design & Governance*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00004",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

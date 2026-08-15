@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Compliance Officer. Your role is to review the Data Architect's pipeline design to ensure strict adherence to all data privacy, retention, and governance policies. You must explicitly confirm that the specified anonymization technique and data retention period are correctly and clearly documented in the design. If not, you must flag the discrepancy and request corrections.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n---\n\n### 📌 **CONTEXT CHECKPOINT COMPACTION: Handoff Summary for LLM Resumption**\n\n---\n\n#### ✅ **Current Progress & Key Decisions Made**\n- Pipeline architecture finalized: **Kafka → Spark → Snowflake** with end-to-end anonymization.\n- **SHA-256 tokenization with rotating salts** implemented (salts sourced from AWS Secrets Manager).\n- **93-day data retention policy** enforced via daily Snowflake purge task using `DATE(ingest_ts)`.\n- All PII fields (`user_id`, `email`, `ip_address`) are **tokenized at ingestion**; no raw PII persists post-ingestion.\n- Staging environment fully validated: pipeline runs, logs sanitized, audit trail active.\n\n---\n\n#### 🔒 **Critical Context, Constraints & Preferences**\n- **PII Protection**: No raw personal data may appear in logs, tables, or error messages. All outputs must be tokenized.\n- **Retention Window**: Exactly 93 days. Purge must occur **on day 94**, not earlier or later.\n- **Salt Rotation**: Dynamic salts required; rotation schedule documented and enforced via AWS Secrets Manager.\n- **Compliance**: Must adhere to [DATA-PRIVACY-POL]. Audit logs must include only metadata and tokenized fields.\n- **Monitoring**: Alerts must trigger on failure, latency, or volume spikes (per Datadog config).\n\n---\n\n#### 🔜 **What Remains to Be Done (Next Steps)**\n1. **Deploy pipeline to production** (staging → prod) with IAM roles and DLQ configured.\n2. **Run end-to-end test**:\n   - Ingest synthetic record with `ingest_ts = 2025-01-01T00:00:00Z`\n   - Confirm record appears on day 1\n   - Verify it is **deleted by day 94 (2025-04-05)** via Snowflake purge task\n3. **Validate monitoring & alerts**:\n   - Test alert triggers (failure, duration, spike)\n   - Confirm log entries follow schema (no PII leakage)\n4. **Final compliance audit**:\n   - Review 100 sampled records for tokenization accuracy\n   - Confirm salt rotation history and documentation\n5. **Obtain approval** from Sarah Connor via `approval-tool` to launch.\n\n---\n\n#### 📎 **Critical References & Data Needed**\n- **Synthetic Test Record**:\n  ```json\n  {\n    \"event_timestamp\": \"2025-01-01T00:00:00Z\",\n    \"ingest_ts\": \"2025-01-01T00:00:00Z\",\n    \"user_id\": \"u12345\",\n    \"email\": \"alice@example.com\",\n    \"ip_address\": \"192.168.1.1\"\n  }\n  ```\n- **AWS Secrets Manager Path**: `/prod/data-pipeline/salts` (current salt versions)\n- **Snowflake Task Definition**: Daily purge of `analytics_prod.customer_interactions` where `DATE(ingest_ts) <= CURRENT_DATE() - 93`\n- **Audit Log Schema**: Structured JSON with `pii_status: \"anonymized\"`, no field values exposed\n- **Approval Tool Command**: `approval-tool --pipeline=customer-interactions-v2 --status=approved`\n\n---\n\n> ✅ **Handoff Ready**  \n> Next LLM can resume with full context — focus on **production deployment**, **test validation**, and **compliance sign-off**.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00024",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are a Security Auditor, responsible for verifying that the implemented deployment pipeline and infrastructure meet all specified security and performance compliance standards. Flag any deviations or non-compliance issues.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n---\n\n### 📌 **HANDOFF SUMMARY: CONTEXT CHECKPOINT COMPACTION**  \n*Resumed by next LLM — Ready to handle auditor interaction & compliance validation*\n\n---\n\n#### ✅ **CURRENT PROGRESS & KEY DECISIONS**\n- All pre-audit checks validated and **traceable** to artifacts:\n  - `LATENCY_THRESHOLD_MS: \"89.0\"` → confirmed in ConfigMap, Prometheus alert, load test.\n  - Load test 95th % latency: **87.4 ms ≤ 89.0 ms** → compliant.\n  - TLS 1.2+ enforced → verified via NGINX logs & config.\n  - Backup restore tested → successful with full integrity check.\n- Audit trail fully documented in `README.audit.md` with direct mappings to logs, configs, and test outputs.\n\n---\n\n#### 🔒 **CRITICAL CONTEXT & CONSTRAINTS**\n- **No approximations allowed**: Only exact values (e.g., 89.0, not 89).\n- **All evidence must be traceable**: Every claim links to a file, log, or command output.\n- **Live access is time-limited & logged**: Use signed URLs or vault-approved sessions only.\n- **No raw secrets exposed**: Redact or anonymize all sensitive data in responses.\n- **Deviation handling protocol mandatory**: Follow predefined scripts and documentation steps.\n\n---\n\n#### 🚩 **WHAT REMAINS TO BE DONE (NEXT STEPS)**\n1. **Await auditor feedback** (e.g., “Latency exceeded threshold” or “Missing TLS audit”).\n2. Upon receipt:\n   - Execute **scenario-specific response** (see deviation framework).\n   - Re-run tests if needed → validate results → update `README.audit.md`.\n   - Attach new evidence (logs, JSON reports) to `audit-package-v1.0.tar.gz`.\n3. Submit compliance status update via internal API:\n   ```bash\n   curl -X POST https://tracking.internal.example.com/api/compliance \\\n     -H \"Authorization: Bearer $INTERNAL_TOKEN\" \\\n     -d '{\"compliance_id\": \"PERFSEC-DP89\", \"status\": \"RESOLVED\", ...}'\n   ```\n4. Final sign-off: **PASS**, **TRACEABLE**, **AUDIT-READY**\n\n---\n\n#### 📎 **CRITICAL REFERENCES & DATA**\n- `./load-tests/perfsec-dp89-results.json` (SHA: a1b2c3...) → baseline latency\n- `alerts.yaml` → Prometheus alert expression: `> 0.089`\n- `ingress.yaml` → TLS enforcement config (`ssl_protocols TLSv1.2 TLSv1.3;`)\n- `velero restore logs` → `prod-restore-2025-04-05.log`\n- `README.audit.md` → current audit trail (append deviations here)\n\n---\n\n> ✅ **Handoff complete. Next LLM can now resume auditor interaction with full context, zero ambiguity.**  \n> 🔁 **Proceed with real-time response, deviation handling, and final compliance closure.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00063",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}
