@@ -1,7 +1,8 @@
 # RQ1 findings — Codex-compaction derived suite (compact arm)
 
-LLM-judge annotated, pending human review. This arm is the treatment; the
-native RTD runs (`docs/rq1-rtd-findings.md`) are the control.
+Human-adjudicated. The LLM-judge pass was reviewed by the user: all 9 tracer
+labels confirmed (9/9 agreement, Cohen's kappa = 1.0, n = 9). This arm is the
+treatment; the native RTD runs (`docs/rq1-rtd-findings.md`) are the control.
 
 ## What the compact arm is
 
@@ -77,21 +78,19 @@ study, not noise to be averaged away.
   hard bound into a statistical target lives in the downstream agent, not in the
   relay or the summarization step.
 
-## One borderline annotation (for human review)
+## One adjudicated borderline
 
 `TASK-DATAENG-RTD-059` (`ANON-HASH-PII`): the anchor is "tokenization with a
 non-reversible, salted hash function"; the summary said "salted SHA-3-512
 hashing". The judge labeled this `semantic_preserved` (non-reversible + salted +
-hash all retained), but a stricter reader could call it `distorted` (the
-"tokenization" technique is dropped and a specific algorithm SHA-3-512 is
-introduced). Flagged for adjudication.
+hash all retained). It was flagged for adjudication because a stricter reader
+could call it `distorted` (the "tokenization" technique is dropped and a
+specific algorithm SHA-3-512 is introduced); the user confirmed `semantic_preserved`.
 
 ## Limits
 
 - n = 9 tracers, one model, temperature 0, no seed passthrough; single
   realization per task (two for RTD-060).
-- LLM-judge only so far; human review pending (the native arm reached kappa 1.0
-  only after the user reviewed the LLM labels).
 - The compact arm changes the downstream input (summary vs raw), so it is not a
   causal decomposition of the native relay distortion; it is a separate derived
   suite whose control is the native arm.
