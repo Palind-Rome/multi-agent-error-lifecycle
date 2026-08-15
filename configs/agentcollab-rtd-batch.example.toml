@@ -1,0 +1,29 @@
+# Copy to configs/agentcollab-rtd-batch.local.toml before use (git-ignored).
+# Never put an API key here. The driver reads it only from hidden input or one
+# non-TTY stdin line.
+
+[provider]
+base_url = "https://aigateway.paperbypass.com/api/v1"
+model = "qwen/qwen3-30b-a3b-instruct-2507"
+temperature = 0.0
+# Large-context calls in the 6-agent task can exceed 60s; 300s avoids
+# spurious timeouts on late rounds.
+request_timeout_seconds = 300.0
+# PaperBypass does not publicly guarantee seed passthrough.
+send_seed = false
+
+[limits]
+# These caps are per task. The largest RTD task needs 40 calls; 45 gives margin.
+max_calls = 45
+# The 6-agent RTD task accumulates ~260k real input tokens across 34 rounds;
+# 1M gives headroom over the conservative byte-based pre-call estimate.
+max_input_tokens = 1000000
+max_output_tokens = 160000
+# A 1024-token ceiling truncated the pinned Qwen in an earlier smoke.
+max_output_tokens_per_call = 4096
+max_wall_seconds = 3600.0
+max_cost_usd = 0.50
+
+# Conservative configured ceilings in USD per 1M tokens for the pinned model.
+max_input_cost_usd_per_million_tokens = 0.04815
+max_output_cost_usd_per_million_tokens = 0.19305

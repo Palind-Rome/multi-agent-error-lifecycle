@@ -648,6 +648,10 @@ def _extract_artifacts(
     rtd = injections.get("rtd", {}) if isinstance(injections, dict) else {}
     if isinstance(rtd, dict) and rtd:
         constraints = rtd.get("constraints")
+        if not isinstance(constraints, list):
+            multi_constraint = rtd.get("multi_constraint")
+            if isinstance(multi_constraint, dict):
+                constraints = multi_constraint.get("constraints")
         rows = constraints if isinstance(constraints, list) else [rtd]
         for index, row in enumerate(rows):
             if not isinstance(row, dict):
