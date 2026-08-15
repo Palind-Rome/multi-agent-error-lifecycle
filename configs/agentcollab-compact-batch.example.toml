@@ -1,0 +1,30 @@
+# Copy to configs/agentcollab-compact-batch.local.toml before use (git-ignored).
+# Never put an API key here. The driver reads it only from hidden input or one
+# non-TTY stdin line.
+#
+# Codex-compaction arm: every inter-agent handoff adds one checkpoint-compaction
+# call, so a task's total call count is roughly double its native agent calls.
+
+[provider]
+base_url = "https://aigateway.paperbypass.com/api/v1"
+model = "qwen/qwen3-30b-a3b-instruct-2507"
+temperature = 0.0
+request_timeout_seconds = 300.0
+send_seed = false
+
+[limits]
+# Per task. Native 6-agent task needs ~34 agent calls; compaction adds ~33 more.
+max_calls = 90
+# Compaction reads each parent output once, then the downstream agent reads a
+# shorter summary, so total input stays in the same order as native. 1M headroom.
+max_input_tokens = 1000000
+max_output_tokens = 160000
+# Compaction summaries are instructed to be concise; 4096 stays above the
+# largest observed summary without truncating agent reasoning.
+max_output_tokens_per_call = 4096
+max_wall_seconds = 3600.0
+max_cost_usd = 0.50
+
+# Conservative configured ceilings in USD per 1M tokens for the pinned model.
+max_input_cost_usd_per_million_tokens = 0.04815
+max_output_cost_usd_per_million_tokens = 0.19305
