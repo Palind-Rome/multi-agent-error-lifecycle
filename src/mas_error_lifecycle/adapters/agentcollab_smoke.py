@@ -66,6 +66,8 @@ APPROVED_METRIC = "rtd"
 # Tracked, untouched RTD tasks approved for the engineering-smoke path. Each
 # pinned SHA-256 pins the exact task bytes before execution. The allowlist is
 # the reviewed native-instrumentation sample across DATAENG/DEVOPS/SWE.
+# The second block (batch 2) fills the ag=3 gap and the two topologies absent
+# from the first block (branching_tree, custom_graph); all multi-constraint.
 APPROVED_RTD_TASKS = {
     "TASK-DATAENG-RTD-060": "9bb822c2bc1555104fa9ae63c5ee050a1e1b35603396dddc92634e8a609ed92b",
     "TASK-DATAENG-RTD-059": "2884f1a68036fcb9ca65b81514e31e0648b1ef83189996d7ffa93edabbb7b92c",
@@ -74,6 +76,12 @@ APPROVED_RTD_TASKS = {
     "TASK-DATAENG-RTD-108": "ceb11da7a75406a4cec027dc2ebae3732892865a8f21a3a3250542174ccf7b9d",
     "TASK-DEVOPS-RTD-103": "f4b533a2731d6b9a5cca85ae9fee2069aebabe4d4306e56f1e674216a756420d",
     "TASK-SWE-RTD-105": "689e30e5944b0294b9adfb6d9f69748bc18f79c8f322fda048c9bfda035325bb",
+    # --- batch 2 (ag=3, branching_tree + custom_graph) ---
+    "TASK-DATAENG-RTD-058": "2a53063fc817ac3e36ff9f7971d457bec14f002cc02d908b9320dd21d582a2b2",
+    "TASK-DEVOPS-RTD-172": "6b5e6eef91dbaa958349559c3c236c582e8c565cbbd8ae7c4d65a0fd2610b894",
+    "TASK-SWE-RTD-054": "6a500bae4a7a35240cd1e195c441ba372a2db334d6b77fd3a924799333d57e47",
+    "TASK-DEVOPS-RTD-118": "aa3c9bfaca936c4b26ff6ef1359dbabb42f7b9729e4fe79b0b5784ad96d7afd6",
+    "TASK-SWE-RTD-047": "df1925db88c7032f1a58913cef4780745a1278c0dac6dd46d185d6cdac2abfb2",
 }
 # Tracked, untouched CPR tasks for the false-fact (RQ2) engineering-smoke path.
 APPROVED_CPR_TASKS = {
