@@ -1177,6 +1177,35 @@ class MultiModelOverrideTests(unittest.TestCase):
         self.assertEqual(settings.provider.model, PAPERBYPASS_MODEL)
         self.assertEqual(settings.limits.max_calls, 2)
 
+    def test_new_qwen_sizes_are_allowlisted(self):
+        for model in (
+            "qwen/qwen3-235b-a22b-2507",
+            "qwen/qwen3-30b-a3b-thinking-2507",
+        ):
+            self.assertIn(model, APPROVED_PAPERBYPASS_MODELS)
+
+    def test_per_model_floor_rejects_underpriced_ceiling(self):
+        # thinking-2507 output is $0.40/M; $0.30 passes the base floor but is
+        # below this model's own floor, so SmokeSettings must reject it.
+        limits = BudgetLimits(
+            max_calls=1,
+            max_input_tokens=100,
+            max_output_tokens=100,
+            max_output_tokens_per_call=50,
+            max_wall_seconds=30,
+            max_cost_usd=Decimal("1"),
+            max_input_cost_usd_per_million_tokens=Decimal("0.08"),
+            max_output_cost_usd_per_million_tokens=Decimal("0.30"),
+        )
+        with self.assertRaises(SmokeConfigurationError):
+            SmokeSettings(
+                provider=ProviderSettings(
+                    base_url=PAPERBYPASS_BASE_URL,
+                    model="qwen/qwen3-30b-a3b-thinking-2507",
+                ),
+                limits=limits,
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

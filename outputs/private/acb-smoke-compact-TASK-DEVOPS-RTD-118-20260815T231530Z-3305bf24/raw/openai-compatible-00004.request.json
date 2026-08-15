@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "**CI/CD Pipeline Setup Task – Status Update (Turn 1 of 6)**  \n*Initiated by CI/CD Engineer*\n\n---\n\n### ✅ **Critical Constraints Confirmed & Communicated**\n\nAll downstream agents have been notified of the following **non-negotiable constraints**:\n\n#### 🔴 **CRITICAL CONSTRAINT [PIPE-TIME-LIMIT-300S]**  \n> All pipeline stages must complete within a **maximum duration of exactly 300.00 seconds**.  \n> - Any stage exceeding this limit will trigger a pipeline failure.  \n> - Total pipeline execution time must be **monitored and capped at 300.00s**.  \n> - Optimization required: parallelize non-dependent tasks, minimize idle time.\n\n#### 🔴 **CRITICAL CONSTRAINT [ARTIFACT-TAG-V10BN]**  \n> All deployed artifacts must be tagged with the semantic version format:  \n> `v1.0.BUILD-NUM`  \n> - Example: `v1.0.42`  \n> - `BUILD-NUM` must be dynamically injected from the CI system (e.g., GitHub Actions build number or Jenkins job ID).  \n> - Tagging must occur **before deployment to AWS S3**.\n\n---\n\n### 📌 **Pipeline Structure Overview (Proposed Graph Topology)**\n\n```\n[Developer] → (Code Push) → [CI/CD Engineer] → [Pipeline Trigger]\n                              ↓\n                  [Stage 1: Linting & Code Quality] → 60s max\n                              ↓\n                  [Stage 2: Unit Testing] → 90s max\n                              ↓\n                  [Stage 3: Build & Artifact Packaging] → 70s max\n                              ↓\n                  [Stage 4: Deploy to AWS S3] → 80s max\n                              ↓\n                  [Stage 5: Slack Notification + Validation] → 0s (immediate)\n```\n\n> ✅ **Total Estimated Time**: 60 + 90 + 70 + 80 = **300.00 seconds**  \n> ⚠️ *No buffer — all stages must stay within allocated time windows.*\n\n---\n\n### 🔄 **Feedback Loop Established**\n\n- **Developer** → **CI/CD Engineer**:  \n  - Developer to provide code artifacts via Git push.  \n  - CI/CD Engineer to validate that build scripts comply with timing and tagging requirements.  \n  - Feedback loop enabled: if linting fails or script exceeds time budget, immediate feedback sent via Slack.\n\n---\n\n### 🛠️ **Action Items for Next Turn (Turn 2)**\n\n1. **CI/CD Engineer**:  \n   - Finalize pipeline YAML (e.g., GitHub Actions workflow) with strict time limits per step.  \n   - Implement dynamic `BUILD-NUM` injection using `github.run_number` or equivalent.  \n   - Confirm artifact tagging logic: `v1.0.${{ github.run_number }}`.\n\n2. **Release Manager**:  \n   - Confirm AWS S3 bucket permissions and deployment role access.  \n   - Verify Slack webhook URL is configured and testable.\n\n3. **Developer**:  \n   - Push initial commit with valid code (no syntax errors) to trigger first pipeline run.  \n   - Ensure no large dependencies or slow build steps are included.\n\n---\n\n🔁 **Next Step**: CI/CD Engineer to share draft pipeline configuration for review by Release Manager and Developer.  \n⏱️ **Deadline**: Turn 2 — ensure alignment before execution.\n\n> ✅ **All constraints propagated. Pipeline design aligned with 300.00s cap and v1.0.BUILD-NUM tagging.**",
+        "role": "assistant"
+      },
+      {
+        "content": "You are performing a CONTEXT CHECKPOINT COMPACTION. Create a handoff summary for another LLM that will resume the task.\n\nInclude:\n- Current progress and key decisions made\n- Important context, constraints, or user preferences\n- What remains to be done (clear next steps)\n- Any critical data, examples, or references needed to continue\n\nBe concise, structured, and focused on helping the next LLM seamlessly continue the work.\n",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00004",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

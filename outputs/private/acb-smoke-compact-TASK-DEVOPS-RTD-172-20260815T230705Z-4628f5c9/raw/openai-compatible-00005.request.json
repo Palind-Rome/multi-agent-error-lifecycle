@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Security Operations Engineer. Your task is to configure and maintain security policies for deployed services. Ensure all security protocols, especially encryption standards for external ports, are correctly applied.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION – Handoff Summary**\n\n---\n\n### ✅ **Current Progress & Key Decisions Made**\n- Two critical constraints for `microservice-alpha` (staging) have been formally communicated to downstream agents:\n  - **VM-RAM-MAX-10-75GB**: Hard cap of 10.75 GB RAM per instance enforced at infrastructure level.\n  - **EXT-PORTS-TLS-1-3**: TLS 1.3 mandatory on all external ports; NGINX ingress and firewall rules must reflect this.\n- Both constraints are now acknowledged in the chain of command.\n- Deployment cannot proceed until both A2 (Infra) and A3 (Security) confirm compliance.\n\n---\n\n### 🔑 **Important Context & Constraints**\n- **Service**: `microservice-alpha`  \n- **Environment**: Staging  \n- **OS**: Ubuntu 22.04 LTS  \n- **Containerization**: Docker  \n- **Ingress**: NGINX  \n- **Load Balancer**: Application Load Balancer (ALB)  \n- **Compliance Drivers**: Financial controls (RAM), PCI DSS (TLS 1.3)  \n- **No exceptions allowed** — both constraints are non-negotiable.\n\n---\n\n### 📌 **What Remains to Be Done (Next Steps)**\n1. Await formal acknowledgments from:\n   - **A2 (Infrastructure Engineer)**: Confirm Terraform/CloudFormation enforces 10.75 GB RAM limit.\n   - **A3 (Security Ops Engineer)**: Confirm NGINX + cert-manager + ALB enforce TLS 1.3 only.\n2. Validate pre-deployment checks pass for both constraints.\n3. Approve staging deployment upon confirmation.\n\n---\n\n### 📎 **Critical Data / References Needed**\n- Terraform module for VM provisioning (ensure `memory = 10.75` GB max, no dynamic scaling above).\n- NGINX config snippet showing `ssl_protocols TLSv1.3;` and no older versions.\n- cert-manager issuer configuration (must support TLS 1.3).\n- ALB security group rule set (confirm no HTTP/HTTPS open without TLS 1.3).\n\n> ⚠️ **Note**: If either agent reports non-compliance, escalate with root cause analysis request.\n\n---\n\n✅ *Handoff complete. Next LLM can resume by verifying acknowledgments and validating technical configurations against the referenced constraints.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00005",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

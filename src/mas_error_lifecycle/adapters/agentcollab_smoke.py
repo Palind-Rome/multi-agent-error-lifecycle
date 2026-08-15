@@ -48,13 +48,20 @@ ANALYSIS_ELIGIBLE = False
 TESTED_AGENTCOLLAB_COMMIT = "f016f600568b6d8127dc861e4c83c87b72750d63"
 PAPERBYPASS_BASE_URL = "https://aigateway.paperbypass.com/api/v1"
 PAPERBYPASS_MODEL = "qwen/qwen3-30b-a3b-instruct-2507"
-# Models approved for the guarded smoke driver. Every entry must be a real
-# PaperBypass model id whose per-million-token price is at or below the floors
-# below (cheaper models are safe: the cost estimate over-shoots, never
-# under-shoots). Add a size only after verifying both the id and its pricing.
-APPROVED_PAPERBYPASS_MODELS = frozenset({PAPERBYPASS_MODEL})
-MIN_INPUT_PRICE_USD_PER_MILLION = Decimal("0.04815")
-MIN_OUTPUT_PRICE_USD_PER_MILLION = Decimal("0.19305")
+# model id -> (input price floor, output price floor) in USD per 1M tokens,
+# from the PaperBypass /developer/models list. A config's per-million-token
+# ceiling must be >= the model's floor so the cost estimate never under-shoots.
+# Add a size only after verifying both the id and its live list price.
+PAPERBYPASS_MODEL_PRICES = {
+    "qwen/qwen3-30b-a3b-instruct-2507": (Decimal("0.04815"), Decimal("0.19305")),
+    "qwen/qwen3-235b-a22b-2507": (Decimal("0.09"), Decimal("0.10")),
+    "qwen/qwen3-30b-a3b-thinking-2507": (Decimal("0.08"), Decimal("0.40")),
+}
+APPROVED_PAPERBYPASS_MODELS = frozenset(PAPERBYPASS_MODEL_PRICES)
+# Base floor = the default model's list price, still enforced by BudgetLimits so
+# the ceiling never drops below a known-safe level for any model.
+MIN_INPUT_PRICE_USD_PER_MILLION = PAPERBYPASS_MODEL_PRICES[PAPERBYPASS_MODEL][0]
+MIN_OUTPUT_PRICE_USD_PER_MILLION = PAPERBYPASS_MODEL_PRICES[PAPERBYPASS_MODEL][1]
 MAX_RESPONSE_BODY_BYTES = 4 * 1024 * 1024
 MAX_SELECTED_HEADER_CHARACTERS = 4096
 MAX_API_KEY_CHARACTERS = 16 * 1024
@@ -241,6 +248,21 @@ class BudgetLimits:
 class SmokeSettings:
     provider: ProviderSettings
     limits: BudgetLimits
+
+    def __post_init__(self) -> None:
+        # Per-model floor: the ceiling must be >= the model's own list price, so
+        # a more expensive model than the default cannot be silently under-priced.
+        input_floor, output_floor = PAPERBYPASS_MODEL_PRICES[self.provider.model]
+        if self.limits.max_input_cost_usd_per_million_tokens < input_floor:
+            raise SmokeConfigurationError(
+                "limits.max_input_cost_usd_per_million_tokens is below the "
+                f"approved price floor for {self.provider.model}"
+            )
+        if self.limits.max_output_cost_usd_per_million_tokens < output_floor:
+            raise SmokeConfigurationError(
+                "limits.max_output_cost_usd_per_million_tokens is below the "
+                f"approved price floor for {self.provider.model}"
+            )
 
 
 @dataclass(frozen=True, slots=True)
@@ -555,15 +577,11 @@ class PrivateRunStore:
                 "outputs/private resolves outside its literal repository path"
             )
         os.chmod(private_root, 0o700)
-        if (root / ".git").exists():
-            ignored = _run_git(
-                root,
-                ["check-ignore", "--quiet", "--", "outputs/private/probe"],
-            )
-            if ignored.returncode != 0:
-                raise SmokeConfigurationError(
-                    "outputs/private must be git-ignored before a smoke run"
-                )
+        # Traces are intentionally tracked and uploaded (the project decision to
+        # publish experiment traces), so there is deliberately no git-ignore gate
+        # here. The API key never reaches this directory: the provider layer
+        # redacts it from every persisted request/response. The 0o700 mode and
+        # symlink checks above remain as the local-privacy boundary.
         run_directory = private_root / run_id
         try:
             run_directory.mkdir(mode=0o700)

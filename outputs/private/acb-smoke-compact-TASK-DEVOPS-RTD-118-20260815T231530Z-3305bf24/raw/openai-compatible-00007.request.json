@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the CI/CD Engineer, responsible for designing and implementing the continuous integration and deployment pipeline. You must ensure that all pipeline stages adhere to the maximum execution duration and that artifact tagging follows the specified semantic versioning. You receive input from the Developer and Release Manager.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n---\n\n### 📌 **Handoff Summary: Context Checkpoint Compaction**\n\n**Next LLM Role**: CI/CD Engineer (resume pipeline implementation)\n\n---\n\n#### ✅ **Current Progress & Key Decisions**\n- Pipeline structure defined: 5-stage workflow (`lint`, `test`, `build`, `deploy`, `notify`).\n- Total time budget enforced: **300s (5 minutes)** via `timeout-minutes: 5`.\n- Dynamic versioning finalized: `v1.0.${{ github.run_number }}` will be used across all stages.\n- AWS S3 deployment confirmed with valid IAM role and bucket (`s3://myapp-artifacts-prod-us-east-1`).\n- Slack webhook and secrets verified; notification to `#releases` is required on success/failure.\n\n---\n\n#### 🔑 **Critical Constraints & Preferences**\n- ⏱️ **Time Caps per Stage**:\n  - Linting: ≤60s\n  - Unit Tests: ≤90s\n  - Build & Package: ≤70s\n  - Deploy to S3: ≤80s\n  - Slack Notify: Immediate (0s)\n- 🏷️ **Artifact Tagging**: Must use `v1.0.${{ github.run_number }}` in:\n  - S3 key path: `releases/v1.0.${{ github.run_number }}/`\n  - Artifact filename: `app-v1.0.${{ github.run_number }}.zip`\n  - Slack message\n- 🔐 **Security**: Use GitHub Secrets for AWS keys and Slack webhook.\n- 📦 **S3 Metadata**:\n  - `Content-Type: application/zip`\n  - `Cache-Control: public, max-age=31536000`\n  - `--acl public-read`\n\n---\n\n#### 🛠️ **What Remains to Be Done**\n1. Finalize `.github/workflows/release.yml` with:\n   - Full step-by-step logic using `run:` blocks.\n   - Correct `aws s3 cp` command with metadata and ACL.\n   - Version injection via `echo \"ARTIFACT_VERSION=v1.0.${{ github.run_number }}\" >> $GITHUB_ENV`.\n   - Proper `if: success()` condition for Slack notification.\n2. Add traceability logs: `echo \"Starting stage: lint\"` etc.\n3. Validate that no stage exceeds its time limit in simulation.\n\n---\n\n#### 📎 **Critical References & Data**\n- **Slack Webhook URL**: `https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX`\n- **S3 Bucket**: `s3://myapp-artifacts-prod-us-east-1`\n- **IAM Role ARN**: `arn:aws:iam::123456789012:role/pipeline-s3-deploy-role`\n- **Example Artifact Path**:  \n  `https://myapp-artifacts-prod-us-east-1.s3.amazonaws.com/releases/v1.0.41/app.zip`\n- **Expected Slack Message**:\n  > ✅ Pipeline succeeded! Artifact deployed: *v1.0.42*  \n  > 🔗 [Download app-v1.0.42.zip](https://myapp-artifacts-prod-us-east-1.s3.amazonaws.com/releases/v1.0.42/app.zip)\n\n---\n\n> ✅ **Next Step**: Draft the complete `release.yml` file with all steps, timing, tagging, and integrations.  \n> 🚀 **Deadline**: Deliver by end-of-day today to meet EOD release cadence.\n\n--- \n\n🔁 **Handoff Complete — Ready for CI/CD Engineer to Resume**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00007",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

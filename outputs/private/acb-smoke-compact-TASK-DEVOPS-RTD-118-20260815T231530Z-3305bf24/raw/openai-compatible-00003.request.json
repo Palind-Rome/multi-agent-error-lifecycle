@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Developer, providing the code and build scripts for the internal tool. You must ensure your build processes contribute to meeting the pipeline's maximum duration and that your build scripts correctly implement the artifact semantic versioning. You receive feedback from the CI/CD Engineer.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION – Handoff Summary**\n\n---\n\n### 📌 **Current Progress & Key Decisions**\n- Pipeline structure finalized with 5 stages, totaling exactly **300.00 seconds** (no buffer).\n- All stages assigned strict time caps:\n  - Linting & Code Quality: ≤60s\n  - Unit Testing: ≤90s\n  - Build & Packaging: ≤70s\n  - Deploy to AWS S3: ≤80s\n  - Slack Notification: Immediate (0s)\n- **Critical constraints confirmed and communicated**:\n  - ⏱️ **PIPE-TIME-LIMIT-300S**: Total pipeline must not exceed 300.00s.\n  - 🏷️ **ARTIFACT-TAG-V10BN**: Artifacts must be tagged as `v1.0.${BUILD-NUM}` (e.g., `v1.0.42`).\n\n---\n\n### 🔑 **Key Constraints & Preferences**\n- **No tolerance for overruns** — any stage exceeding its time limit fails the pipeline.\n- **Dynamic tagging required**: `BUILD-NUM` must be injected from CI system (e.g., `github.run_number`).\n- **AWS S3 deployment** must occur *after* artifact tagging.\n- **Slack notification** must fire immediately post-deploy (no delay).\n- Feedback loop between Developer and CI/CD Engineer is active.\n\n---\n\n### ✅ **Remaining Tasks (Next Steps)**\n1. **CI/CD Engineer**:\n   - Draft pipeline YAML (GitHub Actions or equivalent) with:\n     - Time limits per step (`timeout: 60s`, etc.)\n     - Dynamic tag injection: `v1.0.${{ github.run_number }}`\n     - Pre-deploy artifact tagging logic\n   - Validate that all steps stay within allocated time windows.\n\n2. **Release Manager**:\n   - Confirm AWS S3 bucket access and IAM role permissions.\n   - Verify Slack webhook URL is live and testable.\n\n3. **Developer**:\n   - Push a clean, valid code commit to trigger first pipeline run.\n   - Avoid large dependencies or slow build steps.\n\n---\n\n### 📎 **Critical References & Examples**\n- **Tagging Example**: `v1.0.42` → `BUILD-NUM = 42` (from CI system)\n- **Time Budget Allocation**:\n  ```yaml\n  timeout: 60s  # Linting\n  timeout: 90s  # Unit Test\n  timeout: 70s  # Build\n  timeout: 80s  # Deploy\n  ```\n- **Slack Webhook**: Must be configured in CI environment (URL provided by Release Manager).\n\n---\n\n🔁 **Handoff Ready**  \n> Next LLM should begin drafting pipeline configuration with full context on timing, tagging, and integration points.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00003",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

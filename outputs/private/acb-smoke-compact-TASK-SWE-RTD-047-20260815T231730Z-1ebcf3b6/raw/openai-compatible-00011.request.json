@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the QA Engineer, responsible for testing the user profile update module. You must verify that user data is correctly stored in the specified MongoDB Atlas 6.0 cluster, that no local caching occurs, and that API authentication strictly uses OAuth 2.0 with JWT tokens. You report findings to the Backend Developer and Lead Developer.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION – Handoff Summary**\n\n---\n\n### 📌 **Current Progress & Key Decisions**\n- ✅ Backend service (Node.js) deployed to AWS EC2 via CI/CD (GitHub Actions).\n- ✅ Health check confirmed: `GET /health` returns `{\"status\": \"UP\"}`.\n- ✅ ELK stack configured for structured logging with PII redaction (e.g., `[REDACTED]` for email/name).\n- ✅ JWT-based auth integrated: HTTP-only cookies used; frontend sends `Authorization: Bearer <JWT>` header.\n- ✅ Input validation, scope checks, and rate limiting implemented.\n- ✅ End-to-end test cases defined and validated in staging.\n\n---\n\n### 🔒 **Constraints & User Preferences**\n- **Security First**: No JWT in `localStorage`; use HTTP-only cookies.\n- **PII Protection**: All logs must redact sensitive fields (email, name, token).\n- **No External Secrets**: Environment variables must not be exposed in logs or code.\n- **Compliance**: Follows GDPR-like data handling; audit trails required.\n- **Deployment**: Only via GitHub Actions on `main` push; no manual SSH deploys allowed.\n\n---\n\n### ⏭️ **Next Steps (Clear Action Items)**\n1. **Deploy to Production**  \n   - Trigger GitHub Actions workflow on `main` branch → deploy to production EC2 instance.\n2. **Validate End-to-End Flow in Prod**  \n   - Simulate real user flow: login → update profile → verify DB + log + response.\n   - Confirm:\n     - JWT is properly set in HTTP-only cookie.\n     - Request includes `Authorization: Bearer` header.\n     - Response is `200 OK` with success message.\n     - Log entry appears in ELK (structured, PII redacted).\n3. **Verify Monitoring Alerts**  \n   - Test error scenarios (expired token, invalid scope) → confirm 401/400 responses and alert triggers.\n4. **Final Sign-Off**  \n   - Confirm all tests pass; notify team: “Service live and monitored.”\n\n---\n\n### 📎 **Critical References & Examples**\n- **Log Format (ELK)**:\n  ```json\n  {\n    \"timestamp\": \"2025-04-05T12:00:00Z\",\n    \"level\": \"info\",\n    \"message\": \"Profile update successful\",\n    \"userId\": \"user_123\",\n    \"action\": \"PUT /api/profile\",\n    \"ip\": \"192.168.1.100\",\n    \"correlationId\": \"abc123xyz\"\n  }\n  ```\n- **Error Response Example**:\n  ```json\n  { \"error\": \"Unauthorized\", \"code\": \"401\", \"details\": \"Invalid scope: profile:update\" }\n  ```\n- **Frontend Header Interceptor**:\n  ```js\n  axios.interceptors.request.use(config => {\n    const token = getCookie('token');\n    if (token) config.headers.Authorization = `Bearer ${token}`;\n    return config;\n  });\n  ```\n\n---\n\n> ✅ **Handoff Ready** — Next LLM can resume from deployment execution and end-to-end validation.  \n> Use provided examples, constraints, and checklist to continue seamlessly.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00011",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}
