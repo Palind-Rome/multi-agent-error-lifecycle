@@ -48,15 +48,18 @@ The three downstream losses:
 ## Literal RTD is noisy under compaction
 
 The benchmark's own RTD diagnostic is unstable here (no seed passthrough, so
-each run is an independent realization):
+each run is an independent realization). Repeats confirm it:
 
-- `TASK-DATAENG-RTD-060`: 0.0 in one run, 1.0 in another.
-- `TASK-DATAENG-RTD-108`: 0.667 (one of three constraints lost literally).
-- The other five: 1.0.
+| Task | Literal RTD across realizations |
+| --- | --- |
+| `TASK-DATAENG-RTD-060` | 1.0, 1.0, 1.0, 0.0 |
+| `TASK-DATAENG-RTD-108` | 0.667, 0.667, 1.0 |
+| `TASK-DEVOPS-RTD-103` | 1.0, 1.0 (one network failure) |
 
 So literal tracer survival is stochastic under compaction, while the semantic
-layer is the stable signal. The literal-vs-semantic gap is the point of the
-study, not noise to be averaged away.
+layer (same first-loss stage across runs) is the stable signal. The
+literal-vs-semantic gap is the point of the study, not noise to be averaged
+away.
 
 ## Interpretation
 
