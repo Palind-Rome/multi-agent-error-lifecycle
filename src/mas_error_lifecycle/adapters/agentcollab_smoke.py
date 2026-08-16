@@ -89,6 +89,12 @@ APPROVED_RTD_TASKS = {
     "TASK-SWE-RTD-054": "6a500bae4a7a35240cd1e195c441ba372a2db334d6b77fd3a924799333d57e47",
     "TASK-DEVOPS-RTD-118": "aa3c9bfaca936c4b26ff6ef1359dbabb42f7b9729e4fe79b0b5784ad96d7afd6",
     "TASK-SWE-RTD-047": "df1925db88c7032f1a58913cef4780745a1278c0dac6dd46d185d6cdac2abfb2",
+    # --- batch 3 (balance custom_graph vs branching_tree across domains) ---
+    "TASK-DATAENG-RTD-052": "ecdbe472fca4b957d9ef931fe8b7f2b1ae0f0c605d7cd70768d075d9f9df1048",
+    "TASK-DEVOPS-RTD-129": "dd608faf88ccce762bd245d81f03367fbb47bdeab91baadf27a5b51eb3d26b9c",
+    "TASK-SWE-RTD-055": "2a7343fcf7391935485a9f937c5ee8e5aa340f3b1934574462847d24aec09eae",
+    "TASK-DEVOPS-RTD-146": "a34415b0cdc5459d94d8a539eebab8640764e211378f31a6ccbf36ca3eb0328d",
+    "TASK-SWE-RTD-067": "9f171f2f0c41365b84f13d563d4c1613f28d4cfccdc73a5692df63e184b1dc43",
 }
 # Tracked, untouched CPR tasks for the false-fact (RQ2) engineering-smoke path.
 APPROVED_CPR_TASKS = {
