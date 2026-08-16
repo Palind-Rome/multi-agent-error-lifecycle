@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "**System Message: Initiating Branching Communication Protocol for Authentication Module Implementation**\n\n---\n\n**To Backend Developer (A2):**  \nYou are responsible for implementing the cryptographic foundation of user authentication, specifically password hashing. The following **critical security constraint** must be strictly enforced:\n\n> 🔐 **CRITICAL CONSTRAINT [AUTH-ARGON2ID-65K]:**  \n> All password hashing must use **Argon2id** with a **minimum of 4 iterations** and a **memory cost of 65,536 KB (64 MB)**.  \n> - Use a salt length of at least 16 bytes (randomly generated per password).  \n> - Ensure the output hash is stored in a secure, standardized format (e.g., base64-encoded string including salt, parameters, and hash).  \n> - Validate that no fallback to weaker algorithms (e.g., bcrypt, scrypt, or plain SHA) is permitted under any circumstances.  \n> - Confirm implementation uses a well-maintained, audited library (e.g., `libsodium`, `argon2` via `pycryptodome` or equivalent in your stack).  \n\n✅ *This constraint is non-negotiable and must be verified during code review and penetration testing.*  \nPlease confirm receipt and initial planning steps.\n\n---\n\n**To Frontend Developer (A3):**  \nYou are responsible for managing client-side session lifecycle and token handling. The following **critical security constraint** applies to your domain:\n\n> 🔐 **CRITICAL CONSTRAINT [SESS-EXP-1440MIN]:**  \n> User session tokens must:  \n> - Automatically expire after **1,440 minutes (24 hours) of inactivity** (i.e., no API request from the client within this window).  \n> - Be **immediately invalidated upon logout**, regardless of remaining lifetime.  \n> - Include a mechanism to detect inactivity (e.g., heartbeat ping every 10–15 minutes, or timestamp tracking on each API call).  \n> - Not rely solely on server-side TTLs without client-side enforcement (e.g., local storage expiration + re-authentication prompt).  \n> - Support secure token refresh mechanisms (if applicable), but only if the refresh token itself adheres to the same expiry rules.  \n\n⚠️ *Failure to enforce this will result in persistent session risks.*  \nPlease confirm understanding and outline your proposed approach for inactivity detection and token invalidation.\n\n---\n\n**To Software Architect (A1):**  \nAll constraints have been relayed via branching communication path.  \n- A2 (Backend) has received **[AUTH-ARGON2ID-65K]**  \n- A3 (Frontend) has received **[SESS-EXP-1440MIN]**  \n\nThe system now enters iterative implementation planning phase. Each agent must maintain awareness of their assigned constraint across **22 expected turns**, ensuring consistency, traceability, and alignment with the original security requirements.  \n\n🔁 **Next Step:**  \nA2 and A3 shall respond with their initial implementation plans, including:  \n- Selected libraries/frameworks  \n- Data structures for storing/validating hashes/tokens  \n- Inactivity monitoring strategy (for A3)  \n- Validation method for compliance (e.g., unit tests, integration checks)\n\nProceed when ready.",
+        "role": "assistant"
+      },
+      {
+        "content": "You are performing a CONTEXT CHECKPOINT COMPACTION. Create a handoff summary for another LLM that will resume the task.\n\nInclude:\n- Current progress and key decisions made\n- Important context, constraints, or user preferences\n- What remains to be done (clear next steps)\n- Any critical data, examples, or references needed to continue\n\nBe concise, structured, and focused on helping the next LLM seamlessly continue the work.\n",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00022",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

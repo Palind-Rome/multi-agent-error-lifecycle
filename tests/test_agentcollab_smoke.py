@@ -22,6 +22,7 @@ from unittest.mock import patch
 
 from mas_error_lifecycle.adapters.agentcollab_smoke import (
     ANALYSIS_ELIGIBLE,
+    APPROVED_PAPERBYPASS_MODELS,
     APPROVED_TASK_ID,
     PURPOSE,
     BudgetExceeded,
@@ -37,8 +38,10 @@ from mas_error_lifecycle.adapters.agentcollab_smoke import (
     RunLedger,
     SmokeConfigurationError,
     SmokeSettings,
+    add_override_argument,
     expected_agentcollab_calls,
     load_smoke_settings,
+    parse_cli_overrides,
     read_api_key_from_user_input,
     run_single_agentcollab_smoke,
     validate_native_task,
@@ -1102,6 +1105,105 @@ class AgentCollabSmokeTests(unittest.TestCase):
                     "--untracked-files=all",
                 ],
                 seen_arguments,
+            )
+
+
+class MultiModelOverrideTests(unittest.TestCase):
+    """The Qwen-robustness knobs: model allowlist + ``--override`` coercion."""
+
+    def test_allowlist_is_a_frozenset_containing_the_default(self):
+        self.assertIsInstance(APPROVED_PAPERBYPASS_MODELS, frozenset)
+        self.assertIn(PAPERBYPASS_MODEL, APPROVED_PAPERBYPASS_MODELS)
+
+    def test_unapproved_model_is_rejected(self):
+        with self.assertRaises(SmokeConfigurationError):
+            ProviderSettings(
+                base_url=PAPERBYPASS_BASE_URL,
+                model="qwen/qwen3-8b-instruct-2507",  # not yet allowlisted
+            )
+
+    def test_allowlist_is_extensible(self):
+        extra = "qwen/qwen3-8b-instruct-2507"
+        with patch(
+            "mas_error_lifecycle.adapters.agentcollab_smoke.APPROVED_PAPERBYPASS_MODELS",
+            APPROVED_PAPERBYPASS_MODELS | {extra},
+        ):
+            settings = ProviderSettings(
+                base_url=PAPERBYPASS_BASE_URL,
+                model=extra,
+            )
+            self.assertEqual(settings.model, extra)
+
+    def test_parse_overrides_coerces_types(self):
+        overrides = parse_cli_overrides(
+            [
+                "model=qwen/qwen3-30b-a3b-instruct-2507",
+                "max_calls=90",
+                "send_seed=false",
+                "max_input_cost_usd_per_million_tokens=0.01",
+            ]
+        )
+        self.assertEqual(overrides["model"], PAPERBYPASS_MODEL)
+        self.assertEqual(overrides["max_calls"], 90)
+        self.assertIs(overrides["send_seed"], False)
+        self.assertEqual(overrides["max_input_cost_usd_per_million_tokens"], "0.01")
+
+    def test_parse_overrides_rejects_unknown_or_malformed(self):
+        with self.assertRaises(SmokeConfigurationError):
+            parse_cli_overrides(["bogus=1"])
+        with self.assertRaises(SmokeConfigurationError):
+            parse_cli_overrides(["noequals"])
+
+    def test_override_flag_feeds_load_smoke_settings(self):
+        overrides = parse_cli_overrides(
+            [
+                "base_url=https://aigateway.paperbypass.com/api/v1",
+                "model=qwen/qwen3-30b-a3b-instruct-2507",
+                "max_calls=2",
+                "max_input_tokens=1000",
+                "max_output_tokens=100",
+                "max_output_tokens_per_call=50",
+                "max_wall_seconds=30",
+                "max_cost_usd=0.01",
+                "max_input_cost_usd_per_million_tokens=0.04815",
+                "max_output_cost_usd_per_million_tokens=0.19305",
+            ]
+        )
+        settings = load_smoke_settings(
+            repository_root=Path.cwd(),
+            config_path=None,
+            overrides=overrides,
+        )
+        self.assertEqual(settings.provider.model, PAPERBYPASS_MODEL)
+        self.assertEqual(settings.limits.max_calls, 2)
+
+    def test_new_qwen_sizes_are_allowlisted(self):
+        for model in (
+            "qwen/qwen3-235b-a22b-2507",
+            "qwen/qwen3-30b-a3b-thinking-2507",
+        ):
+            self.assertIn(model, APPROVED_PAPERBYPASS_MODELS)
+
+    def test_per_model_floor_rejects_underpriced_ceiling(self):
+        # thinking-2507 output is $0.40/M; $0.30 passes the base floor but is
+        # below this model's own floor, so SmokeSettings must reject it.
+        limits = BudgetLimits(
+            max_calls=1,
+            max_input_tokens=100,
+            max_output_tokens=100,
+            max_output_tokens_per_call=50,
+            max_wall_seconds=30,
+            max_cost_usd=Decimal("1"),
+            max_input_cost_usd_per_million_tokens=Decimal("0.08"),
+            max_output_cost_usd_per_million_tokens=Decimal("0.30"),
+        )
+        with self.assertRaises(SmokeConfigurationError):
+            SmokeSettings(
+                provider=ProviderSettings(
+                    base_url=PAPERBYPASS_BASE_URL,
+                    model="qwen/qwen3-30b-a3b-thinking-2507",
+                ),
+                limits=limits,
             )
 
 

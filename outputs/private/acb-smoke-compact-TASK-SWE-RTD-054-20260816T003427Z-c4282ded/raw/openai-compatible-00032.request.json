@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "**[Architect A1 → Backend Developer A2]**\n\n> **CRITICAL CONSTRAINT [AUTH-ARGON2ID-65K]:** All password hashing must use **Argon2id** with a **minimum of 4 iterations** and a **memory cost of 65536 KB**.  \n> This is a non-negotiable security requirement for the authentication module. You are responsible for implementing the server-side password hashing logic accordingly.  \n> Ensure the chosen cryptographic library supports these parameters (e.g., `libsodium` or equivalent hardened implementations).  \n> Do not proceed with alternative algorithms (e.g., bcrypt, PBKDF2) unless explicitly approved — **Argon2id is mandated**.  \n> Confirm receipt and planned implementation approach.\n\n---\n\n**[Architect A1 → Frontend Developer A3]**\n\n> **CRITICAL CONSTRAINT [SESS-EXP-1440MIN]:** User session tokens must **expire after 1440 minutes (24 hours) of inactivity** and must be **immediately invalidated upon user logout**.  \n> You are responsible for managing session state on the client side in coordination with backend token mechanisms (e.g., JWT or opaque tokens).  \n> Implement idle detection (e.g., tracking user input, mouse movement, API activity) to enforce the inactivity timeout.  \n> On logout — whether manual or timeout-triggered — ensure all active tokens are cleared from storage (e.g., memory, sessionStorage) and an explicit invalidation request is sent to the backend.  \n> Confirm receipt and outline your approach to tracking inactivity and handling token lifecycle.\n\n---\n\n**[Architect A1 → All]**\n\n> Both constraints are **security-critical** and must be implemented as specified.  \n> You will coordinate later with each other and me to ensure integration consistency (e.g., token issuance aligns with auth backend, logout signals are synchronized).  \n> This is a **branching communication pattern** — each of you owns your path, but precision is essential.  \n> Await responses from A2 and A3 to proceed to the next phase.  \n> Acknowledge understanding and begin planning.",
+        "role": "assistant"
+      },
+      {
+        "content": "You are performing a CONTEXT CHECKPOINT COMPACTION. Create a handoff summary for another LLM that will resume the task.\n\nInclude:\n- Current progress and key decisions made\n- Important context, constraints, or user preferences\n- What remains to be done (clear next steps)\n- Any critical data, examples, or references needed to continue\n\nBe concise, structured, and focused on helping the next LLM seamlessly continue the work.\n",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00032",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

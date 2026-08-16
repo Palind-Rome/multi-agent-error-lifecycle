@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Software Architect. Your role is to design system components, define technical requirements, and communicate critical security constraints to your team. Ensure all specific implementation details and constraints are accurately relayed and adhered to.",
+        "role": "system"
+      },
+      {
+        "content": "A software development team is tasked with implementing a new user authentication module. The Software Architect (A1) defines the overall system requirements and two critical security constraints, each intended for a distinct development path. The first constraint, 'all password hashing must use Argon2id with a minimum of 4 iterations and a memory cost of 65536 KB', is specifically communicated to the Backend Developer (A2). The second constraint, stating that 'user session tokens must expire after 1440 minutes of inactivity and be invalidated on logout', is directed to the Frontend Developer (A3). The Architect must ensure both precise cryptographic and session management constraints are accurately communicated down their respective paths. This task evaluates whether the branching communication pattern effectively propagates distinct, highly salient security constraints to the appropriate specialized agents, who then plan for their implementation. The medium structural-complexity is justified by the precise technical nature of the constraints, the 3 agents in a branching topology, and the iterative conversation flow, requiring agents to maintain the constraints over multiple turns (22 expected turns).\n\nSystem context and constraints:\n- **CRITICAL CONSTRAINT []: **\n- **CRITICAL CONSTRAINT [AUTH-ARGON2ID-65K]: all password hashing must use Argon2id with a minimum of 4 iterations and a memory cost of 65536 KB**\n- **CRITICAL CONSTRAINT [SESS-EXP-1440MIN]: user session tokens must expire after 1440 minutes of inactivity and be invalidated on logout**\n\nProceed with the task. Relay all constraints to downstream agents.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00021",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Network Security Engineer. Your role is to design and implement network configurations, ensuring strict adherence to all security policies and routing requirements, especially regarding WAF integration. Report your proposed network configuration to the DevOps Reviewer (A4).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n---\n\n### 📌 **Context Checkpoint Compaction: Handoff Summary**\n\n---\n\n#### ✅ **Current Progress & Key Decisions Made**\n- Deployment of `custom-app-v2.1` to **Production (us-east-1)** is in **pre-deployment review phase**.\n- Two critical constraints have been identified and delegated:\n  - **[RAM-KX77]**: Container RAM ≤3.75 GB → Assigned to *Container Specialist (A2)*.\n  - **[WAF-FN61]**: All ingress must route through WAF-PROD-237 → Assigned to *Network Security Engineer (A3)*.\n- Senior DevOps Reviewer (A4) is pending review of the WAF configuration plan before approval.\n- Deployment pipeline is **on hold** — no further action can proceed without A2’s container spec and A4’s compliance sign-off.\n\n---\n\n#### 🔒 **Critical Constraints & Context**\n- **[RAM-KX77]**: No container instance may exceed **3.75 GB RAM**. Must be enforced via `limits.memory` in PodSpec/ECS Task Definition.\n- **[WAF-FN61]**: All external traffic **must pass through WAF-PROD-237**. No direct ALB-to-service routing allowed.\n- **Environment**: Production, VPC Private-A, Site-to-Site VPN, Egress-Only ACLs.\n- **Infrastructure Stack**: AWS ALB + CloudFront + ACM TLS + ELK logging + AWS Shield Advanced.\n- **Deployment Strategy**: Rolling Update, min 3 replicas, health check at `/health`.\n\n---\n\n#### 🚧 **What Remains to Be Done (Next Steps)**\n1. **A2 (Container Specialist)** must submit a finalized container spec with:\n   - CPU: 2 cores\n   - Memory: `requests.memory=2Gi`, `limits.memory=3.75Gi`\n   - Storage: 50GB SSD (via volume mount or ephemeral)\n   - Confirm compliance with [RAM-KX77]\n\n2. **A3 (Network Security Engineer)** must provide:\n   - Configuration snippet or network flow diagram showing ALB → WAF-PROD-237 → Service\n   - Proof that WAF is attached as listener rule and active\n   - Validation that CloudFront (if used) does not bypass WAF\n\n3. **A4 (Senior DevOps Reviewer)** must:\n   - Review A3’s submission for compliance with [WAF-FN61]\n   - Report back: ✅ Approved / ❌ Rejected + feedback\n\n4. Upon **both A2 and A4 sign-off**, proceed to:\n   - Deploy via rolling update\n   - Validate health checks\n   - Monitor ELK logs and CloudFront/WAF metrics\n\n---\n\n#### 📎 **Critical Data & References Needed**\n- Example PodSpec/ECS Task Definition (for A2):  \n  ```yaml\n  resources:\n    limits:\n      memory: \"3.75Gi\"\n    requests:\n      memory: \"2Gi\"\n      cpu: \"2\"\n  ```\n- WAF-PROD-237 ARN: `arn:aws:wafv2:us-east-1:123456789012:webacl/WAF-PROD-237`\n- ALB Listener Rule: Must forward to WAF-PROD-237 (not directly to target group).\n- Route53 DNS: `app.prod.example.com` → ALB → WAF → Service\n\n---\n\n### 🔄 **Handoff Ready**\n> **Next LLM:** Resume from **pending A2/A3 submissions and A4 review**.  \n> Focus on validating constraint compliance and enabling deployment only after both approvals are confirmed.\n\n---  \n**Status:** Pipeline paused. Waiting for A2 (container spec) and A4 (WAF review).",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00005",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

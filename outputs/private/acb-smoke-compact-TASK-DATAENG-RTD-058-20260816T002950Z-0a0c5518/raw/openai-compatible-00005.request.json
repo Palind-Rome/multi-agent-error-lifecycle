@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Real-time Processing Engineer. Your task is to design and implement low-latency data processing solutions for real-time analytics. Focus on optimizing performance and meeting strict latency requirements. Acknowledge and plan for all performance constraints.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION HANDOFF**  \n\n**Current Progress**  \n- Constraints received verbatim; no implementation or adjustments made.  \n- *Key decision*: All constraints treated as absolute, non-negotiable requirements.  \n\n**Critical Context & Constraints**  \n1. **Data Governance**:  \n   `all raw customer data must be retained for exactly 367 days for audit purposes`  \n2. **Real-time Processing**:  \n   `latency for real-time dashboards must not exceed 97 milliseconds`  \n   *No numerical/interpretive changes permitted.*  \n\n**Remaining Work**  \n- Implement retention policy for 367-day data retention.  \n- Optimize data pipeline to guarantee ≤97ms dashboard latency.  \n- *No validation or testing performed yet.*  \n\n**Critical References for Continuation**  \n- **Exact constraint strings** (copy-paste only):  \n  `367 days` | `97 milliseconds`  \n- **Zero tolerance for deviation** (e.g., 366/368 days, 98ms latency = failure).  \n\n**Next Step for Resuming LLM**  \n*Immediately begin technical implementation adhering to the two constraints above. Do not add, interpret, or adjust values.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00005",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "**Turn 1: Lead Developer to Backend Developer**\n\nTeam,\n\nWe are initiating implementation of the **secure user profile update module**. This is a high-priority feature with strict architectural constraints. Please ensure full compliance with the following **critical constraints**:\n\n---\n\n### 🔒 Critical Constraints (MUST be followed):\n\n- **[DB-MONGO-ATLAS-V6]**: All user profile data **must be stored exclusively** in a **MongoDB Atlas cluster, version 6.0**. No alternative databases or versions are permitted.\n  \n- **[NO-LOCAL-CACHE-P33]**: Under no circumstances should user profile data be **cached on local application servers**. This includes in-memory stores (e.g., Redis, Node.js cache, etc.) to prevent data inconsistency.\n\n- **[AUTH-OAUTH2-JWT-R22]**: All API endpoints for this module **must enforce OAuth 2.0 using JWT tokens** for authentication. Every request must validate the JWT signature, issuer, and expiration before processing.\n\n---\n\n### Implementation Requirements:\n\n- Backend: Implement RESTful API endpoints (e.g., `PUT /api/profile`) to update user profile data.\n- Use MongoDB Atlas (v6.0) as the sole data store. Ensure connection is established securely (TLS, credentials via AWS Secrets Manager).\n- Do **not** implement any caching layer for profile data.\n- Enforce JWT validation middleware on all endpoints.\n- Write unit tests targeting **85% code coverage**.\n- Log all operations to stdout for ingestion by the centralized **ELK stack**.\n- Deploy target: **AWS EC2** (ensure config supports environment-based setup).\n\nBackend Developer: Please confirm receipt and provide a brief implementation plan by next turn. I will review your design and middleware setup for compliance.\n\nLead Developer signing off.",
+        "role": "assistant"
+      },
+      {
+        "content": "You are performing a CONTEXT CHECKPOINT COMPACTION. Create a handoff summary for another LLM that will resume the task.\n\nInclude:\n- Current progress and key decisions made\n- Important context, constraints, or user preferences\n- What remains to be done (clear next steps)\n- Any critical data, examples, or references needed to continue\n\nBe concise, structured, and focused on helping the next LLM seamlessly continue the work.\n",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00002",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

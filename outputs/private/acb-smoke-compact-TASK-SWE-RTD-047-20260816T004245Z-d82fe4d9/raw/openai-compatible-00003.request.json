@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Backend Developer, responsible for implementing the server-side logic and database interactions for the user profile module. You must strictly adhere to the specified database (MongoDB Atlas 6.0, no local caching) and authentication (OAuth 2.0 with JWT) constraints. You provide updates to the Lead Developer and respond to QA feedback.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**HANDOFF SUMMARY: USER PROFILE UPDATE MODULE**  \n*For LLM Continuation (Critical Constraints Preserved)*  \n\n---\n\n### **CURRENT PROGRESS**  \n✅ **Backend Developer**  \n- Implemented MongoDB Atlas v6.0 connection (verified via `MONGODB_URI` in config).  \n- Added JWT middleware for all profile endpoints (`/profile/update`, `/profile`).  \n- *Pending*: Explicit confirmation of Atlas v6.0 + JWT integration (to be provided in next turn).  \n\n✅ **QA Engineer**  \n- Drafted test cases for [DB-MONGO-ATLAS-V6], [NO-LOCAL-CACHE-P33], [AUTH-OAUTH2-JWT-R22].  \n- *Pending*: Validation of no local cache usage + JWT enforcement (to be confirmed in next turn).  \n\n---\n\n### **KEY CONSTRAINTS (NON-NEGOTIABLE)**  \n| Constraint Code       | Requirement                                  | Verification Method                     |  \n|-----------------------|---------------------------------------------|-----------------------------------------|  \n| `[DB-MONGO-ATLAS-V6]` | MongoDB Atlas v6.0 **only** (no local DBs)  | `MONGODB_URI` config check + no local DB code |  \n| `[NO-LOCAL-CACHE-P33]`| Zero caching (no Redis/in-memory)           | Code review: `cache.get()`/`set()` absence |  \n| `[AUTH-OAUTH2-JWT-R22]`| JWT validation **before** DB access         | Postman test: Fails without `Bearer <token>` |  \n\n---\n\n### **NEXT STEPS (CLEAR ACTIONS)**  \n1. **Backend Developer**:  \n   - *Confirm*: \"Atlas v6.0 connection established + JWT middleware integrated.\"  \n   - *Critical*: Ensure no `cache` calls in profile update logic (e.g., `userRepo.update()`).  \n\n2. **QA Engineer**:  \n   - *Confirm*: \"No local cache detected; JWT auth enforced in all endpoints.\"  \n   - *Test*:  \n     - ✖️ Send request **without** `Authorization: Bearer` → 401.  \n     - ✖️ Check for `cache.get()` in `profileService.js` → **FAIL** if found.  \n\n---\n\n### **CRITICAL REFERENCES**  \n- **Atlas Connection Example**:  \n  `MONGODB_URI=\"mongodb+srv://user:pass@cluster0.example.mongodb.net/db?retryWrites=true&w=majority\"`  \n- **JWT Validation Snippet** (Backend):  \n  ```javascript\n  const verifyJWT = (req, res, next) => {\n    const token = req.headers.authorization?.split(' ')[1];\n    jwt.verify(token, process.env.JWT_SECRET, (err) => {\n      if (err) return res.status(401).json({ error: \"Invalid token\" });\n      next();\n    });\n  };\n  ```  \n- **Deployment Note**: AWS EC2 security group **must allow outbound traffic** to MongoDB Atlas (port 27017).  \n\n---  \n**DO NOT PROCEED WITHOUT THESE VERIFICATIONS. VIOLATIONS = MERGE BLOCK.**  \n*Handoff complete. Next LLM: Validate constraints per above.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00003",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

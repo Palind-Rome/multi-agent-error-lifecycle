@@ -14,6 +14,7 @@ import argparse
 import json
 import sys
 from pathlib import Path
+from typing import Sequence
 
 sys.dont_write_bytecode = True
 
@@ -28,7 +29,9 @@ from mas_error_lifecycle.adapters.agentcollab_smoke import (
     PURPOSE,
     SmokeConfigurationError,
     SmokeExecutionError,
+    add_override_argument,
     load_smoke_settings,
+    parse_cli_overrides,
     read_api_key_from_user_input,
 )
 
@@ -40,9 +43,16 @@ def _run_batch(
     settings: object,
     api_key: str,
     api_key_input_method: str,
+    task_ids: Sequence[str] | None = None,
 ) -> dict[str, object]:
+    selected = list(task_ids) if task_ids else list(APPROVED_RTD_TASKS)
+    unknown = [task_id for task_id in selected if task_id not in APPROVED_RTD_TASKS]
+    if unknown:
+        raise SmokeConfigurationError(
+            "task not on the approved RTD allowlist: " + ", ".join(sorted(unknown))
+        )
     results: list[dict[str, object]] = []
-    for task_id in APPROVED_RTD_TASKS:
+    for task_id in selected:
         task_file = agentcollab_repository / "tasks" / f"{task_id}.json"
         try:
             run = run_single_agentcollab_compact(
@@ -85,6 +95,14 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--agentcollab-repo", required=True, type=Path)
     parser.add_argument("--config", type=Path)
     parser.add_argument(
+        "--task-id",
+        action="append",
+        default=[],
+        metavar="ID",
+        help="run only this allowlisted task (repeatable; default: all approved)",
+    )
+    add_override_argument(parser)
+    parser.add_argument(
         "--api-key-stdin",
         action="store_true",
         help="read exactly one API-key line from non-TTY stdin",
@@ -101,7 +119,7 @@ def main(argv: list[str] | None = None) -> int:
         settings = load_smoke_settings(
             repository_root=repository_root,
             config_path=args.config,
-            overrides={},
+            overrides=parse_cli_overrides(args.override),
         )
         api_key, api_key_input_method = read_api_key_from_user_input(
             use_stdin=args.api_key_stdin
@@ -112,6 +130,7 @@ def main(argv: list[str] | None = None) -> int:
             settings=settings,
             api_key=api_key,
             api_key_input_method=api_key_input_method,
+            task_ids=args.task_id or None,
         )
     except SmokeConfigurationError as exc:
         print(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False), file=sys.stderr)

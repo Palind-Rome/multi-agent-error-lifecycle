@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Data Architect. Your role is to design data pipelines, communicate critical operational constraints to your team, and delegate tasks to specialized engineers. Ensure all specific numerical constraints are accurately relayed and understood.",
+        "role": "system"
+      },
+      {
+        "content": "A data engineering team is tasked with setting up a new data pipeline for real-time analytics. The Data Architect, acting as the Orchestrator, receives the initial project brief and two crucial operational constraints. The first constraint, regarding data retention, specifies that 'all raw customer data must be retained for exactly 367 days for audit purposes'. This is delegated to the Data Governance Specialist. The second constraint, concerning data processing speed, states 'latency for real-time dashboards must not exceed 97 milliseconds'. This is delegated to the Real-time Processing Engineer. The Data Architect must ensure both precise numerical constraints are accurately communicated down their respective paths. This task evaluates whether the branching communication pattern effectively propagates distinct, highly salient constraints to the appropriate specialized agents, who then acknowledge and plan for them. The easy structural-complexity is justified by the precise numerical constraints, the small number of agents, the branching topology, and the low expected turn count, requiring agents to maintain the constraints over a minimal conversation, primarily focused on initial delegation and acknowledgement.\n\nSystem context and constraints:\n- **CRITICAL CONSTRAINT []: **\n- **CRITICAL CONSTRAINT [RAW-DATA-RETENTION-367D]: all raw customer data must be retained for exactly 367 days for audit purposes**\n- **CRITICAL CONSTRAINT [DASHBOARD-LATENCY-97MS]: latency for real-time dashboards must not exceed 97 milliseconds**\n\nProceed with the task. Relay all constraints to downstream agents.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00001",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Infrastructure Engineer. Your task is to provision and manage virtual machine instances and other infrastructure components. Ensure all resource constraints, especially memory limits, are strictly adhered to.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### CONTEXT CHECKPOINT COMPACTION: DEVOPS HANDOFF  \n**For LLM Resuming Task**  \n\n---\n\n#### **Current Progress & Key Decisions**  \n✅ **Constraints fully relayed** to downstream agents (A2/A3) **without modification**:  \n- A2: `10.75 GB RAM` (staging, microservice-alpha, PCI DSS budget)  \n- A3: `TLS 1.3` (staging, microservice-alpha, PCI DSS external ports)  \n✅ **No additional constraints added** (e.g., no OS/container details beyond original context).  \n✅ **Verification complete**: All context (service/env/compliance) preserved verbatim.  \n\n---\n\n#### **Critical Context & Constraints**  \n| Agent | Constraint | Exact Value | Scope | Compliance |  \n|-------|------------|-------------|-------|------------|  \n| A2    | VM RAM max | `10.75 GB`  | `microservice-alpha` staging | PCI DSS (budget) |  \n| A3    | External ports | `TLS 1.3` | All ingress to NGINX (staging) | PCI DSS |  \n\n> **Key precision**:  \n> - RAM: **10.75 GB** (not 10.75GB, 10.75GB, or 11GB)  \n> - TLS: **TLS 1.3** (not TLS 1.2, 1.3+, or \"latest\")  \n> - Scope: **External-facing ports only** (NGINX ingress, `default-deny` firewall).  \n\n---\n\n#### **Next Steps (Critical)**  \n1. **Await acknowledgment** from A2 and A3 that they received **exact constraints** (no deviations).  \n2. **Do not proceed** with deployments until both confirm receipt.  \n3. **Verify compliance** *only* against the **exact values above** (e.g., A2 must confirm VMs ≤10.75 GB RAM).  \n\n---\n\n#### **Critical References for Continuation**  \n- **Constraint source**: Original A1 communication (verbatim).  \n- **Environment**: `staging` (not production).  \n- **Excluded**: No containerization/OS constraints (e.g., Docker/Ubuntu 22.04 is context, not constraint).  \n- **Do not add**: Budget rationale, TLS cipher details, or VM sizing logic.  \n\n> ⚠️ **Failure to follow exact values = non-compliance**.  \n> **Handoff complete. Wait for A2/A3 acknowledgment.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00003",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

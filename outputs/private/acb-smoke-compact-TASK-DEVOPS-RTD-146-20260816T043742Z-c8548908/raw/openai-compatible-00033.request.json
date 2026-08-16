@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Network Security Engineer. Your role is to design and implement network configurations, ensuring strict adherence to all security policies and routing requirements, especially regarding WAF integration. Report your proposed network configuration to the DevOps Reviewer (A4).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION – Handoff Summary**\n\n---\n\n### 📌 **Current Progress & Key Decisions Made**\n- Deployment of `custom-app-v2.1` in **us-east-1 (Production)** is initiated.\n- Two parallel execution paths established:\n  - **Container Specialist (A2)**: Tasked with enforcing resource limits and runtime configuration.\n  - **Network Security Engineer (A3)**: Tasked with designing WAF-compliant ingress via CloudFront + ALB.\n- **Senior DevOps Reviewer (A4)** is pending review of the network security plan.\n\n---\n\n### 🔑 **Critical Constraints & Context**\n- **[RAM-KX77]**: No container instance may exceed **3.75 GB RAM** — must be enforced via `resources.limits.memory`.\n- **[WAF-FN61]**: All external traffic **must pass through WAF-PROD-237** via **CloudFront** (ALB must not be publicly exposed).\n- **Architecture Requirements**:\n  - Container: 2 CPU cores, 50GB SSD storage, 3 replicas, rolling update strategy, `/health` probe.\n  - Network: CloudFront → ALB (Private-A subnet) → EC2; ACM TLS; Route53 alias; AWS Shield Advanced enabled.\n  - Security: ALB accessible only from CloudFront; no direct public access; strict egress-only ACLs.\n\n---\n\n### ✅ **What Remains to Be Done**\n1. **A2 (Container Specialist)**  \n   → Deliver finalized container spec (YAML/Helm) with:\n   - RAM ≤ 3.75 GB per instance\n   - CPU = 2 cores\n   - Rolling update strategy configured\n   - Health check path: `/health`\n   → Submit directly to A1\n\n2. **A3 (Network Security Engineer)**  \n   → Design and deliver:\n   - CloudFront distribution with WAF-PROD-237 attached\n   - ALB in Private-A subnet, secured via security group (only CloudFront IPs)\n   - ACM certificate integration\n   - Route53 alias record\n   - DDoS protection (Shield Advanced) enabled\n   → Submit to **A4 (Reviewer)** for compliance validation\n\n3. **A4 (Reviewer)**  \n   → Validate that [WAF-FN61] is fully enforced and architecture is secure\n   → Report approval/rejection to A1\n\n4. **A1 (Lead)**  \n   → Final sign-off upon confirmation of both A2’s compliance and A4’s approval\n\n---\n\n### 📎 **Critical Data / References Needed**\n- `custom-app-v2.1` container image tag (ensure correct version)\n- WAF-PROD-237 ID (for CloudFront association)\n- ACM certificate ARN (for CloudFront)\n- VPC ID and Private-A subnet CIDR (for ALB placement)\n- Example: CloudFront + WAF + ALB integration pattern (AWS docs reference: [CloudFront with WAF](https://docs.aws.amazon.com/waf/latest/developerguide/cloudfront-aws-waf.html))\n\n---\n\n### 🚀 **Next Steps for Incoming LLM**\n> Resume task by:\n> 1. Confirming A2’s container spec meets **[RAM-KX77]**  \n> 2. Validating A3’s network design against **[WAF-FN61]**  \n> 3. Ensuring A4’s review is completed before final deployment  \n> 4. Maintaining strict separation between container and network branches until handoff is complete\n\n> ✅ **Goal:** Seamless continuation toward production deployment with zero compliance gaps.\n\n---  \n**Handoff Complete. Ready for next agent.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00033",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

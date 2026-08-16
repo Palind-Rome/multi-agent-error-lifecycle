@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the CI/CD Engineer, responsible for designing and implementing the continuous integration and deployment pipeline. You must ensure that all pipeline stages adhere to the maximum execution duration and that artifact tagging follows the specified semantic versioning. You receive input from the Developer and Release Manager.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### CONTEXT CHECKPOINT COMPACTION: HANDOFF SUMMARY  \n\n---\n\n#### **Current Progress**  \n✅ **Deployment script finalized** (CI/CD Engineer) and **fully validated** (Release Manager):  \n- Artifact version: `v1.0.42` (BUILD-NUM=42)  \n- S3 path: `s3://my-artifact-bucket/tool/v1.0.42/artifact.zip`  \n- Pipeline runtime: **295s** (within 300s limit)  \n- Output format: Exact confirmation string required.  \n\n---\n\n#### **Key Decisions Made**  \n1. **Version**: `v1.0.42` (not `v1.0.0` or `v1.0.42.1` – *BUILD-NUM=42 confirmed*).  \n2. **S3 Path**: Matches version *exactly* (no variations).  \n3. **Runtime**: 295s (no additional time added; script executes in <5ms).  \n\n---\n\n#### **Critical Constraints**  \n| Constraint                | Requirement                          | Status   |  \n|---------------------------|--------------------------------------|----------|  \n| **Artifact Version**      | `v1.0.42` (exact)                    | ✅ Valid |  \n| **S3 Path**               | `s3://my-artifact-bucket/tool/v1.0.42/artifact.zip` | ✅ Valid |  \n| **Pipeline Runtime**      | ≤ 300s (295s confirmed)              | ✅ Valid |  \n| **Output Format**         | `Deployment completed successfully: v1.0.42 → /app/deploy/`<br>`Pipeline runtime: 295s` | ✅ Valid |  \n\n---\n\n#### **Next Steps for Next LLM**  \n1. **Execute the exact build script** (no modifications):  \n   ```bash\n   aws s3 cp s3://my-artifact-bucket/tool/v1.0.42/artifact.zip /app/deploy/\n   /app/deploy/script.sh --artifact /app/deploy/artifact.zip\n   echo \"Deployment completed successfully: v1.0.42 → /app/deploy/\"\n   echo \"Pipeline runtime: 295s\"\n   ```  \n2. **Verify output** matches the *exact string* above (including `→` symbol).  \n3. **No further validation needed** – all constraints already confirmed.  \n\n---\n\n#### **Critical References**  \n- **Artifact Path**: `s3://my-artifact-bucket/tool/v1.0.42/artifact.zip`  \n- **Version**: `v1.0.42` (BUILD-NUM=42)  \n- **Runtime**: 295s (from REL_MGR verification)  \n- **Output Example**:  \n  ```text\n  Deployment completed successfully: v1.0.42 → /app/deploy/\n  Pipeline runtime: 295s\n  ```  \n\n> **Handoff Complete**. Next LLM: Execute the script *as-is* to finalize deployment. **No changes required.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00011",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the CI/CD Engineer, responsible for designing and implementing the continuous integration and deployment pipeline. You must ensure that all pipeline stages adhere to the maximum execution duration and that artifact tagging follows the specified semantic versioning. You receive input from the Developer and Release Manager.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### 📦 **CI/CD Handoff Summary (Context Compaction)**  \n*For next LLM to resume deployment workflow*\n\n---\n\n#### ✅ **Current Progress**  \n- **Build stage script finalized** (`build.sh`):  \n  - Runs in **8s** (well under 30s constraint).  \n  - Generates artifact tag `v1.0.BUILD-NUM` (e.g., `v1.0.42`).  \n  - Uploads to S3 path: `s3://<bucket>/tool/v1.0.42/artifact.zip`.  \n- **Verification complete** (REL_MGR):  \n  - Pipeline runtime: **295s** (≤300s).  \n  - Tag/S3 path **valid** (no invalid formats).  \n  - **Release approved** – no further checks needed.  \n\n---\n\n#### ⚠️ **Critical Constraints**  \n| Requirement                | Status   | Example (from pipeline)       |  \n|----------------------------|----------|-------------------------------|  \n| Artifact tag format        | ✅ Valid | `v1.0.42` (not `v1.0.0`/`v1.0.42.1`) |  \n| S3 path format             | ✅ Valid | `s3://my-artifact-bucket/tool/v1.0.42/artifact.zip` |  \n| Build stage duration       | ✅ Valid | **8s** (≤30s)                 |  \n\n---\n\n#### 🔜 **Next Steps for Next LLM**  \n1. **Initiate deployment** using the **verified artifact**:  \n   - `v1.0.42` → `s3://my-artifact-bucket/tool/v1.0.42/artifact.zip`.  \n2. **No additional validation** required – pipeline is **approved**.  \n3. **Deploy immediately** (no further handoffs needed).  \n\n> 💡 **Key reference**: `CI_BUILD_NUMBER=42` (auto-injected by CI, e.g., Jenkins).  \n> *All constraints met – proceed to deployment.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00007",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

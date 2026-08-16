@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Data Governance Specialist. Your task is to implement data retention policies and ensure compliance with regulatory requirements. Your focus is on data lifecycle management and audit readiness. Acknowledge and plan for all data retention constraints.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION – HANDOFF SUMMARY**\n\n---\n\n**1. Current Progress & Key Decisions Made:**  \n- Two critical constraints successfully delegated:  \n  - **[RAW-DATA-RETENTION-367D]**: Data governance policy confirmed; retention period set to exactly 367 days with automated lifecycle management via tiered storage (hot → cold → archive).  \n  - **[DASHBOARD-LATENCY-97MS]**: Stream processing pipeline architected using Kafka + Flink for low-latency ingestion and stateful transformation; output routed to Redis-backed real-time cache.  \n- Both agents acknowledged receipt and are awaiting implementation.\n\n---\n\n**2. Important Context, Constraints & Preferences:**  \n- **Retention Policy**: Must enforce *exact* 367-day retention—no variance allowed. Use timestamp-based partitioning and automated deletion triggers.  \n- **Latency Bound**: End-to-end latency ≤ 97ms under 10K TPS peak load. No buffering beyond 50ms in any stage.  \n- **Audit Compliance**: All retention actions must be logged in immutable audit trail (log format: JSON, schema v1.2).  \n- **User Preference**: Zero tolerance for data loss or SLA breaches. Prioritize reliability over optimization.\n\n---\n\n**3. What Remains to Be Done (Next Steps):**  \n- Implement retention policy engine (trigger: daily cron job at 00:00 UTC; action: delete records older than 367 days).  \n- Deploy stream processing pipeline with latency monitoring (metrics: P95 < 97ms, max burst handling).  \n- Integrate audit logging into both systems (retention and streaming layers).  \n- Validate end-to-end compliance via synthetic load test (simulate 10K TPS for 2 hours).\n\n---\n\n**4. Critical Data & References Needed:**  \n- **Data Schema**: `raw_customer_data` (timestamp: `created_at`, key: `customer_id`)  \n- **Reference Docs**:  \n  - [Retention Policy Spec v3.1](https://internal.example.com/docs/retention-v3.1)  \n  - [Stream Pipeline SLA Guide](https://internal.example.com/docs/sla-streaming-v2)  \n- **Example Audit Log Entry**:  \n  ```json\n  {\n    \"event\": \"data_retention_deletion\",\n    \"timestamp\": \"2025-04-05T00:00:00Z\",\n    \"record_count\": 1247,\n    \"batch_id\": \"ret-367d-20250405\",\n    \"source\": \"raw_customer_data\"\n  }\n  ```\n\n---\n\n✅ **Handoff Complete. Next LLM: Resume implementation of retention engine and stream pipeline with full context.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00003",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

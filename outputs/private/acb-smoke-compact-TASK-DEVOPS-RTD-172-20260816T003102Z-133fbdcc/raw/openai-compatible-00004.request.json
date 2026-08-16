@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "### DevOps Lead (A1) Communication to Downstream Agents\n\n---\n\n**To Infrastructure Engineer (A2):**  \n*Critical Constraint for microservice-alpha (staging):*  \n`no virtual machine instance should exceed 10.75 GB of RAM to stay within budget`  \n**Context:**  \n- Service: `microservice-alpha`  \n- Environment: `staging`  \n- Compliance: PCI DSS (budget adherence required)  \n- *Action Required:* Ensure all VM instances (Ubuntu 22.04 LTS, Docker) deployed via Application Load Balancer **strictly comply** with this RAM limit.  \n\n---\n\n**To Security Operations Engineer (A3):**  \n*Critical Constraint for microservice-alpha (staging):*  \n`all external facing ports must use TLS 1.3 encryption`  \n**Context:**  \n- Service: `microservice-alpha`  \n- Environment: `staging`  \n- Compliance: PCI DSS (TLS 1.3 mandatory for external ports)  \n- Ingress: NGINX  \n- Firewall: `default-deny` ruleset  \n- *Action Required:* Validate TLS 1.3 enforcement on **all external-facing ports** (e.g., ingress traffic to NGINX).  \n\n---\n\n### Verification of Constraint Propagation\n- ✅ **VM-RAM-MAX-10-75GB** relayed **exactly** to A2 (no modification to numerical value or budget rationale).  \n- ✅ **EXT-PORTS-TLS-1-3** relayed **exactly** to A3 (no deviation from TLS version or scope).  \n- ✅ Context (service, environment, compliance) added for **unambiguous execution**.  \n- ✅ No additional constraints introduced (e.g., no mention of containerization/OS beyond context).  \n\n*Note: A2 and A3 must acknowledge receipt of these **exact** constraints before proceeding.*",
+        "role": "assistant"
+      },
+      {
+        "content": "You are performing a CONTEXT CHECKPOINT COMPACTION. Create a handoff summary for another LLM that will resume the task.\n\nInclude:\n- Current progress and key decisions made\n- Important context, constraints, or user preferences\n- What remains to be done (clear next steps)\n- Any critical data, examples, or references needed to continue\n\nBe concise, structured, and focused on helping the next LLM seamlessly continue the work.\n",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00004",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

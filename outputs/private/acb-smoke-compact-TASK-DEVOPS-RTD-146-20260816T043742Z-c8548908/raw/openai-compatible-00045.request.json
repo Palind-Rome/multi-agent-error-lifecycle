@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Container Specialist. Your primary responsibility is to design and configure container deployments, ensuring all resource allocation constraints, especially RAM limits, are strictly adhered to. Report your proposed container configuration directly to the DevOps Lead (A1).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n---\n\n### 📌 **Context Checkpoint Compaction: Handoff Summary**\n\n#### ✅ **Current Progress & Key Decisions Made**\n- **Deployment initiated** for `custom-app-v2.1` in `us-east-1` production.\n- Two parallel branches activated:\n  - **Container Spec (A2)**: RAM limit enforced at **3.75 GiB per instance**; CPU, replicas, health check, and logging defined.\n  - **Network Security (A3)**: Ingress routed via **CloudFront → WAF-PROD-237 → ALB → Private-A Subnet**; DNS (Route53) points to CloudFront; TLS via ACM.\n\n#### 🔒 **Critical Constraints & User Preferences**\n- **[RAM-KX77]**: No container may exceed **3.75 GB RAM** — hard cap.\n- **[WAF-FN61]**: All external traffic **must pass through WAF-PROD-237** — no direct ALB exposure.\n- **Production environment only** — no staging or dev.\n- **No bypasses**: WAF must be the first point of ingress control.\n- **Security-first design**: Strict egress-only ACLs, AWS Shield Advanced, site-to-site VPN.\n\n#### 🛠️ **What Remains to Be Done (Next Steps)**\n1. **From A2 (Container Specialist)**:\n   - Submit finalized container spec (YAML/JSON) with:\n     - `resources.limits.memory: 3.75Gi`\n     - `resources.requests.memory: 3.0Gi` (recommended)\n     - Health check path: `/health`\n     - Replica count ≥3\n   - Confirm no instance exceeds 3.75 GB RAM under load.\n\n2. **From A3 (Network Security Engineer)**:\n   - Submit:\n     - CloudFront distribution config (with WAF association)\n     - WAF policy snippet (showing rule set attached to CloudFront)\n     - Route53 DNS record (CNAME to CloudFront domain)\n   - Ensure no ALB public IP or direct internet access.\n\n3. **From A4 (Senior DevOps Reviewer)**:\n   - Validate both A2 and A3 outputs against constraints.\n   - Confirm **no WAF bypass risk** (e.g., direct ALB access, misconfigured origin).\n   - Provide formal sign-off (or rejection with rationale) to A1.\n\n#### 📎 **Critical Data / References Needed**\n- **WAF-PROD-237 ID**: `waf-8a9b1c2d-3e4f-5g6h-7i8j-9k0l1m2n3o4p`\n- **CloudFront Distribution ID**: `E1234567890ABC`\n- **ALB ARN**: `arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/custom-alb/abcdef123456`\n- **VPC Subnet**: `subnet-0a1b2c3d4e5f6g7h8` (Private-A)\n- **ACM Certificate ARN**: `arn:aws:acm:us-east-1:123456789012:certificate/abcd1234-ef56-7890-abcd-1234567890ab`\n\n> ⚠️ **Do not proceed without A4’s compliance sign-off.**\n\n---\n\n✅ **Handoff Complete. Next LLM should resume from A2/A3 task execution and A4 review phase.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00045",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

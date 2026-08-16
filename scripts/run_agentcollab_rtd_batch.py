@@ -23,7 +23,9 @@ from mas_error_lifecycle.adapters.agentcollab_smoke import (
     PURPOSE,
     SmokeConfigurationError,
     SmokeExecutionError,
+    add_override_argument,
     load_smoke_settings,
+    parse_cli_overrides,
     read_api_key_from_user_input,
     run_single_agentcollab_smoke,
 )
@@ -78,6 +80,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--agentcollab-repo", required=True, type=Path)
     parser.add_argument("--config", type=Path)
+    add_override_argument(parser)
     parser.add_argument(
         "--api-key-stdin",
         action="store_true",
@@ -95,7 +98,7 @@ def main(argv: list[str] | None = None) -> int:
         settings = load_smoke_settings(
             repository_root=repository_root,
             config_path=args.config,
-            overrides={},
+            overrides=parse_cli_overrides(args.override),
         )
         api_key, api_key_input_method = read_api_key_from_user_input(
             use_stdin=args.api_key_stdin

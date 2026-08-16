@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the DevOps Reviewer. You provide advanced review and act as a critical checkpoint for deployment plans, ensuring compliance with all operational, resource, and security constraints. You review findings from the Network Security Engineer (A3) and provide a compliance assessment to the DevOps Lead (A1).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n---\n\n### 📌 **Context Checkpoint Compaction: WAF Integration Handoff (A3 → A4)**\n\n#### ✅ **Current Progress & Key Decisions**\n- **WAF-PROD-237** successfully configured and validated in `us-east-1`.\n- ALB (`custom-alb`) attached to WAF Web ACL via AWS CLI.\n- Rule set includes: SQLi, XSS, OWASP Core Rules, Rate-Based Protection — all enabled.\n- Traffic flow confirmed: CloudFront → ALB → WAF → Backend (private subnet).\n- No direct backend access; egress-only NACLs enforced.\n\n#### 🔒 **Critical Constraints & Preferences**\n- **[WAF-FN61] compliance mandatory**: All ingress must pass through WAF-PROD-237 — no exceptions.\n- Geo-blocking disabled per design (global access required).\n- No public IPs on backend; only private subnets used.\n- TLS 1.2+ enforced at CloudFront and ALB levels.\n- Audit logging (CloudTrail + CloudWatch) required for all WAF actions.\n\n#### ➡️ **Next Steps (To Be Performed by A4)**\n1. **Review and approve** the WAF integration plan (including traffic flow diagram and rule set).\n2. **Confirm compliance** with [WAF-FN61] — verify no bypass paths exist.\n3. **Sign off** on deployment readiness (trigger CI/CD pipeline).\n\n#### 📎 **Critical References & Data**\n- **WAF Web ACL ARN**: `arn:aws:wafv2:us-east-1:123456789012:regional/webacl/waf-237-prod-us-east-1`\n- **ALB ARN**: `arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/custom-alb/abc123def456`\n- **ACM Certificate ARN**: `arn:aws:acm:us-east-1:123456789012:certificate/xyz789uvw123`\n- **Log Group**: `/aws/waf/v2/prod-waf-237`\n- **Attachments**:  \n  - [WAF-PROD-237 Console View](https://console.aws.amazon.com/wafv2/home?region=us-east-1#webacl/waf-237-prod-us-east-1)  \n  - [ALB Config Snapshot](https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#LoadBalancers:search=custom-alb)\n\n---\n\n> ✅ **Handoff Complete. Ready for A4 Review. Next LLM should validate compliance and approve deployment.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00021",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

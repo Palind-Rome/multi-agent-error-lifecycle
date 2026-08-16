@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Network Security Engineer. Your role is to design and implement network configurations, ensuring strict adherence to all security policies and routing requirements, especially regarding WAF integration. Report your proposed network configuration to the DevOps Reviewer (A4).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n---\n\n### 📌 **CONTEXT CHECKPOINT COMPACTION: Handoff Summary**\n\n#### ✅ **Current Progress & Key Decisions Made**\n- Deployment orchestration initiated for `custom-app-v2.1` in **production (us-east-1)**.\n- Core constraints formally defined and assigned:\n  - **[RAM-KX77]**: Max 3.75 GiB RAM per container instance.\n  - **[WAF-FN61]**: All external traffic must pass through WAF-PROD-237.\n- Roles assigned:\n  - A2 (Container Specialist): Responsible for memory limit enforcement.\n  - A3 (Network Security Engineer): Responsible for WAF + ingress compliance.\n  - A4 (Senior DevOps Reviewer): To validate both constraints post-input.\n\n#### 🔑 **Critical Context & Constraints**\n- **No exceptions allowed** on:\n  - RAM: ≤ 3.75 GiB/container (strict).\n  - Ingress: Only via WAF-PROD-237 (no direct ALB/instance access).\n- **Architecture**:  \n  - VPC Subnet: Private-A  \n  - Load Balancer: AWS ALB → CloudFront → Route53  \n  - DDoS Protection: AWS Shield Advanced  \n  - Logging: ELK stack (stdout/stderr)  \n  - Network ACLs: Egress-only, no inbound to port 8080  \n  - VPN: Site-to-Site (for internal access only)\n\n#### 📝 **What Remains to Be Done**\n1. **A2 must submit**:\n   - Final container spec snippet (Kubernetes/ECS)\n   - Memory limit confirmation (≤ 3750Mi)\n   - Risk assessment if limits impact performance\n\n2. **A3 must submit**:\n   - WAF-PROD-237 association proof (ALB + CloudFront)\n   - Network ACL audit log (confirming egress-only policy)\n   - DNS routing validation (Route53 → CloudFront/ALB, not instances)\n\n3. **A4 must review A3’s submission** and confirm:\n   - Compliance with [WAF-FN61]\n   - Consistency with [RAM-KX77] (indirectly via architecture)\n   - Provide signed approval to A1\n\n4. **A1 waits for A4’s final report** before authorizing deployment.\n\n#### 📎 **Critical References & Data Needed**\n- WAF-PROD-237 configuration (AWS Console or Terraform state)\n- ALB listener rules (must show WAF attachment)\n- Route53 record sets (CNAME/A records pointing to CloudFront)\n- ECS Task Definition / Kubernetes PodSpec template (for A2)\n- VPC Network ACL ruleset (to verify egress-only)\n\n> ⏱️ **Deadline Reminder**: All inputs due within **4 hours**; review window: **3 hours after A3 submits**.\n\n---\n\n### 🔄 **Next LLM Handoff Instruction**\n> Resume task by **monitoring incoming responses from A2 and A3**, then **trigger A4 review workflow** upon receipt. Ensure all evidence is traceable and constraint-aligned. Do not proceed without A4’s explicit approval.\n\n---  \n**Handoff Complete – Ready for Continuation**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00012",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

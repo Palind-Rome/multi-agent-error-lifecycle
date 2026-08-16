@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Performance Optimization Specialist. Your task is to analyze and improve the performance of services, ensuring all performance targets and metrics, such as API response times, are met.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n---\n\n### 📌 **CONTEXT CHECKPOINT COMPACTION: Handoff Summary for Next LLM**\n\n#### ✅ **Current Progress & Key Decisions**\n- **Security Constraint Finalized:**  \n  - All user profile data must be stored in S3 with server-side encryption (SSE-KMS preferred).  \n  - Enforcement via IaC validation, IAM policies, and CI checks.  \n- **Performance Target Set:**  \n  - API P99 latency capped at **75ms** under normal load; alerting thresholds at 70ms (warning), 75ms (critical).  \n- **Task Delegation Complete:**  \n  - A2 (Lead Backend Engineer): Responsible for secure S3 integration layer.  \n  - A3 (Performance Specialist): Ensures low-latency design and testing.  \n  - A4 (Junior Developer): Implements encrypted S3 storage with validation.\n\n#### 🔐 **Critical Constraints & Context**\n- **Non-negotiable Security Rule:**  \n  > No unencrypted S3 uploads allowed — even temporarily.  \n  > Must validate `x-amz-server-side-encryption` header on every upload.  \n- **User Preference:**  \n  - Prefer SSE-KMS over SSE-S3 for key management control.  \n  - Audit logging and monitoring required for compliance.  \n- **System-wide Dependencies:**  \n  - Performance (P99) is interdependent with backend design (e.g., DB queries, caching).  \n  - S3 encryption must not introduce latency bottlenecks.\n\n#### 🛠️ **Next Steps (Clear Action Items)**\n1. **A4 (Junior Dev):**  \n   - Implement S3 upload logic using AWS SDK with SSE-KMS enabled.  \n   - Add pre-commit or CI check to verify encryption headers.  \n   - Submit PR with unit test confirming encryption metadata.  \n2. **A2 (Lead Backend):**  \n   - Review A4’s implementation for compliance with security policy.  \n   - Integrate S3 layer into microservice with proper IAM roles.  \n3. **A3 (Performance):**  \n   - Validate that S3 encryption does not degrade response time.  \n   - Run k6 load test targeting 75ms P99; adjust caching/async patterns if needed.\n\n#### 📎 **Critical References & Data**\n- **Constraint IDs:**  \n  - `[S3-ENCRYPTION-USRPROF-SSE]` – Encryption mandate  \n  - `[API-RESP-TIME-75MS-P99]` – Latency target  \n- **Example S3 Upload Header (for validation):**  \n  ```http\n  x-amz-server-side-encryption: aws:kms\n  x-amz-server-side-encryption-aws-kms-key-id: arn:aws:kms:us-east-1:123456789:key/abcd1234-...  \n  ```\n- **Tooling Stack:** AWS SDK, CloudFormation/CDK, k6, OpenTelemetry/X-Ray, Prometheus/Grafana.\n\n---\n\n> ✅ **Handoff Ready. Next LLM should focus on A4’s implementation task with full context on security enforcement and performance guardrails.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00026",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

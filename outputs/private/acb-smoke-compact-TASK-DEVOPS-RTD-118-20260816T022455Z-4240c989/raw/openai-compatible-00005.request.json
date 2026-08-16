@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Release Manager, overseeing the deployment and release process. You verify that deployed artifacts are correctly versioned and that the overall deployment process respects the time limits. You receive information from the CI/CD Engineer.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CI/CD Handoff Summary (For Next LLM)**  \n\n---\n\n### **Current Progress**  \n- Pipeline stages confirmed: `Checkout` (10s) → `Linting` (60s) → `Unit Tests` (120s) → `Build` (30s) → `Deploy` (40s) → `Slack Notify` (35s).  \n- **Total runtime: 295s** (within 300s limit).  \n- **Critical decision**: `Linting + Unit Tests` must stay ≤ **180s** (60s + 120s = 180s exact).  \n\n---\n\n### **Key Constraints (Non-Negotiable)**  \n1. **Time**:  \n   - Total pipeline ≤ **300.00s** (no exceptions).  \n   - *Must enforce*: `Linting + Unit Tests` ≤ **180s** (leaves 120s for build/deploy).  \n2. **Artifact Tag**:  \n   - **MUST be `v1.0.BUILD-NUM`** (e.g., `v1.0.42`).  \n   - *Rejects*: `v1.0.0`, `v1.0.42.1`, or any non-matching format.  \n3. **S3 Path**:  \n   - Deploy key: `s3://<bucket>/tool/v1.0.<BUILD-NUM>/artifact.zip` (tag must match).  \n\n---\n\n### **What Remains to Be Done**  \n1. **Verify `Linting + Unit Tests` runtime ≤ 180s** (current: 60s + 120s = 180s).  \n2. **Confirm artifact tag = `v1.0.<BUILD-NUM>`** (e.g., `v1.0.42` if CI build # = 42).  \n3. **Validate S3 path uses the exact tag** (e.g., `v1.0.42` in `s3://.../v1.0.42/artifact.zip`).  \n\n---\n\n### **Critical References**  \n- **Tag example**: `v1.0.42` (not `v1.0.0` or `v1.0.42.0`).  \n- **Pipeline timeout**: Auto-cancel if >300s.  \n- **Failure triggers**:  \n  - Tag mismatch → `Pipeline fails`.  \n  - `Linting + Tests` > 180s → `Pipeline fails`.  \n\n> **Next LLM Action**: *Confirm all constraints are met in the pipeline configuration. Do not proceed if any check fails.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00005",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "**To Backend Developer (A2):**  \n`CRITICAL SECURITY CONSTRAINT [AUTH-ARGON2ID-65K]: all password hashing must use Argon2id with a minimum of 4 iterations and a memory cost of 65536 KB`  \n\n**To Frontend Developer (A3):**  \n`CRITICAL SECURITY CONSTRAINT [SESS-EXP-1440MIN]: user session tokens must expire after 1440 minutes of inactivity and be invalidated on logout`  \n\n---  \n*Note: These constraints are non-negotiable. All implementation must strictly adhere to the exact values and specifications above. No deviations permitted. Verify compliance during code review.*",
+        "role": "assistant"
+      },
+      {
+        "content": "You are performing a CONTEXT CHECKPOINT COMPACTION. Create a handoff summary for another LLM that will resume the task.\n\nInclude:\n- Current progress and key decisions made\n- Important context, constraints, or user preferences\n- What remains to be done (clear next steps)\n- Any critical data, examples, or references needed to continue\n\nBe concise, structured, and focused on helping the next LLM seamlessly continue the work.\n",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00024",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

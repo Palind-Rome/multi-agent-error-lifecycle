@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "**[Architect (A1) → Backend Developer (A2)]:**  \nA2, for the user authentication module, you are responsible for implementing secure password handling. You must adhere to the following **critical security constraint**:\n\n> **[CRITICAL CONSTRAINT: AUTH-ARGON2ID-65K]**  \n> All password hashing **must use Argon2id** with a **minimum of 4 iterations** and a **memory cost of 65536 KB**. This configuration is non-negotiable and must be strictly enforced in the backend logic. Ensure that all user passwords are hashed using these parameters before storage. Confirm your understanding and outline your implementation approach.\n\n---\n\n**[Architect (A1) → Frontend Developer (A3)]:**  \nA3, you are responsible for managing user session behavior on the client side. You must implement the following **critical security constraint**:\n\n> **[CRITICAL CONSTRAINT: SESS-EXP-1440MIN]**  \n> User session tokens **must expire after 1440 minutes (24 hours) of inactivity** and **must be invalidated immediately upon logout**. This includes ensuring that the UI triggers token invalidation requests to the backend on logout and that inactive sessions do not remain valid beyond the specified window. You will coordinate with A2 on token lifecycle signals.\n\nConfirm your understanding and describe how you plan to track inactivity and handle session expiration and logout invalidation.\n\n---\n\nAwaiting responses from A2 and A3 to proceed with validation and iterative refinement.  \n**Turn 1 complete.**  \n**Expected turns: 22**  \n**Current state: Constraints relayed; awaiting implementation plans.**",
+        "role": "assistant"
+      },
+      {
+        "content": "You are performing a CONTEXT CHECKPOINT COMPACTION. Create a handoff summary for another LLM that will resume the task.\n\nInclude:\n- Current progress and key decisions made\n- Important context, constraints, or user preferences\n- What remains to be done (clear next steps)\n- Any critical data, examples, or references needed to continue\n\nBe concise, structured, and focused on helping the next LLM seamlessly continue the work.\n",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00012",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

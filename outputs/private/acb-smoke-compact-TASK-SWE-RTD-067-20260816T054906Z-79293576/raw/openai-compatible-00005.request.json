@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Performance Optimization Specialist. Your task is to analyze and improve the performance of services, ensuring all performance targets and metrics, such as API response times, are met.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION – Handoff Summary**\n\n---\n\n### 📌 **Current Progress & Key Decisions**\n- Security constraint **[S3-ENCRYPTION-USRPROF-SSE]** confirmed and relayed to Junior Developer (A4) via Lead Backend Engineer (A2).  \n- Performance SLA **[API-RESP-TIME-75MS-P99]** communicated to Performance Optimization Specialist (A3) with design guidance.  \n- Communication path validated: no constraint degradation across hierarchy.\n\n---\n\n### 🔑 **Critical Context & Constraints**\n- **Non-negotiable security**: All user profile data stored in S3 must use SSE-S3 encryption. No exceptions.  \n- **Performance target**: P99 API response ≤ 75ms under peak load. Must be measurable via observability stack (Prometheus/Grafana).  \n- **Role alignment**:  \n  - A2: Enforces S3 encryption at infrastructure level.  \n  - A3: Designs low-latency architecture; monitors metrics.  \n  - A4: Implements encrypted S3 storage layer per spec.\n\n---\n\n### ✅ **Next Steps (Clear Actions for Next LLM)**\n1. Verify that A4’s implementation includes:  \n   - AWS S3 bucket configuration with `ServerSideEncryptionConfiguration` set to SSE-S3.  \n   - CI/CD validation (e.g., Terraform linting or CloudFormation check) enforcing encryption.  \n2. Confirm A3 has initiated:  \n   - Latency instrumentation (e.g., OpenTelemetry traces, custom metrics).  \n   - Load testing plan simulating 99th percentile traffic.  \n3. Prepare for integration review: ensure both constraints are traceable in system documentation and test reports.\n\n---\n\n### 📎 **References & Data Needed**\n- AWS S3 Bucket Policy Example (with SSE-S3):  \n  ```json\n  \"BucketEncryption\": {\n    \"ServerSideEncryptionConfiguration\": [\n      {\n        \"ServerSideEncryptionByDefault\": {\n          \"SSEAlgorithm\": \"AES256\"\n        }\n      }\n    ]\n  }\n  ```\n- Sample Prometheus metric: `http_request_duration_ms{quantile=\"0.99\"}`\n- Link to architectural policy doc: `https://docs.company.com/arch/policies/s3-encryption-usprof-sse`\n\n---\n\n> ✅ **Handoff Complete** – Next LLM can resume with full context. Focus on validation and integration readiness.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00005",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

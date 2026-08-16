@@ -48,8 +48,20 @@ ANALYSIS_ELIGIBLE = False
 TESTED_AGENTCOLLAB_COMMIT = "f016f600568b6d8127dc861e4c83c87b72750d63"
 PAPERBYPASS_BASE_URL = "https://aigateway.paperbypass.com/api/v1"
 PAPERBYPASS_MODEL = "qwen/qwen3-30b-a3b-instruct-2507"
-MIN_INPUT_PRICE_USD_PER_MILLION = Decimal("0.04815")
-MIN_OUTPUT_PRICE_USD_PER_MILLION = Decimal("0.19305")
+# model id -> (input price floor, output price floor) in USD per 1M tokens,
+# from the PaperBypass /developer/models list. A config's per-million-token
+# ceiling must be >= the model's floor so the cost estimate never under-shoots.
+# Add a size only after verifying both the id and its live list price.
+PAPERBYPASS_MODEL_PRICES = {
+    "qwen/qwen3-30b-a3b-instruct-2507": (Decimal("0.04815"), Decimal("0.19305")),
+    "qwen/qwen3-235b-a22b-2507": (Decimal("0.09"), Decimal("0.10")),
+    "qwen/qwen3-30b-a3b-thinking-2507": (Decimal("0.08"), Decimal("0.40")),
+}
+APPROVED_PAPERBYPASS_MODELS = frozenset(PAPERBYPASS_MODEL_PRICES)
+# Base floor = the default model's list price, still enforced by BudgetLimits so
+# the ceiling never drops below a known-safe level for any model.
+MIN_INPUT_PRICE_USD_PER_MILLION = PAPERBYPASS_MODEL_PRICES[PAPERBYPASS_MODEL][0]
+MIN_OUTPUT_PRICE_USD_PER_MILLION = PAPERBYPASS_MODEL_PRICES[PAPERBYPASS_MODEL][1]
 MAX_RESPONSE_BODY_BYTES = 4 * 1024 * 1024
 MAX_SELECTED_HEADER_CHARACTERS = 4096
 MAX_API_KEY_CHARACTERS = 16 * 1024
@@ -61,6 +73,8 @@ APPROVED_METRIC = "rtd"
 # Tracked, untouched RTD tasks approved for the engineering-smoke path. Each
 # pinned SHA-256 pins the exact task bytes before execution. The allowlist is
 # the reviewed native-instrumentation sample across DATAENG/DEVOPS/SWE.
+# The second block (batch 2) fills the ag=3 gap and the two topologies absent
+# from the first block (branching_tree, custom_graph); all multi-constraint.
 APPROVED_RTD_TASKS = {
     "TASK-DATAENG-RTD-060": "9bb822c2bc1555104fa9ae63c5ee050a1e1b35603396dddc92634e8a609ed92b",
     "TASK-DATAENG-RTD-059": "2884f1a68036fcb9ca65b81514e31e0648b1ef83189996d7ffa93edabbb7b92c",
@@ -69,6 +83,18 @@ APPROVED_RTD_TASKS = {
     "TASK-DATAENG-RTD-108": "ceb11da7a75406a4cec027dc2ebae3732892865a8f21a3a3250542174ccf7b9d",
     "TASK-DEVOPS-RTD-103": "f4b533a2731d6b9a5cca85ae9fee2069aebabe4d4306e56f1e674216a756420d",
     "TASK-SWE-RTD-105": "689e30e5944b0294b9adfb6d9f69748bc18f79c8f322fda048c9bfda035325bb",
+    # --- batch 2 (ag=3, branching_tree + custom_graph) ---
+    "TASK-DATAENG-RTD-058": "2a53063fc817ac3e36ff9f7971d457bec14f002cc02d908b9320dd21d582a2b2",
+    "TASK-DEVOPS-RTD-172": "6b5e6eef91dbaa958349559c3c236c582e8c565cbbd8ae7c4d65a0fd2610b894",
+    "TASK-SWE-RTD-054": "6a500bae4a7a35240cd1e195c441ba372a2db334d6b77fd3a924799333d57e47",
+    "TASK-DEVOPS-RTD-118": "aa3c9bfaca936c4b26ff6ef1359dbabb42f7b9729e4fe79b0b5784ad96d7afd6",
+    "TASK-SWE-RTD-047": "df1925db88c7032f1a58913cef4780745a1278c0dac6dd46d185d6cdac2abfb2",
+    # --- batch 3 (balance custom_graph vs branching_tree across domains) ---
+    "TASK-DATAENG-RTD-052": "ecdbe472fca4b957d9ef931fe8b7f2b1ae0f0c605d7cd70768d075d9f9df1048",
+    "TASK-DEVOPS-RTD-129": "dd608faf88ccce762bd245d81f03367fbb47bdeab91baadf27a5b51eb3d26b9c",
+    "TASK-SWE-RTD-055": "2a7343fcf7391935485a9f937c5ee8e5aa340f3b1934574462847d24aec09eae",
+    "TASK-DEVOPS-RTD-146": "a34415b0cdc5459d94d8a539eebab8640764e211378f31a6ccbf36ca3eb0328d",
+    "TASK-SWE-RTD-067": "9f171f2f0c41365b84f13d563d4c1613f28d4cfccdc73a5692df63e184b1dc43",
 }
 # Tracked, untouched CPR tasks for the false-fact (RQ2) engineering-smoke path.
 APPROVED_CPR_TASKS = {
@@ -134,9 +160,9 @@ class ProviderSettings:
                 "provider.base_url must be exactly the approved PaperBypass API base"
             )
         base_url = self.base_url.rstrip("/")
-        if not isinstance(self.model, str) or self.model != PAPERBYPASS_MODEL:
+        if not isinstance(self.model, str) or self.model not in APPROVED_PAPERBYPASS_MODELS:
             raise SmokeConfigurationError(
-                "provider.model must be exactly the approved pinned model"
+                "provider.model is not on the approved PaperBypass model allowlist"
             )
         model = self.model
         if not base_url or base_url == "UNSET":
@@ -228,6 +254,21 @@ class BudgetLimits:
 class SmokeSettings:
     provider: ProviderSettings
     limits: BudgetLimits
+
+    def __post_init__(self) -> None:
+        # Per-model floor: the ceiling must be >= the model's own list price, so
+        # a more expensive model than the default cannot be silently under-priced.
+        input_floor, output_floor = PAPERBYPASS_MODEL_PRICES[self.provider.model]
+        if self.limits.max_input_cost_usd_per_million_tokens < input_floor:
+            raise SmokeConfigurationError(
+                "limits.max_input_cost_usd_per_million_tokens is below the "
+                f"approved price floor for {self.provider.model}"
+            )
+        if self.limits.max_output_cost_usd_per_million_tokens < output_floor:
+            raise SmokeConfigurationError(
+                "limits.max_output_cost_usd_per_million_tokens is below the "
+                f"approved price floor for {self.provider.model}"
+            )
 
 
 @dataclass(frozen=True, slots=True)
@@ -449,6 +490,65 @@ def load_smoke_settings(
     return SmokeSettings(provider=provider, limits=limits)
 
 
+def _strict_bool_text(value: str) -> bool:
+    lowered = value.strip().lower()
+    if lowered in {"true", "1", "yes", "on"}:
+        return True
+    if lowered in {"false", "0", "no", "off"}:
+        return False
+    raise SmokeConfigurationError(f"send_seed must be a boolean, got {value!r}")
+
+
+# Flat override keys accepted by ``load_smoke_settings``, each paired with the
+# coercion that matches the strict typed loader the value later passes through.
+# Decimal fields keep the raw text: ``load_smoke_settings`` runs ``Decimal(str(...))``.
+_OVERRIDE_COERCERS: dict[str, Callable[[str], Any]] = {
+    "base_url": str,
+    "model": str,
+    "temperature": float,
+    "request_timeout_seconds": float,
+    "send_seed": _strict_bool_text,
+    "max_calls": int,
+    "max_input_tokens": int,
+    "max_output_tokens": int,
+    "max_output_tokens_per_call": int,
+    "max_wall_seconds": float,
+    "max_cost_usd": str,
+    "max_input_cost_usd_per_million_tokens": str,
+    "max_output_cost_usd_per_million_tokens": str,
+}
+
+
+def add_override_argument(parser: argparse.ArgumentParser) -> None:
+    """Register the repeatable ``--override KEY=VALUE`` flag on a batch CLI."""
+    parser.add_argument(
+        "--override",
+        action="append",
+        default=[],
+        metavar="KEY=VALUE",
+        help=(
+            "override one provider/limits setting (repeatable), e.g. "
+            "model=qwen/qwen3-8b-instruct-2507 or "
+            "max_input_cost_usd_per_million_tokens=0.01"
+        ),
+    )
+
+
+def parse_cli_overrides(items: Sequence[str]) -> dict[str, Any]:
+    """Coerce ``--override KEY=VALUE`` items into a ``load_smoke_settings`` dict."""
+    overrides: dict[str, Any] = {}
+    for item in items:
+        key, sep, value = item.partition("=")
+        key = key.strip()
+        if not sep or not key or not value.strip():
+            raise SmokeConfigurationError(f"--override must be KEY=VALUE, got {item!r}")
+        coercer = _OVERRIDE_COERCERS.get(key)
+        if coercer is None:
+            raise SmokeConfigurationError(f"unknown --override key {key!r}")
+        overrides[key] = coercer(value.strip())
+    return overrides
+
+
 class PrivateRunStore:
     """Atomic, mode-0600 persistence rooted at ``outputs/private/<run_id>``."""
 
@@ -483,15 +583,11 @@ class PrivateRunStore:
                 "outputs/private resolves outside its literal repository path"
             )
         os.chmod(private_root, 0o700)
-        if (root / ".git").exists():
-            ignored = _run_git(
-                root,
-                ["check-ignore", "--quiet", "--", "outputs/private/probe"],
-            )
-            if ignored.returncode != 0:
-                raise SmokeConfigurationError(
-                    "outputs/private must be git-ignored before a smoke run"
-                )
+        # Traces are intentionally tracked and uploaded (the project decision to
+        # publish experiment traces), so there is deliberately no git-ignore gate
+        # here. The API key never reaches this directory: the provider layer
+        # redacts it from every persisted request/response. The 0o700 mode and
+        # symlink checks above remain as the local-privacy boundary.
         run_directory = private_root / run_id
         try:
             run_directory.mkdir(mode=0o700)

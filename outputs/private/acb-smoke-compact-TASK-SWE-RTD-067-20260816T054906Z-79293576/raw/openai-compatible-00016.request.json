@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "**Software Architect (A1) Action: Relay Critical Constraints to Downstream Agents**\n\n---\n\n### ✅ **To Lead Backend Engineer (A2):**\n> **Critical Security Constraint [S3-ENCRYPTION-USRPROF-SSE]:**  \n> All persistent storage for user profiles must exclusively utilize encrypted S3 buckets with server-side encryption enabled.  \n>  \n> **Action Required:**  \n> - Ensure the data persistence layer for user profiles is implemented using only S3 buckets configured with server-side encryption (SSE-S3 or SSE-KMS, per compliance standards).  \n> - Validate that no unencrypted S3 storage is used under any circumstances.  \n> - Enforce this via infrastructure-as-code (IaC) policies and pre-deployment checks.  \n> - Communicate this requirement clearly to the Junior Developer (A4) responsible for implementation.\n\n---\n\n### ✅ **To Performance Optimization Specialist (A3):**\n> **Critical Performance Constraint [API-RESP-TIME-75MS-P99]:**  \n> The microservice must maintain a maximum API response time of 75 milliseconds for 99th percentile requests.  \n>  \n> **Action Required:**  \n> - Design and implement monitoring, tracing, and load testing strategies to ensure P99 latency remains ≤ 75ms under expected production load.  \n> - Optimize database queries, cache usage, and network roundtrips to meet this target.  \n> - Establish observability metrics (e.g., latency histograms, error rates) in production.  \n> - Collaborate with backend and frontend teams to identify and eliminate bottlenecks.\n\n---\n\n### ✅ **To Junior Developer (A4):**\n> **Reinforced Security Constraint [S3-ENCRYPTION-USRPROF-SSE]:**  \n> You are responsible for implementing the persistent storage solution for user profiles.  \n>  \n> **Mandatory Requirement:**  \n> - Use only S3 buckets with server-side encryption enabled (SSE-S3 or SSE-KMS).  \n> - Do not proceed with any S3 bucket configuration that does not explicitly enforce encryption at rest.  \n> - Confirm encryption settings via AWS console, CLI, or IaC (e.g., CloudFormation/Terraform) before deployment.  \n> - If in doubt, consult the Lead Backend Engineer (A2) immediately.  \n\n> 🔒 **Note:** This security constraint is non-negotiable and must be upheld regardless of development speed or convenience.\n\n---\n\n### ✅ **Architectural Verification Summary:**\n- **Branching Communication Pattern Confirmed:**  \n  - Security constraint ([S3-ENCRYPTION-USRPROF-SSE]) transmitted directly from A1 → A2 → A4 (with reinforcement at A4).  \n  - Performance constraint ([API-RESP-TIME-75MS-P99]) transmitted directly from A1 → A3.  \n- **Constraint Integrity Preserved:**  \n  - The S3 encryption requirement survives an additional communication hop (A2 → A4) and is explicitly reinforced.  \n  - Both constraints remain unambiguous, measurable, and actionable at their respective endpoints.\n\n---\n\n✅ **Status: Constraints successfully propagated. Branching communication pattern validated. Security and performance requirements preserved across all layers.**",
+        "role": "assistant"
+      },
+      {
+        "content": "You are performing a CONTEXT CHECKPOINT COMPACTION. Create a handoff summary for another LLM that will resume the task.\n\nInclude:\n- Current progress and key decisions made\n- Important context, constraints, or user preferences\n- What remains to be done (clear next steps)\n- Any critical data, examples, or references needed to continue\n\nBe concise, structured, and focused on helping the next LLM seamlessly continue the work.\n",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00016",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

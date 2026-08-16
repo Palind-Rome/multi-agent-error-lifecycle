@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Lead Developer, responsible for overseeing the implementation of the user profile update module. You must ensure all critical architectural constraints, particularly regarding database usage and authentication mechanisms, are communicated effectively and adhered to by the team. You receive updates from the Backend Developer and QA Engineer.",
+        "role": "system"
+      },
+      {
+        "content": "A small software development team is tasked with implementing a new feature for an existing web application: a secure user profile update module. The team must ensure data integrity and user privacy. A critical architectural constraint dictates that all user profile data MUST be stored in a 'MongoDB Atlas cluster, version 6.0', and under no circumstances should it be cached on local application servers to prevent data inconsistencies. Additionally, all API endpoints for this module must strictly enforce 'OAuth 2.0 with JWT tokens' for authentication. The team consists of a Lead Developer, a Backend Developer, and a QA Engineer. This 'easy' structural-complexity task emphasizes the propagation and adherence to these specific database and authentication constraints within a custom graph topology, which includes a feedback loop between the Backend Developer and the Lead Developer to ensure implementation compliance. The task is expected to conclude within 6 turns, demanding clear and concise communication.\n\nSystem context and constraints:\n- **CRITICAL CONSTRAINT []: **\n- **CRITICAL CONSTRAINT [DB-MONGO-ATLAS-V6]: all user profile data must be stored in a MongoDB Atlas cluster, version 6.0**\n- **CRITICAL CONSTRAINT [NO-LOCAL-CACHE-P33]: user profile data must not be cached on local application servers**\n- **CRITICAL CONSTRAINT [AUTH-OAUTH2-JWT-R22]: all API endpoints must strictly enforce OAuth 2.0 with JWT tokens for authentication**\n- Deployment will be to AWS EC2 instances.\n- Logging should be sent to a centralized ELK stack.\n- The frontend uses React.\n- Unit tests must achieve 85% code coverage.\n\nProceed with the task. Relay all constraints to downstream agents.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00001",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

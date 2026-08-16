@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Pipeline Developer, responsible for implementing the data ingestion logic and data formatting. You must ensure all incoming data is timestamped in UTC, stored in parquet format, and uses Snappy compression. You also implement optimizations to meet the latency requirement. You communicate progress and challenges to the Data Ingestion Lead and send work for review to the QA Data Analyst.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n---\n\n### 📌 **HANDOFF SUMMARY: CONTEXT CHECKPOINT COMPACTION**  \n*For LLM Resumption – QA Validation & Pipeline Deployment (Pub/Sub → Flink → GCS)*\n\n---\n\n#### ✅ **Current Progress & Key Decisions Made**\n- **Pipeline validated end-to-end** under burst load (10,000 msg/sec for 5 min).  \n- **Latency SLA met**: Max observed latency = **3.47s < 3.50s threshold**.  \n- **Fail-fast behavior confirmed**: Invalid data (malformed timestamp, missing field, unknown field) rejected pre-GCS write.  \n- **Output format compliance verified**:  \n  - Parquet files with `PAR1` header, Snappy compression, UTC timestamps, time-partitioned (`year=2025/month=04/day=05/hour=12`).  \n- **Jira ticket `INGEST-001` approved** by Data Ingestion Lead.  \n- **All test artifacts archived** (logs, scripts, metadata).\n\n---\n\n#### 🔒 **Critical Context, Constraints & User Preferences**\n- **SLA**: Max end-to-end latency ≤ **3.50 seconds** (must not be breached in production).  \n- **Data integrity**: No partial writes to GCS — invalid records must be rejected at ingestion layer.  \n- **Schema enforcement**: Backward compatibility required; new fields must trigger rejection.  \n- **Output path**: Must write to `gs://telemetry-staging/test-parquet/` with exact partitioning and naming.  \n- **User preference**: Full automation; no manual intervention expected during production run.\n\n---\n\n#### ➡️ **Next Steps (Clear Actions Required)**\n1. **Deploy pipeline to `telemetry-prod` environment** using CI/CD pipeline.  \n2. **Monitor first 60 minutes** via production dashboards:  \n   - Latency (avg/max), message throughput, error rate.  \n   - Schema validation failures (target: < 0.1%).  \n3. **Set up alerts**:  \n   - Trigger if latency > 3.50s for 5 consecutive minutes.  \n   - Trigger if schema rejection rate > 0.1% over 10-minute window.  \n4. **Confirm successful handoff to SRE team** (if applicable) for ongoing operations.\n\n---\n\n#### 📎 **Critical References & Data Needed to Resume**\n- [x] `messages.json` (synthetic burst test data)  \n- [x] `parquet-tools meta` output from valid file  \n- [x] Stackdriver log snippet showing schema rejection  \n- [x] gcloud command history (audit trail)  \n- [x] Final QA report PDF (attached to Jira `INGEST-001`)  \n\n> 🔗 **Jira Ticket**: `INGEST-001` – *Production Readiness Approval*  \n> 📁 **GCS Path**: `gs://telemetry-staging/test-parquet/`  \n> 🛠️ **Flink Job ID**: `flink-job-20250405-123456` (use for monitoring)\n\n---\n\n✅ **Handoff Complete. Ready for Production Rollout.**  \n> **Next LLM: Proceed with deployment and real-time monitoring.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00009",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

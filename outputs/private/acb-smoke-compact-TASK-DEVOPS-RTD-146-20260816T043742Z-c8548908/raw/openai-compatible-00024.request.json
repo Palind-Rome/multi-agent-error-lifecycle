@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Container Specialist. Your primary responsibility is to design and configure container deployments, ensuring all resource allocation constraints, especially RAM limits, are strictly adhered to. Report your proposed container configuration directly to the DevOps Lead (A1).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION – Handoff Summary**\n\n---\n\n### 📌 **Current Progress & Key Decisions Made**\n- Deployment of `custom-app-v2.1` in **Production (us-east-1)** is underway under strict operational constraints.\n- Two critical constraints have been validated and delegated:\n  - **[RAM-KX77]**: Container memory capped at **3.75 GiB** (limits: 3.75Gi, requests: 2.5Gi), CPU = 2 cores.\n  - **[WAF-FN61]**: All ingress must route through **WAF-PROD-237** via ALB → CloudFront → WAF chain.\n- Delegations issued:\n  - A2 (Container Specialist): Finalize container spec with resource limits and storage config.\n  - A3 (Network Security Engineer): Implement WAF routing, validate path, and prepare proof.\n\n---\n\n### 🔑 **Critical Context & Constraints**\n- **No deviations allowed** on RAM or WAF routing — any breach triggers rollback.\n- **Rolling update strategy** must avoid transient memory spikes.\n- **Persistent storage**: 50GB SSD mounted externally (not in image).\n- **TLS termination** at CloudFront; no direct public access to port 8080.\n- **Health check path `/health`** must be accessible only via internal WAF/ALB flow.\n\n---\n\n### ✅ **What Remains to Be Done (Next Steps)**\n1. **A2 (Container Specialist)**  \n   → Submit finalized container manifest snippet + compliance confirmation (RAM/CPU/storage).  \n   → Deadline: T+2h\n\n2. **A3 (Network Security Engineer)**  \n   → Deliver WAF integration proof + network path diagram.  \n   → Confirm CloudFront → WAF → ALB chain is active and secure.  \n   → Deadline: T+3h\n\n3. **A4 (Senior DevOps Reviewer)**  \n   → Review A3’s submission for compliance with [WAF-FN61].  \n   → Provide signed approval report + risk assessment.  \n   → Deadline: T+4h\n\n---\n\n### 📎 **Critical Data & References Needed**\n- AWS ALB listener configuration (WAF association)\n- WAF-PROD-237 rule group list (OWASP CRS, rate limiting, SQLi/XSS enabled)\n- CloudFront distribution ID and origin settings\n- Kubernetes/ECS task definition template (for A2 reference)\n- ELK logging pipeline config (Fluentd/Fluent Bit)\n\n> ⚠️ **Do not proceed without verified compliance reports from A2 and A3.**\n\n---\n\n**Handoff Ready. Resume orchestration upon receipt of A2/A3 deliverables.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00024",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

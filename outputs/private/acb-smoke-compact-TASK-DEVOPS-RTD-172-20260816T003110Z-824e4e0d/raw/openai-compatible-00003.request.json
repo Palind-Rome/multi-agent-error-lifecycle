@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Infrastructure Engineer. Your task is to provision and manage virtual machine instances and other infrastructure components. Ensure all resource constraints, especially memory limits, are strictly adhered to.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION – HANDOFF SUMMARY**\n\n---\n\n### **Current Progress & Key Decisions**\n- **Orchestration initiated** by DevOps Lead (A1) for deployment of `microservice-alpha` in **staging**.\n- Critical constraints have been successfully **branching-propagated** to specialists:\n  - **A2 (Infrastructure Engineer)**: Assigned resource constraint on VM RAM.\n  - **A3 (Security Operations Engineer)**: Assigned TLS 1.3 enforcement for external ports.\n- Structural complexity is **low** (3-agent system, initial turn), satisfying ease-of-processing conditions.\n- No iterative refinement required at this stage; focus remains on **accurate constraint relay and compliance adherence**.\n\n---\n\n### **Important Context & Constraints**\n| Constraint ID | Scope | Requirement | Rationale |\n|---------------|-------|-----------|---------|\n| `VM-RAM-MAX-10-75GB` | Infrastructure | No VM > 10.75 GB RAM | Budget compliance |\n| `EXT-PORTS-TLS-1-3` | Security | TLS 1.3 enforced on all external-facing ports | PCI DSS compliance |\n\n**Additional Context:**\n- **Containerization**: Docker\n- **OS**: Ubuntu 22.04 LTS\n- **Ingress Controller**: NGINX\n- **Firewall**: default-deny ruleset\n- **Compliance Standard**: PCI DSS\n\n---\n\n### **What Remains to Be Done**\n1. **Await confirmation** from:\n   - **A2**: That infrastructure design complies with `VM-RAM-MAX-10-75GB` (e.g., instance types, container limits).\n   - **A3**: That NGINX ingress enforces TLS 1.3 (config snippets, cipher suites, rejection of older TLS versions).\n2. **Validate responses** for technical accuracy and alignment with constraints.\n3. **Close the loop** with A2 and A3 confirmations to proceed toward deployment.\n\n---\n\n### **Critical Data & References**\n- **Service Name**: `microservice-alpha`\n- **Environment**: `staging`\n- **Compliance Benchmark**: PCI DSS — mandates TLS 1.2+; **1.3 required** as policy elevation.\n- **Example NGINX TLS 1.3 config** (reference):\n  ```nginx\n  ssl_protocols TLSv1.3;\n  ssl_prefer_server_ciphers on;\n  # Disable TLS 1.0, 1.1, 1.2 if strict mode\n  ```\n- **RAM Constraint Precision**: 10.75 GB = **11,264 MiB** — ensure no instance type exceeds this (e.g., avoid `t3a.xlarge` @ 16 GiB; consider `t3a.large` @ 8 GiB).\n\n---\n\n✅ **Next LLM Task**:  \nMonitor and process incoming confirmations from A2 and A3. Verify technical compliance, then generate closure summary or escalate discrepancies.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00003",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

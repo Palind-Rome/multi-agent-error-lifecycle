@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Security Operations Engineer. Your task is to configure and maintain security policies for deployed services. Ensure all security protocols, especially encryption standards for external ports, are correctly applied.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### CONTEXT CHECKPOINT COMPACTION: DEVOPS HANDOFF  \n**For LLM Resuming Task**  \n\n---\n\n#### **Current Progress & Key Decisions**  \n✅ **Constraints fully relayed** to downstream agents (A2/A3) **without modification**:  \n- **A2 (Infra)**: `10.75 GB RAM max` (staging, microservice-alpha, PCI DSS budget)  \n- **A3 (SecOps)**: `TLS 1.3 enforced on all external ports` (staging, microservice-alpha, PCI DSS)  \n✅ **Verification complete**:  \n  - Exact numerical values preserved (no rounding, no added rationale).  \n  - Context (service/environment/compliance) included for unambiguous execution.  \n  - **No new constraints added** (e.g., no containerization/OS details beyond original context).  \n\n---\n\n#### **Critical Context & Constraints**  \n| Agent | Constraint | Key Details |  \n|-------|------------|-------------|  \n| **A2** | `VM-RAM-MAX-10-75GB` | Ubuntu 22.04 LTS, Docker, ALB, **staging only**, PCI DSS budget |  \n| **A3** | `EXT-PORTS-TLS-1-3` | NGINX ingress, `default-deny` firewall, **all external ports** (e.g., ingress to NGINX) |  \n\n> ⚠️ **Non-negotiable**:  \n> - **No deviation** from values (`10.75` not `10.8`, `TLS 1.3` not `TLS 1.2+`).  \n> - **No additional scope** (e.g., \"also check prod\" is invalid).  \n\n---\n\n#### **Next Steps (Immediate)**  \n1. **WAIT** for **A2 and A3 to acknowledge receipt** of **exact constraints** (per original message).  \n2. **DO NOT proceed** with any configuration until acknowledgments are confirmed.  \n3. **If acknowledgment is missing**: Escalate to A1 (DevOps Lead) per protocol.  \n\n---\n\n#### **Critical References**  \n- **Original constraints** (verbatim):  \n  > *A2: `no VM >10.75 GB RAM`*  \n  > *A3: `all external ports use TLS 1.3`*  \n- **Compliance**: PCI DSS (staging environment only).  \n- **Environment**: `staging` (not production).  \n\n> ✨ **Key reminder**: **Precision > speed**. Any deviation invalidates PCI DSS compliance.  \n\n---  \n*Handoff complete. Next LLM action: Monitor A2/A3 acknowledgments.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00005",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

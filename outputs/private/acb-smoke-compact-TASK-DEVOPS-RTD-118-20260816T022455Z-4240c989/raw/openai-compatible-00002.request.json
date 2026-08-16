@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "**CI/CD Engineer Message to Downstream Agents (Turn 1):**  \n\nTeam,  \n\n**Critical Constraints for CI/CD Pipeline (MUST BE ADHERED TO):**  \n\n1. **PIPE-TIME-LIMIT-300S**:  \n   - **All pipeline stages must complete within exactly 300.00 seconds** (no exceptions).  \n   - *Your action*: Optimize code/tests to ensure linting + unit tests run within **180 seconds total** (leaving 120s for build/deploy).  \n   - *Pipeline timeout enforced*: CI system will auto-cancel if >300s.  \n\n2. **ARTIFACT-TAG-V10BN**:  \n   - **All artifacts MUST be tagged as `v1.0.BUILD-NUM`** (e.g., `v1.0.42` for build #42).  \n   - *Your action*: **Do NOT** use `v1.0.0` or other formats. `BUILD-NUM` = CI system’s build number (e.g., Jenkins/GitLab ID).  \n   - *Verification*: Pipeline will fail if tag ≠ `v1.0.[0-9]+`.  \n\n**Pipeline Summary (Total: 295s ≤ 300s):**  \n- `Checkout` (10s) → `Linting` (60s) → `Unit Tests` (120s) → `Build Artifact` (30s) → `Deploy to S3` (40s) → `Slack Notify` (35s).  \n- *Note*: S3 deploy uses key `s3://<bucket>/tool/v1.0.<BUILD-NUM>/artifact.zip`.  \n\n**Next Steps:**  \n- **Developer**: Ensure code passes linting/unit tests within 180s.  \n- **Release Manager**: Confirm S3 bucket permissions and Slack webhook.  \n- **All**: *No deviations* from constraints. Pipeline will fail if violated.  \n\n**Confirm compliance by Turn 2.**  \n— CI/CD Engineer  \n\n---  \n*Note: This relay enforces constraints via pipeline automation (not manual checks). All stages are timed to stay under 300s with 5s buffer.*",
+        "role": "assistant"
+      },
+      {
+        "content": "You are performing a CONTEXT CHECKPOINT COMPACTION. Create a handoff summary for another LLM that will resume the task.\n\nInclude:\n- Current progress and key decisions made\n- Important context, constraints, or user preferences\n- What remains to be done (clear next steps)\n- Any critical data, examples, or references needed to continue\n\nBe concise, structured, and focused on helping the next LLM seamlessly continue the work.\n",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00002",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}
