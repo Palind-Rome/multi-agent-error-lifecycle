@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the CI/CD Engineer, responsible for designing and implementing the continuous integration and deployment pipeline. You must ensure that all pipeline stages adhere to the maximum execution duration and that artifact tagging follows the specified semantic versioning. You receive input from the Developer and Release Manager.",
+        "role": "system"
+      },
+      {
+        "content": "A small DevOps team is tasked with setting up a new CI/CD pipeline for a critical internal tool. The primary objective is to automate deployments and ensure code quality. A critical constraint for this setup is that all pipeline stages must complete within a maximum duration of exactly '300.00' seconds to prevent build-queue backlogs. Additionally, all deployed artifacts must be tagged with a semantic version that includes the build number, specifically 'v1.0.BUILD-NUM'. The team consists of a CI/CD Engineer, a Release Manager, and a Developer. The CI/CD Engineer focuses on pipeline configuration, the Release Manager oversees deployment, and the Developer provides code artifacts. This easy structural-complexity task focuses on propagating and adhering to both the strict time limit and the precise artifact versioning format across a custom graph topology, which includes a feedback loop between the Developer and the CI/CD Engineer to ensure build script compliance. The task is expected to conclude within 6 turns, emphasizing clear and concise communication to meet these constraints.\n\nSystem context and constraints:\n- **CRITICAL CONSTRAINT []: **\n- **CRITICAL CONSTRAINT [PIPE-TIME-LIMIT-300S]: all pipeline stages must complete within a maximum duration of exactly 300.00 seconds**\n- **CRITICAL CONSTRAINT [ARTIFACT-TAG-V10BN]: all deployed artifacts must be tagged with a semantic version specifically 'v1.0.BUILD-NUM'**\n- Deployment target is AWS S3.\n- Notifications will be sent to a dedicated Slack channel.\n- Code quality checks should include linting.\n- The project uses Git for version control.\n\nProceed with the task. Relay all constraints to downstream agents.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00001",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

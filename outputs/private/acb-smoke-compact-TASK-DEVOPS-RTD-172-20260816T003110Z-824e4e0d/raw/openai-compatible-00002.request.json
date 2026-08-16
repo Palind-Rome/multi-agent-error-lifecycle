@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "**DevOps Lead (A1) - Orchestration & Constraint Propagation**\n\n---\n\n**To:** Infrastructure Engineer (A2)  \n**From:** DevOps Lead (A1)  \n**Subject:** Deployment Task for `microservice-alpha` – Critical Resource Constraint  \n\nHi A2,\n\nWe’re deploying `microservice-alpha` to the **staging** environment. As part of this task, you are responsible for provisioning the underlying infrastructure with strict compliance to budgetary and operational constraints.\n\n**CRITICAL CONSTRAINT [VM-RAM-MAX-10-75GB]:**  \n➡️ *No virtual machine instance may exceed **10.75 GB of RAM**.*  \nThis limit is strictly enforced to remain within allocated budget thresholds. Please ensure all instance types and container resource allocations are configured accordingly. Confirm your implementation adheres to this ceiling.\n\n**Additional Context:**  \n- Containerization: Docker  \n- OS: Ubuntu 22.04 LTS  \n- Load Balancer: Application Load Balancer  \n- Ingress Controller: NGINX  \n- Compliance Standard: PCI DSS  \n- Firewall Ruleset: default-deny  \n\nPlease acknowledge receipt and confirm your design complies with the RAM constraint.\n\nAwaiting your confirmation.\n\n—  \nA1, DevOps Lead\n\n---\n\n**To:** Security Operations Engineer (A3)  \n**From:** DevOps Lead (A1)  \n**Subject:** Deployment Task for `microservice-alpha` – Critical Security Constraint  \n\nHi A3,\n\nAs part of the deployment of `microservice-alpha` in the **staging** environment, you are tasked with implementing and verifying all security configurations, particularly around network encryption.\n\n**CRITICAL CONSTRAINT [EXT-PORTS-TLS-1-3]:**  \n🔐 *All external-facing ports must use **TLS 1.3 encryption**.*  \nThis is a non-negotiable requirement for PCI DSS compliance. Ensure that the NGINX ingress controller and any exposed services enforce TLS 1.3 as the minimum (and preferred) protocol version. Downgrade attempts must be rejected.\n\n**Additional Context:**  \n- Ingress Controller: NGINX  \n- Firewall Ruleset: default-deny  \n- Compliance Standard: PCI DSS  \n- Service: microservice-alpha  \n\nPlease validate that all ingress configurations and certificate bindings meet this standard. Provide confirmation once implemented.\n\n—  \nA1, DevOps Lead\n\n---\n\n✅ **Orchestration Status:**  \nAll critical constraints have been **branching-propagated** to respective specialists:  \n- [VM-RAM-MAX-10-75GB] → A2 (Infrastructure)  \n- [EXT-PORTS-TLS-1-3] → A3 (Security)  \n\nThis satisfies the **easy structural-complexity** condition:  \n- 3-agent structure (A1, A2, A3)  \n- Low turn count (initial dispatch)  \n- Focus on **accurate, salient constraint relay** without iterative refinement  \n\nAwaiting acknowledgments from A2 and A3 to close the loop.",
+        "role": "assistant"
+      },
+      {
+        "content": "You are performing a CONTEXT CHECKPOINT COMPACTION. Create a handoff summary for another LLM that will resume the task.\n\nInclude:\n- Current progress and key decisions made\n- Important context, constraints, or user preferences\n- What remains to be done (clear next steps)\n- Any critical data, examples, or references needed to continue\n\nBe concise, structured, and focused on helping the next LLM seamlessly continue the work.\n",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00002",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

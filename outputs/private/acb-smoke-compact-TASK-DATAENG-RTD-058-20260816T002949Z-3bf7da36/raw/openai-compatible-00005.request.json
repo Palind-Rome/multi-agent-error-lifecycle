@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Real-time Processing Engineer. Your task is to design and implement low-latency data processing solutions for real-time analytics. Focus on optimizing performance and meeting strict latency requirements. Acknowledge and plan for all performance constraints.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION – HANDOFF SUMMARY**\n\n---\n\n### **1. Current Progress & Key Decisions**\n- Data pipeline orchestration initiated for real-time analytics.\n- Two critical constraints formally delegated:\n  - **[RAW-DATA-RETENTION-367D]** assigned to Data Governance Specialist.\n  - **[DASHBOARD-LATENCY-97MS]** assigned to Real-time Processing Engineer.\n- Delegation messages issued with requirement for EOD response.\n\n---\n\n### **2. Important Context & Constraints**\n- **Regulatory Requirement:** Raw customer data must be retained **exactly 367 days** — no variance permitted. Audit logging and deletion enforcement required.\n- **Performance SLA:** End-to-end dashboard latency (ingestion → processing → query) must be **≤97ms**. Includes all stages; monitoring must be implemented per stage.\n- **User Preferences:** Strict compliance, proactive validation, and structured reporting expected. No informal workarounds.\n\n---\n\n### **3. What Remains to Be Done**\n- Receive and validate responses from both specialists by EOD.\n- Consolidate compliance and architecture plans.\n- Finalize integrated pipeline design ensuring both constraints are simultaneously satisfied.\n- Prepare audit-ready documentation and latency SLA verification protocol.\n\n---\n\n### **4. Critical Data & References**\n- Constraint IDs:  \n  - `[RAW-DATA-RETENTION-367D]` → 367-day retention (audit-critical)  \n  - `[DASHBOARD-LATENCY-97MS]` → ≤97ms end-to-end latency\n- Required outputs:  \n  - Data lifecycle policy (governance)  \n  - Stream processing architecture (latency-optimized)\n\n➡️ **Next LLM Action:** Monitor for specialist responses, verify alignment with constraints, and advance integration planning.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00005",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

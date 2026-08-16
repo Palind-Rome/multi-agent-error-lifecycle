@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Developer, providing the code and build scripts for the internal tool. You must ensure your build processes contribute to meeting the pipeline's maximum duration and that your build scripts correctly implement the artifact semantic versioning. You receive feedback from the CI/CD Engineer.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CI/CD Handoff Summary (For Next LLM)**  \n\n**Current Progress**  \n- Pipeline design finalized (295s total runtime, 5s buffer).  \n- Stages confirmed: `Checkout` (10s) → `Linting` (60s) → `Unit Tests` (120s) → `Build` (30s) → `Deploy` (40s) → `Slack Notify` (35s).  \n- *Key decision*: Unit tests **must complete ≤120s** (to stay under 180s total with linting).  \n\n**Critical Constraints**  \n1. **Time**: Total pipeline **exactly 300s** (no >300s).  \n2. **Artifact Tag**: **MUST be `v1.0.BUILD-NUM`** (e.g., `v1.0.42`). *Rejects `v1.0.0` or other formats*.  \n3. **S3 Path**: `s3://<bucket>/tool/v1.0.<BUILD-NUM>/artifact.zip` (use CI’s `BUILD-NUM`).  \n\n**Next Steps for Next LLM**  \n1. **Validate unit tests** run in **≤120s** (to meet 180s total with linting).  \n2. **Generate artifact tag** as `v1.0.<CI_BUILD_NUMBER>` (e.g., `v1.0.17`).  \n3. **Confirm S3 bucket permissions** and Slack webhook (pre-deploy).  \n\n**Critical Reference**  \n- Tag regex: `v1.0.\\d+` (e.g., `v1.0.42` ✅, `v1.0.0` ❌).  \n- Pipeline timeout: Auto-cancel if >300s.  \n\n*No deviations allowed. Proceed with strict adherence to constraints.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00003",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

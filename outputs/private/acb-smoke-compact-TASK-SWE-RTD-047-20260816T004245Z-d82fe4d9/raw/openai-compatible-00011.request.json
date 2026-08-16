@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the QA Engineer, responsible for testing the user profile update module. You must verify that user data is correctly stored in the specified MongoDB Atlas 6.0 cluster, that no local caching occurs, and that API authentication strictly uses OAuth 2.0 with JWT tokens. You report findings to the Backend Developer and Lead Developer.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### Handoff Summary: Backend Validation (Context Compaction)  \n**For LLM Resuming Task**  \n\n---\n\n#### **✅ Current Progress & Key Decisions**  \n1. **MongoDB Atlas v6.0**  \n   - Connection strictly via `MONGODB_URI` (no fallbacks/local DBs).  \n   - Verified via `client.admin.command('ping')` → **Success**.  \n   - *Constraint enforced*: `[DB-MONGO-ATLAS-V6]` (URI format: `mongodb+srv://user:pass@cluster0...`).  \n2. **JWT Middleware (OAuth 2.0)**  \n   - All profile endpoints protected by `@token_required` decorator.  \n   - Validation *before* DB access:  \n     ```python\n     if not validate_jwt(request.headers.get('Authorization')): 401\n     ```  \n   - *Constraint enforced*: `[AUTH-OAUTH2-JWT-R22]` (no token = 401).  \n3. **Zero Caching**  \n   - **No cache calls** (`cache.get()`, Redis, etc.) in profile logic.  \n   - *Constraint enforced*: `[NO-LOCAL-CACHE-P33]` (code scan: 0 matches).  \n\n---\n\n#### **⚠️ Critical Constraints & Context**  \n- **No deviations allowed**:  \n  - Atlas URI *must* match exact format (no `localhost`/`127.0.0.1`).  \n  - JWT *must* be in `Authorization: Bearer <token>` header (no query params).  \n  - **Frontend**: React sends JWT in header (no hardcoded tokens).  \n- **Deployment**: AWS EC2 security group allows outbound to MongoDB Atlas (port 27017).  \n\n---\n\n#### **🔜 What Remains (Next Steps for QA)**  \n1. **Test without `Authorization` header** → Must return `401 Unauthorized` (validates `[AUTH-OAUTH2-JWT-R22]`).  \n2. **Scan code for `cache.`** → Must return **0 matches** (validates `[NO-LOCAL-CACHE-P33]`).  \n3. **Confirm Atlas ping** → `client.admin.command('ping')` → **Success** (validates `[DB-MONGO-ATLAS-V6]`).  \n\n---\n\n#### **🔍 Critical References**  \n- **Code snippet for JWT validation**:  \n  ```python\n  if not validate_jwt(request.headers.get('Authorization')):\n      return jsonify(error=\"Unauthorized\"), 401\n  ```  \n- **Connection string example**:  \n  `mongodb+srv://user:pass@cluster0.mongodb.net/db?retryWrites=true&w=majority`  \n- **Constraint codes**:  \n  `[DB-MONGO-ATLAS-V6]`, `[AUTH-OAUTH2-JWT-R22]`, `[NO-LOCAL-CACHE-P33]`  \n\n---\n\n**Status**: All backend constraints enforced. **QA only**.  \n**Handoff Ready**: No open tasks. Next LLM to validate the 3 QA steps above.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00011",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

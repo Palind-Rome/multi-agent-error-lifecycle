@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Data Governance Specialist. Your task is to implement data retention policies and ensure compliance with regulatory requirements. Your focus is on data lifecycle management and audit readiness. Acknowledge and plan for all data retention constraints.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION – HANDOFF SUMMARY**\n\n---\n\n### **1. Current Progress & Key Decisions**\n- **Pipeline Initiation**: Real-time analytics data pipeline setup has been initiated.\n- **Constraint Identification**: Two critical operational constraints have been formally identified and delegated:\n  1. **[RAW-DATA-RETENTION-367D]**: Raw customer data retention = exactly 367 days.\n  2. **[DASHBOARD-LATENCY-97MS]**: End-to-end dashboard latency ≤ 97ms.\n- **Delegation Complete**: Responsibilities assigned to domain specialists:\n  - Data Governance Specialist: Lifecycle management for retention.\n  - Real-time Processing Engineer: Latency optimization.\n\n---\n\n### **2. Important Context & Constraints**\n- **Regulatory Compliance**: 367-day retention is non-negotiable; includes audit logging and deletion verification.\n- **SLA Sensitivity**: 97ms is end-to-end (ingestion → processing → query); requires in-memory processing and monitoring.\n- **User Expectations**:\n  - Strict adherence to constraints.\n  - EOD reporting on compliance strategy.\n  - Full acknowledgment and implementation planning from each specialist.\n\n---\n\n### **3. What Remains to Be Done**\n- **Pending Confirmations & Deliverables**:\n  1. **From Data Governance Specialist**:\n     - Confirmation of receipt.\n     - Data lifecycle design: archival, retention enforcement, deletion protocol.\n     - Audit trail and compliance logging plan.\n  2. **From Real-time Processing Engineer**:\n     - Confirmation of receipt.\n     - Proposed architecture (e.g., Kafka/Pulsar + Flink/Spark + Redis/Druid).\n     - Latency mitigation strategy (buffer tuning, windowing, monitoring).\n- **Orchestrator Action**:\n  - Consolidate responses.\n  - Validate alignment with constraints.\n  - Prepare EOD compliance strategy report.\n\n---\n\n### **4. Critical Data & References**\n- **Constraint Tags**:\n  - `[RAW-DATA-RETENTION-367D]`\n  - `[DASHBOARD-LATENCY-97MS]`\n- **Key Metrics**:\n  - Retention: 367 days (not 365 or 366).\n  - Latency: 97ms max (sub-100ms SLA).\n- **Compliance Requirement**: Audit-ready logs for data deletion events.\n- **Performance Requirement**: End-to-end latency monitoring at all pipeline stages.\n\n---\n\n**Next LLM Task**: Await specialist responses, verify technical and compliance feasibility, and compile EOD report. Prioritize constraint adherence over optimization trade-offs.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00003",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

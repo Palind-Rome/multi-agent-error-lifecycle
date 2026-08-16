@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "**CI/CD Engineer (You):**  \nUnderstood. I am initiating the CI/CD pipeline setup under the following **critical constraints**:\n\n---\n\n### ✅ **Relayed System Constraints to All Downstream Agents**  \n- **[CRITICAL] PIPE-TIME-LIMIT-300S**: *All pipeline stages must complete within a maximum duration of exactly 300.00 seconds.*  \n  ➜ This includes checkout, linting, build, test, artifact packaging, and deployment. We must optimize for speed and parallelism where possible.\n\n- **[CRITICAL] ARTIFACT-TAG-V10BN**: *All deployed artifacts must be tagged with the semantic version format: `v1.0.BUILD-NUM`*, where `BUILD-NUM` is the unique build identifier (e.g., `v1.0.42`).\n\n- **Deployment Target**: AWS S3  \n- **Notifications**: Slack channel updates on pipeline status (success/failure)  \n- **Code Quality Gate**: Linting must pass before deployment  \n- **Version Control**: Git-based workflow (e.g., trigger on `main` branch push or PR merge)\n\n---\n\n### 🧩 Pipeline Topology (Custom Graph with Feedback Loop)\n```\nDeveloper\n   ↓ (code + build script)\nCI/CD Engineer → [Pipeline Orchestration]\n   ↑           ↘ (feedback if non-compliant)\n   └───────←──── (lint, build, tag, deploy, notify)\n               ↓\n         Release Manager (approves promotion if needed, monitors)\n```\n\n---\n\n### ⚙️ Next Steps:\n\n**To Developer:**  \nPlease provide the initial code artifact and associated build script. Ensure:\n- The build script supports setting a version tag in the format `v1.0.BUILD-NUM`.\n- The total execution time of the build and test steps is designed to stay within **270 seconds** to allow buffer for orchestration (total pipeline ≤ 300.00s).\n\n> 🔁 *If your current script exceeds time limits or uses incorrect tagging, I will send feedback for adjustment.*\n\n**To Release Manager:**  \nStand by for deployment validation. Once the pipeline is stable, you’ll receive:\n- Artifact version (`v1.0.BUILD-NUM`)\n- S3 URI\n- Pipeline duration (must be ≤ 300.00s)\n\nWe are **Turn 1/6**. I am now configuring the base pipeline structure in Jenkins/GitHub Actions (TBD based on your environment). Please respond accordingly.  \n\nPlease confirm readiness or provide updates.",
+        "role": "assistant"
+      },
+      {
+        "content": "You are performing a CONTEXT CHECKPOINT COMPACTION. Create a handoff summary for another LLM that will resume the task.\n\nInclude:\n- Current progress and key decisions made\n- Important context, constraints, or user preferences\n- What remains to be done (clear next steps)\n- Any critical data, examples, or references needed to continue\n\nBe concise, structured, and focused on helping the next LLM seamlessly continue the work.\n",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00002",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

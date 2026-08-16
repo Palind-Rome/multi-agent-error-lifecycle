@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "**[Architect (A1) → Backend Developer (A2)]:**  \nA2, for the new user authentication module, you are responsible for implementing the password hashing mechanism. You must adhere to the following **critical security constraint**:\n\n> **[CRITICAL CONSTRAINT AUTH-ARGON2ID-65K]:** All password hashing must use **Argon2id** with a **minimum of 4 iterations** and a **memory cost of 65536 KB**. This configuration must be strictly enforced in the backend logic. Ensure that any deviation is prevented through configuration validation and unit testing.\n\nConfirm receipt and outline your implementation approach in the next turn.\n\n---\n\n**[Architect (A1) → Frontend Developer (A3)]:**  \nA3, you are responsible for managing user session behavior on the client side. You must implement the following **critical security constraint**:\n\n> **[CRITICAL CONSTRAINT SESS-EXP-1440MIN]:** User session tokens must **expire after 1440 minutes (24 hours) of inactivity** and must be **explicitly invalidated upon user logout**. This includes ensuring tokens are removed from storage and a revocation request is sent to the backend on logout.\n\nCoordinate with A2 as needed regarding token lifecycle, but ensure the frontend enforces inactivity tracking and secure token handling. Confirm receipt and describe your session management strategy in the next turn.\n\n---\n\n**[Architect (A1) → All]:**  \nBoth constraints are non-negotiable and must be implemented as specified. I will verify compliance during design review and testing phases. Maintain traceability of these constraints in your documentation and code comments.  \n\nAwaiting your responses.",
+        "role": "assistant"
+      },
+      {
+        "content": "You are performing a CONTEXT CHECKPOINT COMPACTION. Create a handoff summary for another LLM that will resume the task.\n\nInclude:\n- Current progress and key decisions made\n- Important context, constraints, or user preferences\n- What remains to be done (clear next steps)\n- Any critical data, examples, or references needed to continue\n\nBe concise, structured, and focused on helping the next LLM seamlessly continue the work.\n",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00027",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

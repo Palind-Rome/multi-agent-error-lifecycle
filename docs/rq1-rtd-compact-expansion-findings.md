@@ -78,6 +78,30 @@ Notes:
   so far where the loss can be attributed to the compaction stage rather than
   the relay.
 
+## Cross-model comparison (literal RTD, same 5 tasks)
+
+| Task | topology | 30b-a3b | 235b-a22b | thinking |
+| --- | --- | --- | --- | --- |
+| RTD-058 | branching_tree | 1.0 | 1.0 | **0.0** |
+| RTD-172 | branching_tree | 1.0 | 1.0 | 1.0 |
+| RTD-054 | branching_tree | 1.0 | 1.0 | 1.0 |
+| RTD-118 | custom_graph | 0.0 | **1.0** | 0.0 |
+| RTD-047 | custom_graph | 0.0 | **0.5** | **1.0** |
+
+Observations (n = 5, one realization per cell — signal, not conclusion):
+
+- **Size**: the bigger `235b-a22b-2507` preserves tracers that the baseline
+  drops — both `custom_graph` tasks improve (0.0 → 1.0 and 0.0 → 0.5). The
+  custom_graph loss is therefore *not* purely topological; a stronger model
+  overcomes it.
+- **Reasoning style**: `thinking-2507` keeps `RTD-047` (custom, which the
+  baseline lost) but drops `RTD-058` (branching, which both others kept). Its
+  failure points do not line up with topology — a different failure mode than
+  the non-reasoning models.
+- The `thinking` model also needed a larger per-call output budget
+  (`max_output_tokens_per_call` 4096 → 16384) or it failed with `BudgetExceeded`
+  on two tasks; its reasoning is longer.
+
 ## What this suggests to check next
 
 1. Whether `custom_graph` (a non-tree edge structure with back-and-forth hops)

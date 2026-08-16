@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Backend Developer, responsible for implementing the server-side logic and database interactions for the user profile module. You must strictly adhere to the specified database (MongoDB Atlas 6.0, no local caching) and authentication (OAuth 2.0 with JWT) constraints. You provide updates to the Lead Developer and respond to QA feedback.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**Handoff Summary: User Profile Update Module (Context Compaction)**  \n\n---\n\n### **Current Progress & Key Decisions**  \n- **Zero implementation completed** (all constraints unenforced).  \n- *No code written* for Atlas connection, JWT middleware, or profile update logic.  \n- *Critical decisions pending*:  \n  - Backend must use **MongoDB Atlas v6.0 only** (no fallbacks).  \n  - **JWT auth mandatory** for all endpoints (no exceptions).  \n  - **Zero caching** enforced (no Redis/local cache in code).  \n\n---\n\n### **Critical Constraints (Non-Negotiable)**  \n| Constraint Code       | Requirement                                                                 | Verification Method                                  |  \n|-----------------------|-----------------------------------------------------------------------------|------------------------------------------------------|  \n| `[DB-MONGO-ATLAS-V6]` | All data stored *exclusively* in MongoDB Atlas v6.0.                        | `MONGODB_URI` config check (no local DBs).           |  \n| `[NO-LOCAL-CACHE-P33]`| **No caching** (e.g., `cache.get()`, `cache.set()` in profile logic).       | Code review: *no cache calls* in profile update.     |  \n| `[AUTH-OAUTH2-JWT-R22]`| JWT validation *before DB access*; `Authorization: Bearer` header required. | Postman test: Fails without valid JWT.               |  \n\n> **Note**: Violating *any* constraint = **block on merge**.  \n\n---\n\n### **Remaining Work (Next Steps)**  \n1. **Backend Developer**:  \n   - ✅ Implement Atlas v6.0 connection (verify `MONGODB_URI` in config).  \n   - ✅ Integrate JWT middleware (validate signature/expiry *before* DB access).  \n   - **Confirm in next turn**:  \n     > *\"Atlas v6.0 connection established + JWT middleware integrated.\"*  \n\n2. **QA Engineer**:  \n   - ✅ Validate all constraints via test cases:  \n     - *No local cache* (scan code for `cache.*` calls).  \n     - *JWT enforced* (test endpoints without `Authorization` header).  \n   - **Confirm in next turn**:  \n     > *\"No local cache detected; JWT auth enforced in all endpoints.\"*  \n\n---\n\n### **Critical References for Continuation**  \n- **Config Example**: `MONGODB_URI=mongodb+srv://user:pass@cluster0.mongodb.net/db?retryWrites=true&w=majority` (Atlas v6.0 format).  \n- **JWT Validation Flow**:  \n  ```python  \n  # Pseudocode (must be implemented)  \n  if not validate_jwt(request.headers['Authorization']):  \n      return 401  # Block before DB access  \n  ```  \n- **Deployment**: AWS EC2 *must* have security group allowing traffic to MongoDB Atlas.  \n- **Frontend Note**: React app *must* send JWT (no hardcoded tokens).  \n\n---  \n**Handoff Clarity**: *No assumptions made. All constraints unmet. Next LLM must implement [DB-MONGO-ATLAS-V6], [NO-LOCAL-CACHE-P33], and [AUTH-OAUTH2-JWT-R22] as absolute requirements.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00007",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

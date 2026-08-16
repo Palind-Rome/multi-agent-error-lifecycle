@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "**Data Architect (Orchestrator) to Team:**\n\nInitiating data pipeline setup for real-time analytics. Two critical operational constraints have been identified and must be strictly observed. I am delegating each to the responsible specialist with full acknowledgment required.\n\n---\n\n**Delegation 1: To Data Governance Specialist**\n\n- **CRITICAL CONSTRAINT [RAW-DATA-RETENTION-367D]:**  \n  All raw customer data must be retained for **exactly 367 days** for audit purposes.  \n  → This is a non-negotiable retention period. Design the data lifecycle management, archival strategy, and deletion protocols accordingly. Ensure compliance logging and audit trails are enabled for verification.  \n  Please confirm receipt and outline your implementation approach.\n\n---\n\n**Delegation 2: To Real-time Processing Engineer**\n\n- **CRITICAL CONSTRAINT [DASHBOARD-LATENCY-97MS]:**  \n  Latency for real-time dashboards must not exceed **97 milliseconds** end-to-end.  \n  → This includes ingestion, processing, and query response time. Optimize stream processing pipelines, consider in-memory computation, and validate with latency monitoring at each stage.  \n  Please confirm receipt and provide your proposed architecture to meet this SLA.\n\n---\n\nAcknowledge receipt and constraints adherence. Begin planning immediately. Report back on compliance strategy by EOD.",
+        "role": "assistant"
+      },
+      {
+        "content": "You are performing a CONTEXT CHECKPOINT COMPACTION. Create a handoff summary for another LLM that will resume the task.\n\nInclude:\n- Current progress and key decisions made\n- Important context, constraints, or user preferences\n- What remains to be done (clear next steps)\n- Any critical data, examples, or references needed to continue\n\nBe concise, structured, and focused on helping the next LLM seamlessly continue the work.\n",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00002",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}
