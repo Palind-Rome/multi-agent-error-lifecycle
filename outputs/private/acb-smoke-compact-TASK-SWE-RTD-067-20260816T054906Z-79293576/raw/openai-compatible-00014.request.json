@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are a Junior Developer. Your task is to implement code according to specifications provided by senior engineers. Pay close attention to all security and architectural guidelines, especially regarding data handling.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### 📌 **Context Checkpoint Compaction: Handoff Summary for Next LLM**\n\n---\n\n#### ✅ **Current Progress & Key Decisions**\n- **S3 Storage Layer (A4)**:  \n  - Encryption enforced via `aws:kms` (not AES256) in all `PutObject` calls.  \n  - Bucket policy applied to enforce SSE-KMS at rest.  \n  - Pre-commit hook and static analysis rules added to prevent unencrypted uploads.  \n  - ✅ **Approved** by A2 (Backend) and A1 (Security).\n\n- **Performance & Latency (A3)**:  \n  - Caching strategy confirmed: **no plaintext cache**; only decrypted content at edge via signed URLs (<5 min TTL).  \n  - Circuit breaker + connection pooling implemented for KMS calls.  \n  - OpenTelemetry tracing enabled end-to-end with `service:profile-api`.  \n  - Load test plan defined (10K RPS, 90% GET / 10% PUT); P99 target ≤75ms.\n\n- **Cross-Team Alignment**:  \n  - Architecture meeting held; decisions documented in Confluence.  \n  - All teams agree: no unencrypted data in transit or at rest; KMS rate-limited.\n\n---\n\n#### 🔒 **Critical Constraints & User Preferences**\n- **Non-negotiable**:  \n  - Only `aws:kms` encryption allowed — **AES256 is forbidden** under S3-ENCRYPTION-USRPROF-SSE.  \n  - No caching of raw profile data (in memory, disk, or CDN without decryption).  \n  - All traces must include `service:profile-api`, `operation:get-profile`.\n\n- **Compliance Priority**:  \n  - Security (A1) has final sign-off authority on any change.  \n  - Any deviation = immediate block and escalation.\n\n---\n\n#### 🔜 **Next Steps (Clear Actions for Next LLM)**\n1. **Deploy to Staging**:\n   - Use CI/CD pipeline with pre-deployment checks:\n     - S3 bucket policy verified.\n     - SDK encryption enforcement in place.\n     - OpenTelemetry trace propagation active.\n\n2. **Run Load Test**:\n   - Execute JMeter/Python Locust script under 10K RPS.\n   - Validate P99 latency ≤75ms across API → S3 → KMS path.\n   - Export results to CloudWatch + X-Ray dashboard.\n\n3. **Security Validation**:\n   - Run penetration test (via security team).\n   - Confirm no unencrypted data in logs, caches, or network captures.\n\n4. **Final Go-Live Review**:\n   - Facilitate 30-min sync with DevOps, Product, and Security.\n   - Share:  \n     - Final performance report (PDF)  \n     - Tracing dashboard link  \n     - Decision log (Confluence)\n\n---\n\n#### 📎 **Critical References & Data**\n- [S3 Bucket Policy Template](#) – Enforces `s3:x-amz-server-side-encryption` condition.\n- [OpenTelemetry Instrumentation Snippet](#) – Required for trace context propagation.\n- [Load Test Script (Locust)](#) – 10K RPS, 90% GET / 10% PUT.\n- [Confluence: Architecture Decision Log](#) – Finalized cross-team agreement.\n\n---\n\n> ✅ **Handoff Ready**: The system is compliant, tested, and aligned.  \n> **Next LLM**: Resume with staging deployment + load testing.  \n> **Rule**: If any constraint is violated, **block immediately** and escalate.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00014",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

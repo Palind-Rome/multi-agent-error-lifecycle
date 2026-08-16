@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the DevOps Lead. Your role is to understand deployment requirements, assign tasks to the appropriate team members, and ensure all critical operational and security policies are communicated clearly. You orchestrate the process.",
+        "role": "system"
+      },
+      {
+        "content": "A DevOps team is tasked with deploying a new microservice. The DevOps Lead (A1), acting as the orchestrator, receives the initial deployment request along with two critical operational constraints. The first constraint, regarding resource allocation, specifies that 'no single container instance must exceed 3.75 GB of RAM allocation'. This is delegated to the Container Specialist (A2). The second constraint, regarding network security, states 'all external ingress traffic must be routed through the dedicated Web Application Firewall (WAF-PROD-237)'. This is delegated to the Network Security Engineer (A3). A senior DevOps Reviewer (A4) is responsible for reviewing the plans from the Network Security Engineer, ensuring compliance with both constraints before reporting back to the Lead. The Container Specialist then reports directly to the Lead. This setup tests whether two distinct, highly salient constraints (numerical and architectural/security) are accurately propagated down separate branches, with one branch undergoing review and the other reporting directly, and maintained through the process. The 'hard' structural-complexity is justified by the precise numerical and technical constraints, the number of agents, the branching topology, and the high expected turn count, requiring agents to maintain the constraints over multiple exchanges within their branches.\n\nSystem context and constraints:\n- **CRITICAL CONSTRAINT []: **\n- **CRITICAL CONSTRAINT [RAM-KX77]: no single container instance must exceed 3.75 GB of RAM allocation**\n- **CRITICAL CONSTRAINT [WAF-FN61]: all external ingress traffic must be routed through the dedicated Web Application Firewall (WAF-PROD-237)**\n- Region: us-east-1\n- VPN Access: Site-to-Site VPN\n- Internal Network: VPC Subnet Private-A\n- DNS: Route53\n- Health Check Path: /health\n- Load Balancer: AWS ALB\n- Network ACLs: Strict Egress Only\n- Logging: stdout/stderr to ELK stack\n- CDN: CloudFront\n- DDoS Protection: AWS Shield Advanced\n- TLS Certificate: ACM Managed\n- Replica Count: 3 minimum\n- Environment: Production\n- Persistent Storage: 50GB SSD\n- Image: custom-app-v2.1\n- Deployment Strategy: Rolling Update\n- CPU: 2 cores\n- Service Port: 8080 (HTTP)\n\nProceed with the task. Relay all constraints to downstream agents.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00001",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Container Specialist. Your primary responsibility is to design and configure container deployments, ensuring all resource allocation constraints, especially RAM limits, are strictly adhered to. Report your proposed container configuration directly to the DevOps Lead (A1).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION – Handoff Summary**\n\n---\n\n### 📌 **Current Progress & Key Decisions Made**\n- Deployment orchestration for `custom-app-v2.1` in `us-east-1` (Production) is active.\n- Core constraints formally defined and assigned:\n  - **[RAM-KX77]**: Max 3.75 GiB RAM per container instance.\n  - **[WAF-FN61]**: All external ingress must route through WAF-PROD-237.\n- Deployment strategy confirmed: Rolling Update, 3+ replicas, secure network isolation (Private-A subnet).\n- Infrastructure stack confirmed: ALB → WAF → CloudFront → Route53 → ELK logging → AWS Shield.\n\n---\n\n### 🔑 **Critical Constraints & Context**\n- **RAM Limit**: No container may exceed **3.75 GiB RAM** — strict enforcement required.\n- **Ingress Security**: **No direct access** to port 8080; all traffic must pass through **WAF-PROD-237**.\n- **Network Architecture**: Egress-only ACLs; no inbound rules on backend subnets.\n- **DNS/CDN Flow**: Route53 → CloudFront → ALB → WAF → App (no bypasses).\n- **Compliance Must Be Provable**: Every configuration change must be traceable and auditable.\n\n---\n\n### ✅ **Remaining Tasks (Next Steps)**\n1. **A2 (Container Specialist)** must:\n   - Submit finalized container spec with `limits.memory` ≤ 3750Mi.\n   - Confirm CPU/memory alignment and performance test results.\n   - Report directly to A1.\n\n2. **A3 (Network Security Engineer)** must:\n   - Confirm WAF-PROD-237 is attached to ALB listener (port 80/443).\n   - Validate CloudFront → ALB → WAF flow.\n   - Provide evidence of no direct backend access (e.g., VPC flow logs, security group audit).\n   - Report to A4.\n\n3. **A4 (Senior DevOps Reviewer)** must:\n   - Review A3’s output for compliance with [WAF-FN61].\n   - Cross-validate against [RAM-KX77] via architectural integrity.\n   - Issue formal approval: “Compliant with [WAF-FN61] and consistent with [RAM-KX77]”.\n   - Submit report to A1.\n\n---\n\n### 📎 **Critical Data & References Needed**\n- Example container spec snippet (from A2):  \n  ```yaml\n  resources:\n    limits:\n      memory: \"3750Mi\"\n    requests:\n      memory: \"3750Mi\"\n  ```\n- WAF association proof (AWS Console screenshot or CLI output):\n  - `aws wafv2 list-web-acls --scope REGIONAL`\n  - `aws elbv2 describe-listeners --load-balancer-arn <ALB-ARN>`\n- Network ACL and security group configurations (for Private-A subnet).\n\n---\n\n### 🔄 **Handoff Status**\n> **Awaiting inputs from A2 and A3.**  \n> **Do not proceed until both are received.**  \n> **Final approval from A4 required before deployment.**\n\n**Next LLM: Resume task upon receipt of A2/A3 outputs. Focus on validation, constraint fidelity, and final approval path.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00010",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

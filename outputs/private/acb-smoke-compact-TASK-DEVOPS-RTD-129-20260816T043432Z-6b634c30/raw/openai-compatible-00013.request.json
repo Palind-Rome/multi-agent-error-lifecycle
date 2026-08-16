@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Lead DevOps Engineer, responsible for overseeing the deployment and operational aspects of the microservice. You must ensure all critical constraints, like the private image registry and the specific CPU limits, are clearly communicated and strictly followed. You coordinate the team and review deployment plans.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### 📌 **Context Checkpoint Compaction: Handoff Summary for Next LLM**\n\n---\n\n#### ✅ **Current Progress & Key Decisions**\n- **CI/CD Pipeline**: Fully updated with pre/post-deploy validation hooks:\n  - Image digest verification via `skopeo` + `docker inspect`\n  - `regcred-prod` secret check enforced\n  - Post-deploy health, Istio sidecar, mTLS, and metrics checks automated\n- **SRE Monitoring**: All observability layers active:\n  - Prometheus (metrics), Loki (logs), Jaeger (traces) configured\n  - PagerDuty alerts set for startup time (>90s) and unauthorized egress\n- **Service Catalog**: Entry created and documented in Confluence with full metadata\n- **Security Compliance**: \n  - Only private registry used (`company-private-registry.io/prod-images`)\n  - Egress restricted to approved list: `monitoring.company.internal`, `api.internal.auth-service`, `10.200.0.0/16`\n  - Sidecar injection confirmed; no PVCs used\n\n---\n\n#### 🔒 **Critical Constraints & User Preferences**\n- **No public image references allowed** — all artifacts must be from `company-private-registry.io`\n- **Egress policy enforcement mandatory** — any outbound traffic outside approved list triggers alert\n- **CPU limit strictly enforced at `500m`**\n- **Sidecar injection required** via Istio (`sidecar.istio.io/inject: \"true\"`)\n- **Zero-downtime rollout** via `RollingUpdate` with `maxUnavailable: 0`\n\n---\n\n#### ➡️ **Next Steps (Clear Action Items)**\n1. **Trigger production deployment** via CI/CD pipeline:\n   ```bash\n   git push origin main --force-with-lease\n   ```\n2. **Monitor rollout in real-time** using:\n   - `kubectl get pods -n prod-apps -w`\n   - Prometheus dashboard: [app-metrics](https://prometheus.company.internal/app/dashboards/app-metrics)\n   - Loki query: `{source=\"app-logs\", \"message\":\"mTLS handshake successful\"}`\n3. **Verify post-deploy checks** within 90s:\n   - Pod ready state\n   - Istio proxy injection\n   - `/metrics` endpoint reachable\n   - No unauthorized egress alerts\n4. **Confirm PagerDuty incident resolution** after `T+68s` (startup time < 90s)\n\n---\n\n#### 📎 **Critical References & Data**\n- **Deployment Manifest**:  \n  `https://git.company.com/configs/k8s/app-deployment.yaml@v1.0`\n- **Registry Digest**:  \n  `sha256:abc123...` → matches `company-private-registry.io/prod-images/app:v1.0`\n- **Egress Allowed List**:  \n  `monitoring.company.internal`, `api.internal.auth-service`, `10.200.0.0/16`\n- **Service Catalog Entry**:  \n  `https://confluence.company.com/deploy/app-v1.0-live`\n- **Istio Proxy Log Snippet Example**:\n  ```log\n  [INFO] mTLS handshake successful for destination api.internal.auth-service\n  ```\n\n---\n\n> 🔄 **Handoff Ready** – Next LLM can now execute production rollout with full context, compliance guardrails, and monitoring in place.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00013",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

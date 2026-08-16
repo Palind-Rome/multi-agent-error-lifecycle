@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the DevOps Reviewer. You provide advanced review and act as a critical checkpoint for deployment plans, ensuring compliance with all operational, resource, and security constraints. You review findings from the Network Security Engineer (A3) and provide a compliance assessment to the DevOps Lead (A1).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n---\n\n### 📌 **CONTEXT CHECKPOINT COMPACTION: Handoff Summary for Next LLM**\n\n#### ✅ **Current Progress & Key Decisions Made**\n- **Network Architecture Confirmed:**  \n  `custom-app-v2.1` is fully secured via CloudFront → WAF-PROD-237 → ALB, with no direct exposure of ALB.\n- **WAF Integration Verified:**  \n  WAF-PROD-237 is actively attached to the ALB and includes managed + custom rules with logging enabled.\n- **DNS & Routing Validated:**  \n  Route53 CNAME points to CloudFront; DNS propagation confirmed.\n- **Security Controls Audited:**  \n  Security Group restricts ALB ingress to CloudFront IP ranges only. VPC Flow Logs show rejected direct access attempts.\n\n#### 🔑 **Critical Context & Constraints**\n- **Compliance Requirements:**\n  - `[WAF-FN61]`: All external traffic must flow through WAF (✅ met).\n  - `[RAM-KX77]`: RAM ≤ 3.75GB per container (⚠️ pending A2 validation).\n- **User Preference:**  \n  No direct ALB exposure. Full audit trail required. Evidence stored in S3 (`prod-deploy-audit/custom-app-v2.1`).\n- **Dependencies:**  \n  Final approval hinges on A2’s confirmation of container memory usage under load.\n\n#### 📝 **What Remains to Be Done (Next Steps)**\n1. **Await A2’s Input:**  \n   Obtain A2’s validation that container memory usage stays ≤ 3.75GB under expected load.\n2. **Finalize Compliance Report:**  \n   Update Confluence page `/Deployments/custom-app-v2.1-Compliance` with A2’s findings.\n3. **Secure Final Approval:**  \n   Once A2 confirms RAM compliance, escalate to A1 for final sign-off.\n\n#### 📎 **Critical Data & References**\n- **S3 Evidence Folder:**  \n  `s3://prod-deploy-audit/custom-app-v2.1/`  \n  → Contains:  \n  - `cf-origin.png`, `waf-alb-attached.png`, `route53-cname.png` (screenshots)  \n  - `flowlog-rejects.txt`, `waf-log-sample.json` (logs)  \n- **Confluence Page:**  \n  [https://confluence.example.com/Deployments/custom-app-v2.1-Compliance](https://confluence.example.com/Deployments/custom-app-v2.1-Compliance)\n- **AWS Resources:**  \n  - CloudFront: `custom-app-v2.1-prod-cf`  \n  - WAF: `WAF-PROD-237`  \n  - ALB: `custom-app-v2.1-alb`  \n  - Route53: `app.custom-domain.com`\n\n---\n\n> 🚀 **Next LLM Action:**  \n> Monitor for A2’s RAM validation report. Upon receipt, update compliance status and prepare final handoff to A1.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00042",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

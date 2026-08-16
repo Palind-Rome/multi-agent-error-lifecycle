@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are a Junior Developer. Your task is to implement code according to specifications provided by senior engineers. Pay close attention to all security and architectural guidelines, especially regarding data handling.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**🚀 CONTEXT CHECKPOINT COMPACTION – Handoff Summary (For Next LLM)**\n\n---\n\n### ✅ **Current Progress & Key Decisions**\n- **S3 Encryption**: Confirmed `server_side_encryption_configuration` with `sse_algorithm = \"AES256\"` in IaC. KMS option recommended for auditability.\n- **Performance Monitoring**: X-Ray tracing enabled on `/profile/{id}` and `/profile/update`. Prometheus + Grafana stack deployed for metrics.\n- **Load Test Results**: P99 latency = 68ms under 10k concurrent users (50% read/write), within target (<75ms).\n- **Policy Enforcement**: Checkov integrated into CI pipeline to block non-compliant IaC merges.\n\n---\n\n### 🔒 **Constraints & User Preferences**\n- **Security**: All S3 buckets must use server-side encryption (KMS preferred).\n- **Performance**: P99 ≤75ms under real-world load; error rate < 0.1%.\n- **Observability**: Traces, metrics, and alerts mandatory before staging.\n- **Compliance**: No manual overrides — all changes via version-controlled IaC.\n\n---\n\n### 📌 **What Remains to Be Done (Next Steps)**\n1. **Finalize CI/CD Pipeline Integration**:\n   - Ensure Checkov runs pre-merge on all PRs targeting `user-profiles` module.\n   - Fail builds on policy violations (e.g., missing SSE).\n2. **Document Runbook**:\n   - Add: “How to validate encryption,” “How to view X-Ray traces,” “How to interpret Grafana dashboards.”\n3. **Staging Deployment Approval**:\n   - Confirm all checklist items are green → approve rollout to staging.\n4. **Post-Deployment Validation**:\n   - Verify logs, traces, and metrics in staging environment match expectations.\n\n---\n\n### 📎 **Critical References & Data**\n- **IaC File**: `modules/user-profiles/s3-bucket.tf`\n- **Checkov Policy**: `AWS_S3_BUCKET_SERVER_SIDE_ENCRYPTION_ENABLED`, `AWS_S3_BUCKET_BLOCK_PUBLIC_ACCESS`\n- **Grafana Dashboard URL**: `https://grafana.prod.example.com/d/profile-performance`\n- **X-Ray Trace ID Example**: `1-671b2c3d-4e5f6a7b8c9d0e1f2a3b4c5d`\n- **Runbook Template**: `docs/runbooks/user-profile-service.md`\n\n---\n\n✅ **Handoff Ready. Resume from next steps above — ensure compliance, observability, and automation are fully enforced.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00021",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

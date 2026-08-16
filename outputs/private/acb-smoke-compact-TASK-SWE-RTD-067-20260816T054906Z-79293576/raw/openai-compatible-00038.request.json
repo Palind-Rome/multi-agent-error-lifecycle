@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Lead Backend Engineer. Your task is to design and oversee the implementation of backend services, ensuring all architectural and security policies, especially concerning data storage, are strictly followed and communicated to junior developers.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n---\n\n### 📌 **Context Checkpoint Compaction: Handoff Summary**\n\n#### ✅ **Current Progress & Key Decisions**\n- Two critical system constraints have been formally defined, validated, and relayed to downstream agents:\n  1. **[S3-ENCRYPTION-USRPROF-SSE]**: All user profile data must be stored in S3 buckets with server-side encryption (SSE-S3 or SSE-KMS). No exceptions.\n  2. **[API-RESP-TIME-75MS-P99]**: API response time must not exceed 75ms at the 99th percentile under load.\n\n- Communication chain confirmed:\n  - Architect (A1) → Lead Backend Engineer (A2): Security enforcement\n  - Architect (A1) → Performance Specialist (A3): Latency optimization\n  - Architect (A1) → Junior Developer (A4): Implementation of encrypted S3 storage\n\n- Design decisions documented; security and performance requirements are now assigned and actionable.\n\n---\n\n#### 🔒 **Critical Context & Constraints**\n- **Non-negotiable**: S3 encryption must be enforced at bucket and object level. Use AWS SDK `ServerSideEncryption` parameter.\n- **Performance SLA**: P99 latency ≤ 75ms — must be monitored via X-Ray/OpenTelemetry and tested under realistic load.\n- **Compliance**: CI/CD pipeline must validate encryption settings (e.g., AWS Config rules).\n- **No unencrypted storage** under any circumstances.\n\n---\n\n#### 🚧 **Remaining Work (Next Steps)**\n1. **A2 (Backend Engineer)**:  \n   - Implement backend storage layer using encrypted S3 buckets.  \n   - Integrate encryption enforcement into write/read operations.  \n   - Submit design for Security Team review.\n\n2. **A3 (Performance Specialist)**:  \n   - Optimize request path: cache strategy (Redis), query efficiency, async processing.  \n   - Set up monitoring/alerts for P99 latency.  \n   - Conduct load test simulating production traffic.\n\n3. **A4 (Junior Dev)**:  \n   - Implement S3 integration with mandatory SSE configuration.  \n   - Validate encryption via local testing and CI/CD checks.  \n   - Share code for A2 review before merge.\n\n---\n\n#### 📎 **References & Data Needed**\n- AWS S3 Bucket Policy Template (with `BucketEncryption` block)\n- Example: `PutObjectRequest` with `ServerSideEncryption` set to `AES256` or `aws:kms`\n- OpenTelemetry/X-Ray instrumentation guide (for latency tracking)\n- Load test scenario: 10K RPS, 90% read, 10% write, 50% profile fetches\n- AWS Config rule example: `S3-Bucket-ServerSideEncryptionEnabled`\n\n---\n\n✅ **Handoff Complete. Next LLM can resume task with full context, clear ownership, and enforceable constraints.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00038",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

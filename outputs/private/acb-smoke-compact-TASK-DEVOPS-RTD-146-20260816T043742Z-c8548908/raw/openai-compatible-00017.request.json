@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Container Specialist. Your primary responsibility is to design and configure container deployments, ensuring all resource allocation constraints, especially RAM limits, are strictly adhered to. Report your proposed container configuration directly to the DevOps Lead (A1).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION – Handoff Summary**\n\n---\n\n### 📌 **Current Progress & Key Decisions Made:**\n- Deployment orchestration for `custom-app-v2.1` in `us-east-1` production initiated.\n- Two critical constraints formally assigned and propagated:\n  - **[RAM-KX77]**: Max 3.75 GiB RAM per container instance (enforced via `limits.memory`).\n  - **[WAF-FN61]**: All external traffic must route through WAF-PROD-237 (via ALB integration).\n- Deployment context fully defined (VPC, subnet, load balancer, TLS, logging, etc.).\n- Task flow structured with parallel branches:\n  - **Resource branch**: A2 (Container Specialist) to finalize container specs.\n  - **Security branch**: A3 → A4 (Network Security → Senior Reviewer) to validate WAF integration.\n\n---\n\n### 🔑 **Critical Context & Constraints:**\n- **Non-negotiables:**\n  - No container may exceed **3.75 GiB RAM** (both `requests` and `limits`).\n  - **No direct public ingress** to backend; all traffic must pass through **WAF-PROD-237** attached to AWS ALB.\n- **Deployment Requirements:**\n  - Rolling update strategy\n  - Minimum 3 replicas\n  - Health check at `/health`\n  - CloudFront → ALB → WAF → App flow\n- **Network Policy:** Private-A subnet, egress-only NACLs, site-to-site VPN\n\n---\n\n### ✅ **What Remains to Be Done:**\n1. **A2 (Container Specialist):**  \n   - Submit Kubernetes manifest snippet with:\n     ```yaml\n     resources:\n       limits:\n         memory: 3.75Gi\n         cpu: 2\n       requests:\n         memory: 3.0Gi\n         cpu: 1\n     ```\n   - Confirm compliance with [RAM-KX77].\n\n2. **A3 (Network Security Engineer):**  \n   - Deliver WAF integration plan including:\n     - ALB-WAF attachment proof\n     - Rule set validation (SQLi/XSS enabled)\n     - Routing diagram (CloudFront → ALB → WAF → App)\n   - Submit to A4 for review.\n\n3. **A4 (Senior DevOps Reviewer):**  \n   - Review WAF plan for compliance with [WAF-FN61] and network topology.\n   - Provide sign-off or feedback.\n\n4. **A1 (DevOps Lead):**  \n   - Final approval only after both branches are cleared.\n\n---\n\n### 📎 **Critical Data / References Needed:**\n- `custom-app-v2.1` Docker image tag (ensure latest stable build)\n- WAF-PROD-237 web ACL ID (for ALB attachment)\n- ALB DNS name and listener configuration (port 80/443)\n- Route53 hosted zone ID for DNS routing\n- ACM certificate ARN (for HTTPS)\n\n> ⚠️ **Do not proceed to deployment until both A2 and A4 confirm compliance.**\n\n---\n\n✅ **Handoff Ready. Next LLM should resume from:**\n> “Awaiting container spec from A2 and WAF review from A4.”",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00017",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

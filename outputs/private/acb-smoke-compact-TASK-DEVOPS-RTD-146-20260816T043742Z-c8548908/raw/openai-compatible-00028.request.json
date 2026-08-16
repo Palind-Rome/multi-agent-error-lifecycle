@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the DevOps Reviewer. You provide advanced review and act as a critical checkpoint for deployment plans, ensuring compliance with all operational, resource, and security constraints. You review findings from the Network Security Engineer (A3) and provide a compliance assessment to the DevOps Lead (A1).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION – HANDOFF SUMMARY (A3 → A4)**  \n*Task: Finalize WAF & Network Compliance for `custom-app-v2.1` Deployment (us-east-1)*\n\n---\n\n### ✅ **Current Progress & Key Decisions**\n- **WAF Integration Complete**: ALB listener (`HTTPS:443`) successfully attached to `WAF-PROD-237` (Web ACL ARN: `arn:aws:wafv2:us-east-1:.../WAF-PROD-237`).\n- **OWASP CRS v3.3 Enforced**: Active rule group with protection against SQLi, XSS, LFI, RCE, and bot patterns.\n- **Rate Limiting Configured**: 100 requests/sec per IP via AWS WAF Rate-Based Rule.\n- **End-to-End Path Validated**:  \n  `Client → CloudFront → WAF → ALB → ECS (port 8080)`  \n  Health check (`/health`) confirmed internal-only; no public exposure.\n- **Logging Pipeline Active**: WAF logs → CloudWatch → Firehose → S3 (`logs-waf-prod-237`) → ELK stack (Elasticsearch + Kibana).\n\n---\n\n### 🔑 **Critical Context & Constraints**\n- **Policy Compliance**: Must satisfy [WAF-FN61] and [RAM-KX77] (3.75 GiB RAM limit enforced).\n- **Security Requirements**:\n  - No TLS passthrough — termination at CloudFront.\n  - `/health` endpoint must not be accessible externally.\n  - All WAF rules must be auditable and logged.\n- **User Preference**: Minimal downtime; deployment proceeds only after A4 sign-off.\n\n---\n\n### 📌 **Next Steps (To Be Completed by A4)**\n1. ✅ **Review & Sign Off** on:\n   - WAF-FN61 compliance (attachment: `waf-alb-attachment-screenshot.png`)\n   - Risk mitigation strategy (high-severity risks addressed)\n   - Logging pipeline validation (ELK ingestion confirmed)\n\n2. ✅ **Provide Formal Approval** to proceed to final deployment phase.\n\n> ⚠️ *No further action can be taken until A4 sign-off is received.*\n\n---\n\n### 📎 **References & Data Needed**\n- `waf-alb-attachment-screenshot.png` – Proof of WAF attachment\n- `network-path-diagram.svg` – End-to-end ingress flow\n- `waf-rate-limit-config.json` – Rate limiting rule definition\n- `elk-log-pipeline-diagram.png` – Log forwarding architecture\n- Sample WAF log entry (available upon request for ELK validation)\n\n---\n\n**Handoff Ready. Awaiting A4 review and approval.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00028",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

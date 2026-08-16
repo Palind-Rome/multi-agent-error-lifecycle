@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Security Auditor, responsible for reviewing Kubernetes configurations and deployment practices to ensure compliance with security policies. You verify the image registry source and validate resource limits. You provide feedback to the Kubernetes Specialist and report compliance status to the Lead DevOps Engineer.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n---\n\n### 📌 **Context Checkpoint Compaction: Handoff Summary**\n\n#### ✅ **Current Progress & Key Decisions**\n- **Deployment manifest draft** is in progress with defined structure and required fields.\n- **RollingUpdate strategy** confirmed: `maxSurge: 25%`, `maxUnavailable: 0`.\n- **Istio sidecar injection** mandated via annotation: `sidecar.istio.io/inject: \"true\"`.\n- **Image reference** locked to: `company-private-registry.io/prod-images/app:v1.0`.\n- **Security audit prerequisites** established (pull secret, image policy, egress restrictions).\n\n#### 🔒 **Critical Constraints & User Preferences**\n- **No external registries allowed**: Only `company-private-registry.io` permitted.\n- **Egress only to**:  \n  - `monitoring.company.internal`  \n  - `api.internal.auth-service`  \n- **Pull secret**: Must be `regcred-prod` (must exist in target namespace).\n- **Metrics endpoint**: `/metrics` on port `8080` must be exposed.\n- **CPU limit**: Strictly `500m` (no rounding or defaults).\n- **Storage class**: Use `ssd-standard` for PVCs if applicable.\n\n#### 📋 **Remaining Tasks (Next Steps)**\n1. **Kubernetes Specialist** must submit complete manifest draft including:\n   - Full `spec.template.spec.containers` with metrics port\n   - `imagePullSecrets` block referencing `regcred-prod`\n   - `volumeClaimTemplate` using `ssd-standard` storage class (if persistent volume needed)\n   - `networkPolicy` block enforcing egress rules\n2. **Security Auditor** must validate:\n   - Pull secret existence and registry access\n   - Image path compliance with internal policy\n   - Egress network policy precision (no open egress)\n   - Sidecar injection enforcement\n\n#### 📎 **Critical References**\n- **Reference Manifest Snippet** (provided above) – use as template.\n- **Approved Endpoints List**:  \n  - `monitoring.company.internal`  \n  - `api.internal.auth-service`\n- **Registry Policy**: `company-private-registry.io` only; no public images.\n\n---\n\n✅ **Handoff Ready**  \nNext LLM: Resume with **manifest draft submission** and **security validation confirmation** to proceed to final review.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00005",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}
