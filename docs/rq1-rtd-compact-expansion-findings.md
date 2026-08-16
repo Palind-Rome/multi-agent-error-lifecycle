@@ -78,6 +78,27 @@ Notes:
   so far where the loss can be attributed to the compaction stage rather than
   the relay.
 
+## Semantic layer (draft LLM-judge, revises the above)
+
+`scripts/run_rtd_semantic_judge.py` classifies each tracer at two stages
+(transformation = compaction summary, downstream = final answer). Judge model is
+the **same** `qwen3-30b-a3b` (self-judging — see caveat below). Result for the
+baseline 11 tracers: **all 11 = `preserved_correctly` + `correctly_reflected`**,
+including the two `custom_graph` tasks whose literal RTD is 0.0.
+
+So the literal 0.0 is **reformatting, not loss**: the downstream agents normalize
+the precision (`exactly 300.00 seconds` → `within 300s`,
+`v1.0.BUILD-NUM` → `v1.0.${BUILD-NUM}`, `must not be cached` → "no local caching
+observed"). The value is unchanged; the exact string is not. This is the
+*opposite* half of the same "literal RTD misleads" finding as the original 7
+tasks — there the literal 1.0 hid a real value change (`50ms→60ms`); here the
+literal 0.0 flags a benign reformatting.
+
+**Caveat**: the judge is the same model family it is judging (leniency risk) and
+has not been human-reviewed. Treat the "all preserved" verdict as a draft; a
+cross-check with a *different* judge model (e.g. `235b-a22b`) or human review is
+the next step before this is adjudicated.
+
 ## Cross-model comparison (literal RTD, same 5 tasks)
 
 | Task | topology | 30b-a3b | 235b-a22b | thinking |

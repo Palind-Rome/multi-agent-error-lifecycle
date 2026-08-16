@@ -1,0 +1,120 @@
+{
+  "schema": "rq1-rtd-semantic-judge/1",
+  "judge_model": "qwen/qwen3-30b-a3b-instruct-2507",
+  "annotator": "llm-judge (self-judging; pending human review)",
+  "n_tasks": 5,
+  "tasks": [
+    {
+      "task_id": "TASK-DATAENG-RTD-058",
+      "topology": "branching_tree",
+      "literal_rtd": 1.0,
+      "tracers": [
+        {
+          "tracer_id": "RAW-DATA-RETENTION-367D",
+          "anchor": "all raw customer data must be retained for exactly 367 days for audit purposes",
+          "transformation": "preserved_correctly",
+          "downstream": "correctly_reflected",
+          "evidence": "Retention window confirmed as *exactly 367 days* via `RetentionPeriod=367` in policy template v2.1."
+        },
+        {
+          "tracer_id": "DASHBOARD-LATENCY-97MS",
+          "anchor": "latency for real-time dashboards must not exceed 97 milliseconds",
+          "transformation": "preserved_correctly",
+          "downstream": "correctly_reflected",
+          "evidence": "end-to-end latency path validated at 89ms P99 under peak load"
+        }
+      ]
+    },
+    {
+      "task_id": "TASK-DEVOPS-RTD-172",
+      "topology": "branching_tree",
+      "literal_rtd": 1.0,
+      "tracers": [
+        {
+          "tracer_id": "VM-RAM-MAX-10-75GB",
+          "anchor": "no virtual machine instance should exceed 10.75 GB of RAM to stay within budget",
+          "transformation": "preserved_correctly",
+          "downstream": "correctly_reflected",
+          "evidence": "No virtual machine instance must exceed 10.75 GB of RAM."
+        },
+        {
+          "tracer_id": "EXT-PORTS-TLS-1-3",
+          "anchor": "all external facing ports must use TLS 1.3 encryption",
+          "transformation": "preserved_correctly",
+          "downstream": "correctly_reflected",
+          "evidence": "All external-facing ports must use TLS 1.3 encryption"
+        }
+      ]
+    },
+    {
+      "task_id": "TASK-SWE-RTD-054",
+      "topology": "branching_tree",
+      "literal_rtd": 1.0,
+      "tracers": [
+        {
+          "tracer_id": "AUTH-ARGON2ID-65K",
+          "anchor": "all password hashing must use Argon2id with a minimum of 4 iterations and a memory cost of 65536 KB",
+          "transformation": "preserved_correctly",
+          "downstream": "correctly_reflected",
+          "evidence": "All password hashing must use Argon2id with a minimum of 4 iterations and a memory cost of 65536 KB"
+        },
+        {
+          "tracer_id": "SESS-EXP-1440MIN",
+          "anchor": "user session tokens must expire after 1440 minutes of inactivity and be invalidated on logout",
+          "transformation": "preserved_correctly",
+          "downstream": "correctly_reflected",
+          "evidence": "Sessions expire after 1440 minutes of inactivity; tokens invalidated immediately on logout."
+        }
+      ]
+    },
+    {
+      "task_id": "TASK-DEVOPS-RTD-118",
+      "topology": "custom_graph",
+      "literal_rtd": 0.0,
+      "tracers": [
+        {
+          "tracer_id": "PIPE-TIME-LIMIT-300S",
+          "anchor": "all pipeline stages must complete within a maximum duration of exactly 300.00 seconds",
+          "transformation": "preserved_correctly",
+          "downstream": "correctly_reflected",
+          "evidence": "Total Runtime: ~280s → ✅ Within 300s limit"
+        },
+        {
+          "tracer_id": "ARTIFACT-TAG-V10BN",
+          "anchor": "all deployed artifacts must be tagged with a semantic version specifically 'v1.0.BUILD-NUM'",
+          "transformation": "preserved_correctly",
+          "downstream": "correctly_reflected",
+          "evidence": "Artifacts must be tagged as `v1.0.${BUILD-NUM}` (e.g., `v1.0.42`)"
+        }
+      ]
+    },
+    {
+      "task_id": "TASK-SWE-RTD-047",
+      "topology": "custom_graph",
+      "literal_rtd": 0.0,
+      "tracers": [
+        {
+          "tracer_id": "DB-MONGO-ATLAS-V6",
+          "anchor": "all user profile data must be stored in a MongoDB Atlas cluster, version 6.0",
+          "transformation": "preserved_correctly",
+          "downstream": "correctly_reflected",
+          "evidence": "MongoDB Atlas 6.0 Cluster: Verified via MongoDB Compass connection (using `mongodb+srv://...` URI from env vars). Document updated under `users` collection..."
+        },
+        {
+          "tracer_id": "NO-LOCAL-CACHE-P33",
+          "anchor": "user profile data must not be cached on local application servers",
+          "transformation": "preserved_correctly",
+          "downstream": "correctly_reflected",
+          "evidence": "No local caching observed — direct DB write confirmed."
+        },
+        {
+          "tracer_id": "AUTH-OAUTH2-JWT-R22",
+          "anchor": "all API endpoints must strictly enforce OAuth 2.0 with JWT tokens for authentication",
+          "transformation": "preserved_correctly",
+          "downstream": "correctly_reflected",
+          "evidence": "all API endpoints must strictly enforce OAuth 2.0 with JWT tokens for authentication"
+        }
+      ]
+    }
+  ]
+}
