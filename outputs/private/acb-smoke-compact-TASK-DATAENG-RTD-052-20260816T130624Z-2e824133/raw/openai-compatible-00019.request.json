@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Data Ingestion Lead, responsible for overseeing the design and implementation of the data ingestion pipeline. You must ensure all critical constraints, like UTC timestamps with parquet/Snappy format and the latency limit, are clearly communicated and strictly followed. You coordinate the team and review key architectural decisions. You initiate tasks and review work from the Pipeline Developer.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### 📌 HANDOFF SUMMARY: DEPLOY-789 APPROVAL MONITORING  \n**For next LLM to resume work**  \n\n---\n\n#### ✅ **CURRENT PROGRESS & KEY DECISIONS**  \n- **All constraints validated** (no rework allowed per stakeholder):  \n  - ✅ `gs://ingest-bucket/parquet/` path confirmed  \n  - ✅ p95 latency = 3.27s (Stackdriver audited)  \n  - ✅ UTC enforcement via `event_time` source field  \n  - ✅ QA-456 compliance (100% pass, ticket `INGEST-123` closed)  \n- **Status**: Monitoring `DEPLOY-789` approval (Jira) pending deadline.  \n\n---\n\n#### ⚠️ **CRITICAL CONSTRAINTS & PREFERENCES**  \n| Constraint               | Validation Proof       | Action for Next LLM       |  \n|--------------------------|------------------------|---------------------------|  \n| **No rechecks** (latency/UTC/data path) | `INGEST-123` closed (100% pass) | ❌ **Never revalidate** |  \n| **Zero rework**          | Stakeholder directive  | ✅ Strictly enforced      |  \n| **Deadline**: 14:03 UTC tomorrow | Current time: 14:03 UTC today | ⏰ **Action at 12:00 UTC tomorrow** |  \n\n---\n\n#### 🔜 **WHAT REMAINS TO BE DONE (NEXT STEPS)**  \n1. **⏰ AT 12:00 UTC TOMORROW**  \n   - **Send automated reminder** (exact wording):  \n     > *\"DEPLOY-789 approval due in 2h (14:03 UTC). All constraints met (see INGEST-123).\"*  \n   - **Reference**: `INGEST-123` (closed, 100% QA-456 pass).  \n\n2. **⏰ IF UNAPPROVED BY 14:03 UTC TOMORROW**  \n   - **Escalate IMMEDIATELY** to Infrastructure Lead (exact wording):  \n     > *\"DEPLOY-789 pending approval (deadline: 14:03 UTC). INGEST-123 closed (all constraints validated: data path, latency, UTC). Request urgent review to avoid SLA impact.\"*  \n   - **Do NOT**: Recheck constraints (already audited).  \n\n---\n\n#### 🔗 **ESSENTIAL REFERENCES**  \n| Item                | Source/Proof                     |  \n|---------------------|----------------------------------|  \n| `DEPLOY-789`        | Jira ticket (monitor status)     |  \n| `INGEST-123`        | Closed QA ticket (100% pass)     |  \n| Validation proof    | Handoff doc (all constraints ✅) |  \n\n---\n\n### ✅ **FINAL INSTRUCTIONS FOR NEXT LLM**  \n> **\"Monitor `DEPLOY-789` until 12:00 UTC tomorrow → send reminder → escalate ONLY if unapproved at 14:03 UTC. Zero rework. All constraints are closed and audited.\"**  \n\n**No further analysis needed.**  \n*Handoff complete. Ready for operational execution.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00019",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

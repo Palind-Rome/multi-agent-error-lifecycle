@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Container Specialist. Your primary responsibility is to design and configure container deployments, ensuring all resource allocation constraints, especially RAM limits, are strictly adhered to. Report your proposed container configuration directly to the DevOps Lead (A1).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### HANDOFF SUMMARY: DEVOPS CONSTRAINTS EXECUTION  \n**For LLM Resuming Task**  \n\n---\n\n#### **CURRENT PROGRESS**  \n- ✅ **A1 (DevOps Lead)** issued constraints to A2 (Container) and A3 (Network Security).  \n- ✅ **Process flow confirmed**:  \n  - A2 → Direct report to A1 (RAM constraint).  \n  - A3 → A4 (Senior Reviewer) for WAF validation.  \n- ❌ **No work completed yet** (A2/A3 pending actions; A4 on standby).  \n\n---\n\n#### **CRITICAL CONSTRAINTS & CONTEXT**  \n| Constraint ID | Key Requirement                          | Non-Negotiable Proof Required          |  \n|---------------|------------------------------------------|----------------------------------------|  \n| `RAM-KX77`    | Max **3.75 GB RAM/container** (no exceptions) | A2: Container spec YAML/JSON snippet + replica compliance report |  \n| `WAF-FN61`    | All external traffic **must route through WAF-PROD-237** (no direct ALB/CloudFront access) | A3: CloudFront config (WAF association), ALB rules, Route53 CNAME |  \n\n**Environment**: `us-east-1` (Production)  \n**Critical Exemptions**:  \n- Site-to-site VPN traffic (internal) **exempt** from WAF.  \n- Persistent storage (`50GB SSD`) **irrelevant** to RAM constraint.  \n\n---\n\n#### **WHAT REMAINS TO BE DONE**  \n1. **A2 (Container Specialist)** must:  \n   - Configure container RAM limit **exactly** to `3.75Gi` (e.g., `resources.limits.memory: 3.75Gi`).  \n   - **Submit to A1**:  \n     - YAML snippet (e.g., `resources.limits.memory: \"3750Mi\"`).  \n     - Verification: `3 replicas × 3.75GB = 11.25GB total RAM` (all ≤ 3.75GB).  \n\n2. **A3 (Network Security)** must:  \n   - Design ingress path: **External → CloudFront → WAF-PROD-237 → ALB → Microservice**.  \n   - **Submit to A4**:  \n     - CloudFront config (WAF association).  \n     - ALB listener rules (source: `WAF-PROD-237`).  \n     - Route53 CNAME → CloudFront (not ALB).  \n\n3. **A4 (Senior Reviewer)** must:  \n   - **Reject** if any constraint violated (e.g., direct ALB access).  \n   - **Approve** only if all 4 checklist items ✅ (see original email).  \n   - **Report outcome to A1**.  \n\n---\n\n#### **KEY REFERENCES FOR CONTINUATION**  \n- **Constraint Codes**: `RAM-KX77` (RAM), `WAF-FN61` (WAF).  \n- **Config Examples**:  \n  - RAM: `resources.limits.memory: \"3750Mi\"` (not `3.75g` or `3750MB`).  \n  - WAF Path: `CloudFront → WAF-PROD-237 → ALB` (no direct CloudFront→ALB).  \n- **Process Flow**:  \n  ```mermaid\n  graph LR\n    A2 -->|RAM-KX77 Report| A1\n    A3 -->|WAF-FN61 Plan| A4\n    A4 -->|Approval| A1\n    A1 -->|Go/No-Go| Deployment\n  ```  \n\n---\n\n**NEXT STEP FOR LLM**:  \n- **Verify A2’s RAM config** (must be **exact 3.75GB**).  \n- **Validate A3’s WAF path** (must **exclude all bypasses**).  \n- **Do not proceed** until A2 report + A4 approval are received by A1.  \n\n> ⚠️ **Failure to enforce constraints = deployment halt.**  \n> *All data in original email (A1’s communication) is authoritative.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00017",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the DevOps Reviewer. You provide advanced review and act as a critical checkpoint for deployment plans, ensuring compliance with all operational, resource, and security constraints. You review findings from the Network Security Engineer (A3) and provide a compliance assessment to the DevOps Lead (A1).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### **Context Checkpoint Compaction: Network Security Handoff (A4 Review)**  \n**For LLM Continuation**  \n\n---\n\n#### **✅ Current Progress & Key Decisions**  \n- **WAF-FN61 compliance fully implemented**:  \n  - CloudFront `WebACLId` **exactly** set to `WAF-PROD-237` (no aliases/typos).  \n  - ALB security group **strictly restricted** to `cloudfront-ip-ranges.json` (no public internet access).  \n- **Critical decision**: *No direct ALB exposure* enforced (all traffic via CloudFront → WAF-PROD-237).  \n\n---\n\n#### **⚠️ Critical Constraints & Context**  \n| Item                | Requirement                                  | Proof in Submission |  \n|---------------------|---------------------------------------------|---------------------|  \n| **WAF ID**          | Must be `WAF-PROD-237` (verbatim)           | ✅ Explicitly set in CloudFront config |  \n| **ALB Access**      | Only CloudFront IPs allowed (no exceptions) | ✅ ALB SG rules + `cloudfront-ip-ranges.json` |  \n| **Excluded Items**  | RAM limits, port 8080, health checks (A2/A3 tasks) | ❌ Not applicable to WAF-FN61 |  \n\n---\n\n#### **➡️ What Remains to Be Done**  \n1. **A4 Review Validation**:  \n   - *Next step*: **Confirm compliance** (no changes needed).  \n   - *Escalation path*: If A4 approves → **immediately escalate to A1**.  \n2. **Do NOT**:  \n   - Modify WAF ID, ALB SG rules, or add public access.  \n   - Re-include excluded items (e.g., port 8080).  \n\n---\n\n#### **📌 Critical References for Continuation**  \n- **Compliance Proof**: [WAF-FN61] flow validated in submission (CloudFront → WAF-PROD-237 → ALB SG restricted).  \n- **Key File**: `cloudfront-ip-ranges.json` (AWS-managed IP list, **must be used verbatim**).  \n- **Final Statement**: *\"ALB is inaccessible from public internet; all traffic routed through WAF-PROD-237.\"*  \n\n---  \n**Handoff Status**: **Ready for A4 validation**.  \n**Next LLM Action**: *Confirm compliance → Escalate to A1 if ✅*.  \n**Do not proceed without A4 sign-off.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00028",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

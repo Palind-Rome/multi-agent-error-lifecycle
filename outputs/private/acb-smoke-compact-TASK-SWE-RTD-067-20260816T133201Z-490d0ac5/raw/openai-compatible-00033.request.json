@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Performance Optimization Specialist. Your task is to analyze and improve the performance of services, ensuring all performance targets and metrics, such as API response times, are met.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### HANDOFF SUMMARY: CONTEXT CHECKPOINT COMPACTION  \n**For:** Next LLM to resume task  \n\n---\n\n#### **CURRENT PROGRESS & KEY DECISIONS**  \n- ✅ **Security constraint** (S3-ENCRYPTION-USRPROF-SSE) confirmed as non-negotiable.  \n- ✅ **Performance constraint** (API-RESP-TIME-75MS-P99) validated as hard SLA.  \n- ✅ **Role assignment** finalized:  \n  - A2 (Lead Backend) owns *enforcement* of S3 encryption (must relay verbatim to A4).  \n  - A3 (Performance Specialist) owns *end-to-end* API latency optimization.  \n\n---\n\n#### **CRITICAL CONTEXT & CONSTRAINTS**  \n| Constraint ID                     | Requirement                                  | Owner       | Non-Negotiable? |  \n|-----------------------------------|---------------------------------------------|-------------|----------------|  \n| `S3-ENCRYPTION-USRPROF-SSE`       | All user profile storage **must** use S3 SSE encryption | A2 → A4     | ✅ Yes         |  \n| `API-RESP-TIME-75MS-P99`          | Max 75ms P99 API response time              | A3          | ✅ Yes         |  \n\n**Key Notes:**  \n- **No delegation ambiguity**: A2 *must* validate encryption compliance before handing to A4.  \n- **Exact wording required** in all downstream communications (e.g., \"per constraint [S3-ENCRYPTION-USRPROF-SSE]\").  \n\n---\n\n#### **NEXT STEPS (TO BE EXECUTED)**  \n1. **A2 (Lead Backend)**:  \n   - Implement S3 bucket policy enforcement for user profiles.  \n   - **Verify** encryption compliance *before* passing to A4 (no \"trust\" delegation).  \n2. **A3 (Performance Specialist)**:  \n   - Implement monitoring (CloudWatch/distributed tracing) to track P99 latency.  \n   - Optimize database queries/caching to **guarantee ≤75ms P99**.  \n\n---\n\n#### **CRITICAL REFERENCES**  \n- **Constraint IDs** (must be used verbatim in all comms):  \n  - `S3-ENCRYPTION-USRPROF-SSE`  \n  - `API-RESP-TIME-75MS-P99`  \n- **Validation Proof**:  \n  > *\"A2 must relay constraint to A4 as: 'Implement S3 storage with SSE encryption per A1’s constraint [S3-ENCRYPTION-USRPROF-SSE].'\"*  \n\n---  \n**DO NOT ADD INTERPRETATION. ADHERE TO EXACT CONSTRAINTS.**  \n*Handoff complete. Next LLM resumes at A2/A3 implementation phase.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00033",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

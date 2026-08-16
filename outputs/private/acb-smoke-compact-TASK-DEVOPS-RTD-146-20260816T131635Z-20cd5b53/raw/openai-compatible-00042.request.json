@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the DevOps Reviewer. You provide advanced review and act as a critical checkpoint for deployment plans, ensuring compliance with all operational, resource, and security constraints. You review findings from the Network Security Engineer (A3) and provide a compliance assessment to the DevOps Lead (A1).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### HANDOFF SUMMARY: NETWORK SECURITY CONFIGURATION (A3 → A4)  \n**✅ CURRENT PROGRESS**  \n- Configuration fully validated against [WAF-FN61] constraints.  \n- **Key decisions locked**:  \n  - Traffic flow: `External → CloudFront → WAF-PROD-237 → ALB` (ALB **never** exposed directly).  \n  - WAF-PROD-237 **exclusively attached to CloudFront** (no ALB attachment).  \n  - ALB security group **only allows CloudFront IPs** (`18.18.0.0/16`, `18.19.0.0/16`, `18.20.0.0/16`, `18.21.0.0/16`).  \n  - Route53: `app.example.com` → **CNAME to CloudFront domain** (e.g., `d123456789.cloudfront.net`).  \n\n**⚠️ CRITICAL CONSTRAINTS**  \n- **NO DEVIATIONS ALLOWED**:  \n  - WAF-PROD-237 **must not** be attached to ALB.  \n  - **No ALB DNS** in Route53 or security groups.  \n  - CloudFront CIDRs **must match AWS-recommended ranges** (no custom IPs).  \n- **Reference**: [AWS CloudFront IP Ranges](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-aws-waf.html) (2023-10-15).  \n\n**📌 NEXT STEPS**  \n1. **Submit to A4 for approval** (no changes permitted).  \n2. **Do not proceed to A1** until A4 signs off.  \n\n**🔑 CRITICAL DATA FOR CONTINUATION**  \n- **WAF ID**: `WAF-PROD-237` (pre-configured, immutable).  \n- **CloudFront CIDRs**: `18.18.0.0/16`, `18.19.0.0/16`, `18.20.0.0/16`, `18.21.0.0/16`.  \n- **Route53 Example**:  \n  ```plaintext  \n  app.example.com → CNAME → d123456789.cloudfront.net  \n  ```  \n\n**❗ DO NOT MODIFY** any configuration values. **100% compliance verified.**  \n*Handoff complete. A4 approval required before progression.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00042",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

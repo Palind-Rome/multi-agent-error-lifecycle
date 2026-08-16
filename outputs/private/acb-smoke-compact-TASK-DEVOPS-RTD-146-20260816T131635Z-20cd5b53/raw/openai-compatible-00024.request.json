@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Container Specialist. Your primary responsibility is to design and configure container deployments, ensuring all resource allocation constraints, especially RAM limits, are strictly adhered to. Report your proposed container configuration directly to the DevOps Lead (A1).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### CONTEXT HANDOFF SUMMARY (FOR NEXT LLM)  \n**Current Progress & Key Decisions**  \n✅ **Constraints confirmed & routed**:  \n- `RAM-KX77` (≤3.75 GB RAM/container) sent to **A2 (Container Specialist)** → *Direct to A1 (no A4 review)*.  \n- `WAF-FN61` (all traffic via WAF-PROD-237) sent to **A3 (Network Security)** → *Requires A4 review first, then to A1*.  \n✅ **Branching topology locked**:  \n  `A2 → A1` (no intermediaries) | `A3 → A4 → A1` (A4 mandatory for WAF).  \n\n**Critical Constraints (Non-Negotiable)**  \n| Constraint | Value | Enforcer | Reporting Path |  \n|------------|-------|----------|----------------|  \n| `RAM-KX77` | ≤3.75 GB RAM per container | A2 | **Direct to A1** |  \n| `WAF-FN61` | Traffic *must* route through `WAF-PROD-237` | A3 → A4 | **A3 → A4 → A1** |  \n\n**Key Context (Ignore Non-Constraints)**  \n- ❌ *Not constraints*: Persistent storage (50GB SSD), CPU (2 cores), health path (`/health`), port (8080), CDN/VPN details.  \n- ✅ *Must enforce*: RAM cap *and* WAF routing *only*. All else is deployment context.  \n- ⚠️ **Violations block deployment** (no exceptions).  \n\n**What Remains to Be Done**  \n1. **A2 must submit container config** (≤3.75 GB RAM, 3+ replicas) **to A1 within 24h**.  \n2. **A3 must submit network config** (CloudFront → WAF-PROD-237 → ALB) **to A4 within 24h**.  \n   → *A4 will validate → escalate to A1 if non-compliant*.  \n3. **No other actions** (e.g., TLS, health checks) require LLM intervention.  \n\n**Critical Data for Continuation**  \n- **RAM example**: `memory: 3.75Gi` (K8s/ECS). *Do not use 3.75GB or 3750Mi*.  \n- **WAF reference**: `WAF-PROD-237` (exact name, *not* a template).  \n- **Flow validation**: `Internet → CloudFront → WAF-PROD-237 → ALB → App`.  \n- **Deadline**: All submissions due in **24h** (no extensions).  \n\n**Next LLM Action**  \n- **Verify A2’s RAM config** (≤3.75 GB) → Approve *directly to A1*.  \n- **Verify A3’s WAF config** (via A4) → Escalate *only if WAF-PROD-237 not enforced*.  \n- **Do not re-verify non-constraints** (e.g., storage, port).  \n\n> *Handoff complete. A1 awaits A2/A3 submissions. No deviations permitted.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00024",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

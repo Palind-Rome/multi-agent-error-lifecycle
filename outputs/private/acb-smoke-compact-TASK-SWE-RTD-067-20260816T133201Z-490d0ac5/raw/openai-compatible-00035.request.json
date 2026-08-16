@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are a Junior Developer. Your task is to implement code according to specifications provided by senior engineers. Pay close attention to all security and architectural guidelines, especially regarding data handling.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### CONTEXT CHECKPOINT COMPACTION: LEAD BACKEND ENGINEER HANDOFF  \n**For: Next LLM to resume task**  \n\n---\n\n#### ✅ **CURRENT PROGRESS & KEY DECISIONS**  \n1. **S3 Encryption (A4)**  \n   - **Mandated**: `S3-ENCRYPTION-USRPROF-SSE` **enforced via SSE-KMS** (not SSE-S3) with CMK (`alias/user-profile-encryption`).  \n   - **Policy**: Bucket policy requires `s3:x-amz-server-side-encryption: aws:kms` on all writes.  \n   - **CI Guardrail**: Pre-merge pipeline fails if `aws s3api get-bucket-encryption` doesn’t return `SSEKMS`.  \n2. **Performance (A2+A3)**  \n   - **Constraint**: `API-RESP-TIME-75MS-P99` **must be met** (A3 owns test design).  \n   - **Critical Rule**: Caching **only** allowed for *non-encrypted* metadata (e.g., `last_updated`); **user data must stay encrypted**.  \n\n---\n\n#### ⚠️ **CRITICAL CONTEXT & CONSTRAINTS**  \n| Constraint ID                     | Non-Negotiable Requirement                                                                 |  \n|-----------------------------------|------------------------------------------------------------------------------------------|  \n| `S3-ENCRYPTION-USRPROF-SSE`       | **No exceptions**. Must reference ID in code/comments. SSE-S3 = **prohibited**.            |  \n| `API-RESP-TIME-75MS-P99`          | A3’s test suite **must validate P99 ≤75ms** (e.g., 10k reqs @ 100 RPS).                 |  \n| **Caching Rule**                  | **Never cache decrypted user data**. All cache keys must reference encrypted S3 objects. |  \n\n---\n\n#### 🔜 **WHAT REMAINS TO BE DONE**  \n1. **A4 (Storage Layer)**  \n   - ✅ **Done**: Implemented SSE-KMS bucket config + bucket policy.  \n   - ⏳ **Pending**: Merge PR with `S3-ENCRYPTION-USRPROF-SSE` in commit message.  \n2. **A3 (API Layer)**  \n   - ⏳ **Critical Next Step**: Design/load test to **prove `API-RESP-TIME-75MS-P99`** (use A2’s S3 latency baseline).  \n   - **Must reject** any cache design that decrypts user data.  \n\n---\n\n#### 📌 **ESSENTIAL REFERENCES**  \n- **S3 Encryption Command**:  \n  ```bash  \n  aws s3api get-bucket-encryption --bucket <BUCKET> | grep -q 'SSEKMS'  # CI validation  \n  ```  \n- **Caching Example (Valid)**:  \n  ```python  \n  # Cache ONLY metadata (encrypted S3 object key)  \n  redis.set(\"profile:123:last_updated\", \"2024-06-01T12:00Z\")  \n  ```  \n- **Caching Example (Invalid)**:  \n  ```python  \n  # ❌ Decrypts user data → violates `S3-ENCRYPTION-USRPROF-SSE`  \n  user_data = decrypt(s3.get_object(\"user:123\"))  \n  redis.set(\"user:123\", user_data)  \n  ```  \n\n---\n\n> **FINAL DIRECTIVE FOR NEXT LLM**:  \n> *\"If `S3-ENCRYPTION-USRPROF-SSE` or `API-RESP-TIME-75MS-P99` is not explicitly referenced in code/PR, **do not proceed**. A3 must validate performance *after* A4’s encryption is merged.\"*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00035",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

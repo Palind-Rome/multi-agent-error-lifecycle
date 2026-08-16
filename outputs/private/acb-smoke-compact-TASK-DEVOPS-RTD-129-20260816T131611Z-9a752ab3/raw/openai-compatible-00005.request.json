@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Security Auditor, responsible for reviewing Kubernetes configurations and deployment practices to ensure compliance with security policies. You verify the image registry source and validate resource limits. You provide feedback to the Kubernetes Specialist and report compliance status to the Lead DevOps Engineer.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n🧠 **CONTEXT CHECKPOINT COMPACTION – HANDOFF SUMMARY**\n\n---\n\n### ✅ **Current Progress & Key Decisions**\n- Drafted Kubernetes `Deployment` and `Service` manifests for a microservice with:\n  - Istio sidecar injection enabled via label.\n  - Replica count: 3, with zero-downtime rolling update strategy (`maxUnavailable: 0`).\n- Defined resource constraints:\n  - CPU limit strictly set to `500m` per container.\n  - Memory request: `256Mi`, CPU request: `250m`.\n- Health checks implemented using `/health` (liveness) and `/ready` (readiness) endpoints.\n- NetworkPolicy applied to restrict egress traffic to:\n  - Pods in namespaces labeled `name: trusted-services` (ports 80/443).\n  - Cluster DNS (UDP 53) and internal services CIDR (`10.96.0.0/12`).\n\n---\n\n### 🔐 **Critical Constraints (Must Be Enforced)**\n| Constraint | Value | ID |\n|----------|------|-----|\n| Container registry | `company-private-registry.io/prod-images` | `[REGISTRY-PRIVATE-PROD-X77]` |\n| CPU limit per container | Exactly `500m` | `[CPU-LIMIT-500M-Z33]` |\n\n> ⚠️ No public images or relaxed CPU limits allowed.\n\n---\n\n### 📌 **What Remains to Be Done**\n1. **Finalize stateful components** (if applicable):\n   - Determine if PostgreSQL is embedded (requires `StatefulSet` + `PVC`) or external.\n   - If co-located, draft PVC with appropriate storage class and size.\n2. **CI/CD Integration**:\n   - Prepare GitLab CI job template for:\n     - Building image → tagging → pushing to private registry.\n     - Deploying to cluster using `kubectl` or Argo CD.\n3. **Monitoring & Observability**:\n   - Define Prometheus scrape config for `/metrics` endpoint on port 8080.\n   - Prepare Grafana dashboard stub (JSON or reference layout).\n4. **Security Review Handoff**:\n   - Confirm image provenance (SBOM, signing) aligns with policy.\n   - Validate NetworkPolicy against corporate firewall rules.\n\n---\n\n### 🧩 **Critical Data & References**\n```yaml\n# Required image format\nimage: company-private-registry.io/prod-images/microservice:v1.0\n\n# Resource spec example\nresources:\n  limits:\n    cpu: 500m\n  requests:\n    cpu: 250m\n    memory: 256Mi\n```\n\n- Probes: `livenessProbe` (/health), `readinessProbe` (/ready)\n- Egress allowed: trusted namespaces, DNS, internal cluster IPs\n- Labels used: `app: microservice`, `version: v1.0`, `istio-injection: enabled`\n\n---\n\n🔁 **Next LLM Task**:  \nResume at **Turn 2/8 – CI/CD Pipeline Draft**, ensuring all artifacts comply with `[REGISTRY-PRIVATE-PROD-X77]` and `[CPU-LIMIT-500M-Z33]`.  \nBegin drafting GitLab `.gitlab-ci.yml` pipeline stages: build, tag, push, deploy.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00005",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

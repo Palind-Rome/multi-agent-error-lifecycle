@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Data Ingestion Lead, responsible for overseeing the design and implementation of the data ingestion pipeline. You must ensure all critical constraints, like UTC timestamps with parquet/Snappy format and the latency limit, are clearly communicated and strictly followed. You coordinate the team and review key architectural decisions. You initiate tasks and review work from the Pipeline Developer.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### **HANDOFF SUMMARY: Jira `INGEST-123` (Turn 2/10)**  \n**Status**: ✅ **QA APPROVED** → **Ready for Deployment**  \n\n---\n\n#### **✅ CURRENT PROGRESS & KEY DECISIONS**  \n1. **Pipeline Implementation (Turn 1)**:  \n   - Fixed timestamp override (`Instant.now()` removed).  \n   - Now uses **source-provided UTC `event_time`** (e.g., `\"2023-10-05T14:30:00.000Z\"`).  \n   - Configured **Snappy compression** + **3.0s batch window** (via `GcsParquetSink`).  \n2. **QA Validation (Turn 2)**:  \n   - ✅ **All constraints passed**:  \n     - `DATA-FMT-PQT-SNAPPY-UTC`: All Parquet files show `Compression: Snappy` + `event_time` ends with `Z`.  \n     - `LATENCY-MAX-3.50S`: p95 latency = **3.27s** (10.6% below threshold).  \n   - *No code changes required* (handoff summary was accurate).  \n\n---\n\n#### **⚠️ CRITICAL CONTEXT & CONSTRAINTS**  \n| Constraint ID                | Requirement                                  | Status       | Proof Reference                     |  \n|------------------------------|---------------------------------------------|--------------|-------------------------------------|  \n| `DATA-FMT-PQT-SNAPPY-UTC`    | UTC timestamp (`Z` suffix) + Snappy Parquet | ✅ **PASS**  | [GCS Output](https://console.cloud.google.com/storage/browser/ingest-bucket) |  \n| `LATENCY-MAX-3.50S`           | p95 latency < 3.50s                         | ✅ **PASS**  | [Stackdriver Metric](https://console.cloud.google.com/monitoring/metrics-explorer?metric=ingestion_latency_seconds) |  \n\n> **Key Preference**: *Source-provided `event_time` (UTC) is mandatory* (no system time overrides).  \n\n---\n\n#### **📌 NEXT STEPS (TO BE EXECUTED)**  \n1. **Deploy pipeline** (no code changes needed).  \n2. **Create Jira `DEPLOY-789`** for deployment approval.  \n3. **Close Jira `INGEST-123`** (implementation complete).  \n\n---\n\n#### **🔑 ESSENTIAL REFERENCES**  \n- **QA Report**: [Jira `QA-456` closed as PASS](https://jira.example.com/issue/QA-456)  \n- **Code**: [GitHub PR](https://github.com/ingestion-pipeline/pull/123) (verified in handoff)  \n- **Deadline**: 28 hours remaining (10 turns total; current: 2/10).  \n\n> **Critical Note**: *Do NOT re-validate constraints* (QA already confirmed ✅). Proceed to deployment.  \n\n---  \n**Handoff Complete** → Next LLM: **Initiate deployment (Jira `DEPLOY-789`)**.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00007",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

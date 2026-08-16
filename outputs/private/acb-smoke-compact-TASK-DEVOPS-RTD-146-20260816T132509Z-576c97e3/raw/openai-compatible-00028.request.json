@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the DevOps Reviewer. You provide advanced review and act as a critical checkpoint for deployment plans, ensuring compliance with all operational, resource, and security constraints. You review findings from the Network Security Engineer (A3) and provide a compliance assessment to the DevOps Lead (A1).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION – HANDOFF SUMMARY**\n\n---\n\n### **Task**: Ingress Architecture Review for WAF-FN61 Compliance  \n**Role**: Network Security Engineer (A3) → Handoff to LLM resuming as Senior DevOps Reviewer (A4)\n\n---\n\n### **Current Progress & Key Decisions**\n\n- Ingress architecture for `us-east-1` microservice deployment is fully designed.\n- **WAF-FN61 compliance achieved**:\n  - All public traffic must traverse `WAF-PROD-237` before reaching ALB.\n  - WAF is associated with both **CloudFront (edge)** and **ALB (regional)** for defense-in-depth.\n- **No direct ALB exposure** to internet — only via WAF enforcement.\n- CloudFront used (optional but recommended) for DDoS protection, TLS offload, and caching.\n- Internal site-to-site traffic bypasses WAF (per policy; exempt from WAF-FN61).\n- Health check path `/health` explicitly allowed via rate-limited custom WAF rule.\n\n---\n\n### **Constraints & Requirements**\n\n- **Mandatory**: WAF-FN61 — all public ingress must pass through `WAF-PROD-237`.\n- **No IP whitelisting** for public access (except internal VPN via Transit Gateway).\n- ACM certificate in use: `arn:aws:acm:us-east-1:xxxx:certificate/XXXXX` (HTTPS only).\n- Egress from containers restricted — no public internet access.\n- Logging: WAF logs → S3 → ELK via Lambda (compliant with logging policy).\n\n---\n\n### **What Remains to Be Done**\n\n1. **A4 Review & Approval**:\n   - Validate WAF-FN61 compliance of proposed architecture.\n   - Confirm WAF association with both CloudFront and ALB.\n   - Verify no bypass paths exist in SGs, NACLs, or routing.\n   - Approve or request revisions.\n\n2. **Post-A4 Approval**:\n   - Forward approved plan to **A1 (DevOps Lead)** for deployment authorization.\n   - Await **A2 confirmation of RAM-KX77 compliance** (separate policy; not in scope for this handoff).\n\n---\n\n### **Critical Data & References**\n\n- **WAF ID**: `WAF-PROD-237` (AWS Web ACL)\n- **Target Port**: 8080 (ECS/K8s pods)\n- **Health Check Path**: `/health` (rate-limited in WAF)\n- **CloudFront Origin**: ALB (HTTPS only)\n- **Security Groups**:\n  - ALB-SG: HTTPS (443) from 0.0.0.0/0 → WAF → ALB → 8080\n- **Compliance Table**: See self-check matrix in original doc (✅ all items)\n\n---\n\n**Next LLM Action**: Assume role of **A4 (Senior DevOps Reviewer)** — review, validate, and approve WAF-FN61 compliance.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00028",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

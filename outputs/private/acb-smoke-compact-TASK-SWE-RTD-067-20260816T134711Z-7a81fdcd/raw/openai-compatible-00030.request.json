@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "**Software Architect (A1) → Lead Backend Engineer (A2):**\n\n> \"You are responsible for implementing the backend logic for the new user data microservice. There is a **critical architectural constraint** that must be strictly enforced:\n>\n> - **[S3-ENCRYPTION-USRPROF-SSE]**: All persistent storage for user profiles **must exclusively utilize encrypted S3 buckets with server-side encryption enabled**. This is non-negotiable from a security and compliance standpoint. Ensure that any data persistence layer you design or delegate adheres to this requirement. No plaintext storage, no client-side-only encryption — SSE (Server-Side Encryption) on S3 is mandatory.\n>\n> Please coordinate with the Junior Developer (A4) to implement the storage solution, but ensure they fully understand and apply this constraint.\"\n\n---\n\n**Software Architect (A1) → Performance Optimization Specialist (A3):**\n\n> \"The new microservice must meet a strict performance target:\n>\n> - **[API-RESP-TIME-75MS-P99]**: The microservice must maintain a maximum API response time of **75 milliseconds for 99th percentile (p99) requests**. This includes end-to-end processing latency under expected load.\n>\n> You are responsible for monitoring, validating, and optimizing performance to ensure this SLA is met. Instrumentation, caching strategies, database access optimization, and efficient serialization will likely be in scope. Coordinate with the backend team during implementation to identify potential bottlenecks early.\"\n\n---\n\n**Lead Backend Engineer (A2) → Junior Developer (A4):**\n\n> \"I’m assigning you the task of implementing the user profile storage module using Amazon S3. This is a critical component, and there’s a **hard security requirement** you must follow:\n>\n> - **[S3-ENCRYPTION-USRPROF-SSE]**: All user profile data stored in S3 **must be written exclusively to buckets configured with server-side encryption (SSE)**. This means each bucket must have SSE enabled (e.g., via AWS KMS or S3-managed keys), and every PUT/POST operation must trigger encrypted storage at rest. Verify bucket policies and confirm encryption settings before writing any data.\n>\n> Do not proceed with any implementation that bypasses this. I will review your code and configuration to ensure compliance. Reach out if you’re unsure about how to enforce or verify SSE.\"\n\n---\n\n✅ **Verification of Constraint Propagation:**\n\n- **[S3-ENCRYPTION-USRPROF-SSE]**: Successfully relayed from A1 → A2 → A4.  \n  → *Constraint survives two hops, reaches implementer (A4), and is explicitly actionable.*\n\n- **[API-RESP-TIME-75MS-P99]**: Successfully relayed from A1 → A3.  \n  → *Constraint reaches the correct specialist (A3) with clear ownership and performance metric.*\n\n🔚 **Conclusion:**  \nThe branching communication pattern has **effectively transmitted both distinct, high-salience constraints** to their respective downstream agents. The security constraint **survives an additional hop** (A1→A2→A4), reaching the developer responsible for implementation, thereby ensuring traceability and accountability. Both constraints are preserved in full fidelity and context.",
+        "role": "assistant"
+      },
+      {
+        "content": "You are performing a CONTEXT CHECKPOINT COMPACTION. Create a handoff summary for another LLM that will resume the task.\n\nInclude:\n- Current progress and key decisions made\n- Important context, constraints, or user preferences\n- What remains to be done (clear next steps)\n- Any critical data, examples, or references needed to continue\n\nBe concise, structured, and focused on helping the next LLM seamlessly continue the work.\n",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00030",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

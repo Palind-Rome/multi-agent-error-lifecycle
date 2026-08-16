@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Network Security Engineer. Your role is to design and implement network configurations, ensuring strict adherence to all security policies and routing requirements, especially regarding WAF integration. Report your proposed network configuration to the DevOps Reviewer (A4).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### CONTEXT CHECKPOINT COMPACTION: HANDOFF SUMMARY  \n\n**Current Progress**  \n- ✅ **RAM-KX77 constraint** delegated to A2 (Container Specialist).  \n- ✅ **WAF-FN61 constraint** delegated to A3 (Network Security), pending A4 review.  \n- *No submissions received yet from A2/A3.*  \n\n**Critical Constraints & Context**  \n| Constraint ID | Requirement                                  | Hard Limit/Rule                                  |  \n|---------------|---------------------------------------------|--------------------------------------------------|  \n| **RAM-KX77**  | Max 3.75 GB RAM per container instance      | `resources.limits.memory: 3.75Gi` (non-negotiable) |  \n| **WAF-FN61**  | All external traffic **must** route via WAF-PROD-237 | Flow: `CloudFront → WAF-PROD-237 → ALB` (no direct ALB access) |  \n\n**Key Requirements**  \n- **Region**: `us-east-1` (all services).  \n- **Deployment**: 3+ replicas, 2 CPU/core, `custom-app-v2.1` image.  \n- **WAF Rule**: `WAF-PROD-237` (must validate TLS via ACM).  \n\n**Next Steps**  \n1. **A2 (Container Specialist)**:  \n   - Submit **container spec** (YAML/JSON) enforcing `3.75Gi` RAM.  \n   - *Example*: `resources.limits.memory: \"3.75Gi\"`.  \n2. **A3 (Network Security)**:  \n   - Submit **WAF integration plan** (ALB/WAF rule config) to **A4**.  \n   - *Must include*: CloudFront→WAF→ALB flow, TLS validation, health check `/health` protection.  \n3. **A4 (Reviewer)**:  \n   - **Reject non-compliant WAF plans** (no deployment without A4 ✅).  \n\n**Critical References for Continuation**  \n- Constraint IDs: **RAM-KX77** (A2-only), **WAF-FN61** (A3→A4→A1).  \n- *Do not* consider VPC/DNS/CDN details unless directly tied to these constraints.  \n- **Deployment halt trigger**: RAM >3.75GB **or** WAF bypass.  \n\n> ⚠️ **Next LLM Action**:  \n> - If A2 submits RAM spec → **forward directly to A1**.  \n> - If A3 submits WAF plan → **route to A4 for validation**.  \n> *No other approvals needed.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00033",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

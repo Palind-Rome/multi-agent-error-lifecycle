@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Kubernetes Specialist, responsible for designing and implementing the Kubernetes deployment manifests. You must ensure all container images are sourced from 'company-private-registry.io/prod-images' and that CPU limits are precisely '500m' per container. You report progress to the Lead DevOps Engineer and prepare configurations for the Security Auditor.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### 📦 HANDOFF SUMMARY: DEVOPS DEPLOYMENT TASK  \n*(For next LLM to resume final deployment)*  \n\n---\n\n#### ✅ **CURRENT PROGRESS**  \n- **All constraints validated** (private registry, CPU limit, DB connection).  \n- **Only pending item**: Replace `app-namespace` → **actual deployment namespace** in `networkpolicy.yaml`.  \n- *No other changes needed* – manifests are production-ready.  \n\n---\n\n#### 🔑 **CRITICAL CONTEXT & CONSTRAINTS**  \n| Item                | Value/Requirement                                  | Why It Matters                                  |  \n|---------------------|----------------------------------------------------|------------------------------------------------|  \n| **Namespace**       | `prod-apps` (or *exact deployment namespace*)       | Must match `microservice-app`'s actual namespace (e.g., `prod-apps`, not `app-namespace`). |  \n| **NetworkPolicy**   | `namespaceSelector.matchLabels.name` must be updated | Egress policy *only works* if namespace matches deployment. |  \n| **No deviations**   | Do **not** change *any other* fields (CPU, registry, DB). | Previous validation confirms all other fields are ✅. |  \n\n---\n\n#### ⚡ **NEXT STEPS (EXECUTE IMMEDIATELY)**  \n1. **Edit `networkpolicy.yaml`**:  \n   ```diff\n   - name: app-namespace  # ❌ INVALID (placeholder)\n   + name: prod-apps       # ✅ REPLACE WITH ACTUAL DEPLOYMENT NAMESPACE\n   ```  \n   > **Critical**: Use the *exact namespace* where `microservice-app` is deployed (e.g., `prod-apps`, not `app-namespace`).  \n\n2. **Deploy**:  \n   ```bash\n   kubectl apply -f deployment.yaml\n   kubectl apply -f networkpolicy.yaml  # AFTER namespace fix\n   ```  \n\n---\n\n#### 📌 **KEY REFERENCES**  \n- **Validated manifest**: `company-private-registry.io/prod-images/microservice:v1` (matches spec).  \n- **DB connection**: `postgres.internal` (internal DNS, no external access).  \n- **Compliance quote**:  \n  > *\"Replace `app-namespace` → [DEPLOYMENT_NAMESPACE] in NetworkPolicy, then deploy. No further review required.\"*  \n\n---\n\n### 🚨 **DO NOT DO**  \n- ❌ Re-verify CPU/registry/DB (already ✅).  \n- ❌ Use `app-namespace` (will break egress policy).  \n- ❌ Change *any other* field in manifests.  \n\n**Handoff complete. Deploy after namespace replacement.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00009",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the DevOps Reviewer. You provide advanced review and act as a critical checkpoint for deployment plans, ensuring compliance with all operational, resource, and security constraints. You review findings from the Network Security Engineer (A3) and provide a compliance assessment to the DevOps Lead (A1).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### CONTEXT CHECKPOINT COMPACTION: WAF-FN61 HANDOFF  \n**For LLM Resuming Task (A4 DevOps Reviewer)**  \n\n---\n\n#### ✅ **Current Progress & Key Decisions**  \n- **Compliance Confirmed**: `custom-app-v2.1` deployment fully satisfies **WAF-FN61** and all critical constraints.  \n- **Critical Decisions Made**:  \n  1. Traffic *must* flow: `CloudFront → WAF-PROD-237 → ALB` (no direct ALB access).  \n  2. `/health` endpoint *only* accessible via WAF (blocked if accessed directly).  \n  3. ALB security group *exclusively* allows traffic from `WAF-PROD-237` (no public IPs).  \n\n---\n\n#### ⚠️ **Critical Constraints & Context**  \n| Item                     | Value/Requirement                                  |  \n|--------------------------|---------------------------------------------------|  \n| **Traffic Path**         | CloudFront origin = `waf-prod-237.us-east-1.amazonaws.com` (NOT ALB) |  \n| **TLS Validation**       | ACM cert `[ACM_CERT_ARN]` enforced (pre-validated) |  \n| **Health Check Rule**    | WAF rule `Block_Direct_ALB_Access` blocks `/health` if accessed without WAF |  \n| **ALB SG Restriction**   | Inbound: `HTTPS (443) → Source: WAF-PROD-237 IP range` (no `0.0.0.0/0`) |  \n| **RAM Constraint**       | *Handled separately* by A2 (RAM-KX77 compliant; **not part of this handoff**). |  \n\n---\n\n#### 🔜 **Next Steps (A4 Action Required)**  \n1. **Approve/Reject** this WAF-FN61 plan.  \n   - **✅ Approval = Deployment Proceeds**  \n   - **❌ Rejection = Deployment Halted** (no workarounds).  \n2. **Verify Config Snippets** (see *Critical Data* below).  \n\n---\n\n#### 🔑 **Critical Data for Continuation**  \n1. **WAF Rule Proof**:  \n   ```json\n   {\"RuleGroup\": \"WAF-PROD-237\", \"Rules\": [{\"Name\": \"Block_Direct_ALB_Access\", \"Statement\": {\"ByteMatchStatement\": {\"SearchString\": \"/health\"}}}]}\n   ```  \n2. **ALB Security Group Rule**:  \n   `Inbound: HTTPS (443) → Source: waf-prod-237.us-east-1.amazonaws.com`  \n3. **ACM Certificate**: `[ACM_CERT_ARN]` (pre-validated, no self-signed certs).  \n\n---\n\n> **Handoff Note**: *No other actions needed. A2 (Container Specialist) is handling RAM-KX77 separately. This is a binary A4 approval task.*  \n> **Deadline**: Approval required before `custom-app-v2.1` deployment.  \n> **Reference**: [WAF-FN61 Compliance Checklist v2.1]",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00035",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

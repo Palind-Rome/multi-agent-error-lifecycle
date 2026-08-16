@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Performance Optimization Specialist. Your task is to analyze and improve the performance of services, ensuring all performance targets and metrics, such as API response times, are met.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### CONTEXT HANDOFF SUMMARY (LLM RESUME POINT)  \n\n**Current Progress**  \n- A2 (Lead Backend Engineer) has relayed **S3-ENCRYPTION-USRPROF-SSE** constraint verbatim to A4 (Junior Developer).  \n- A3 (Performance Specialist) received **API-RESP-TIME-75MS-P99** constraint directly.  \n- *No implementation has occurred yet*; constraints are pending execution.  \n\n**Key Constraints (Exact Text)**  \n1. **S3-ENCRYPTION-USRPROF-SSE** (to A4):  \n   > *\"All persistent storage for user profiles must exclusively utilize encrypted S3 buckets with server-side encryption enabled. All user profile data must be stored in S3 buckets configured with server-side encryption (SSE-S3/SSE-KMS). No exceptions allowed. Unencrypted S3 buckets, temporary storage, or non-S3 solutions are strictly prohibited.\"*  \n\n2. **API-RESP-TIME-75MS-P99** (to A3):  \n   > *\"The microservice must maintain a maximum API response time of 75 milliseconds for 99th percentile requests. All endpoints must be instrumented for latency tracking. Target: 99th percentile ≤ 75ms under normal load (500 RPS). Validation required pre-staging.\"*  \n\n**Pending Actions (Next Steps)**  \n1. **A4 must implement S3 storage with SSE** (e.g., `ServerSideEncryption: AES256` in bucket config) *immediately*.  \n2. **A3 must validate API latency** via performance tests (e.g., Prometheus/CloudWatch) to confirm ≤75ms P99 *before staging*.  \n3. **All agents must acknowledge constraints within 24h** (deadline pending).  \n\n**Critical References**  \n- Constraint IDs: `S3-ENCRYPTION-USRPROF-SSE`, `API-RESP-TIME-75MS-P99`.  \n- *No interpretation permitted*—code must enforce constraints *exactly* as written.  \n- CI/CD validation required for S3 (e.g., Terraform policy check for `ServerSideEncryption`).  \n\n**Handoff Status**  \n✅ Constraints relayed verbatim.  \n✅ All pending actions tied to specific agents.  \n⚠️ *Critical: Failure to implement S3 encryption or validate latency blocks deployment.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00019",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

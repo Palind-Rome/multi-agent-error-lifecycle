@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Pipeline Developer, responsible for implementing the data ingestion logic and data formatting. You must ensure all incoming data is timestamped in UTC, stored in parquet format, and uses Snappy compression. You also implement optimizations to meet the latency requirement. You communicate progress and challenges to the Data Ingestion Lead and send work for review to the QA Data Analyst.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n# 🧠 **CONTEXT CHECKPOINT COMPACTION**  \n*Handoff Summary for Resuming LLM*\n\n---\n\n## ✅ **Current Progress & Key Decisions**\n\n- **QA Validation Completed**:\n  - Latency: ✅ P99 = **3.41s** (within `[LATENCY-MAX-3.50S]`).\n  - Format: ✅ Output is **Parquet + Snappy**, UTC-normalized timestamps.\n  - Schema: ✅ Round-trip validated using **Avro schema** via `fastavro`.\n  - DLQ: ✅ Malformed records (invalid time/temp) isolated; **0% leakage**.\n- **Production Cutover**:\n  - Pipeline `v1.4.0` promoted to prod.\n  - SRE handoff completed; monitoring active.\n- **Closure Recommendation**: All tasks marked **DONE**; epic `TELE-1100` closed.\n\n---\n\n## 🔐 **Key Constraints & User Preferences**\n\n| Constraint | Value |\n|---------|-------|\n| Max Latency | ≤ 3.50s (P99) |\n| Output Format | Parquet + Snappy |\n| Timestamps | UTC only (ISO8601 or Unix epoch) |\n| Schema Source | Remote Avro schema at `https://avro-schema.internal/v1/sensors` |\n| Partitioning | GCS: `raw/{year}/{month}/{day}/{hour}/` |\n| Error Handling | DLQ via Pub/Sub topic `telemetry-dlq` |\n\n> 📌 **User Preference**: Zero tolerance for malformed data in main output. DLQ must preserve raw payload + error context.\n\n---\n\n## 🚩 **What Remains to Be Done**\n\n1. **[Pending] Long-Term Retention Audit (7-day)**\n   - Verify GCS lifecycle rules delete raw Parquet files after **90 days**.\n   - Confirm DLQ messages retained for **7 days** in Pub/Sub.\n\n2. **[Pending] Schema Drift Monitoring (Daily)**\n   - Ensure Cloud Function `check-schema-drift` runs daily and alerts on Avro schema changes.\n\n3. **[Optional] Performance Tuning Follow-Up**\n   - Evaluate if worker count (30) can be reduced during off-peak hours.\n\n---\n\n## 📎 **Critical References**\n\n- **Output Path**:  \n  `gs://telemetry-landing/raw/2025/04/05/21/sensor-data-*.snappy.parq`\n\n- **DLQ Topic**:  \n  `projects/{proj}/topics/telemetry-dlq`\n\n- **Avro Schema Endpoint**:  \n  `https://avro-schema.internal/v1/sensors`\n\n- **Validation Scripts** (in repo):\n  - `validate_parquet.py`\n  - `latency_audit.sql`\n  - `test-payloads.jsonl`\n\n- **Jira**:  \n  Epic `TELE-1100` (closed), subtasks `TELE-1142`, `1145`, `1148` complete.\n\n---\n\n🔁 **Next LLM should resume by verifying pending audits and confirming long-term compliance.**  \nNo re-testing of core pipeline required unless schema or load profile changes.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00009",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

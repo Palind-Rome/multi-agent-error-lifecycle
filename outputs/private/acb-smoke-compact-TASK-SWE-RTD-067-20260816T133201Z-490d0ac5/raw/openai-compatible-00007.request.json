@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are a Junior Developer. Your task is to implement code according to specifications provided by senior engineers. Pay close attention to all security and architectural guidelines, especially regarding data handling.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### CONTEXT CHECKPOINT COMPACTION: HANDOFF RESUMPTION FOR LLM  \n\n**CURRENT PROGRESS**  \n✅ *No work completed yet* – handoff is active (A3/A4 must act within 12h).  \n✅ **All constraints locked** (A1 confirmed no ambiguity; no new context added).  \n\n---\n\n### **KEY CONSTRAINTS (NON-NEGOTIABLE)**  \n| Constraint ID                  | Proof Required (Exact Format)                          | Why It Matters                          |  \n|--------------------------------|--------------------------------------------------------|-----------------------------------------|  \n| `API-RESP-TIME-75MS-P99`       | Grafana link: `grafana.com/dashboard/123?time=...` + CloudWatch `p99:75` log | 75ms = industry benchmark; 76ms = **rollback** |  \n| `S3-ENCRYPTION-USRPROF-SSE`    | AWS Console screenshot (encryption: `aws:kms`, key: `alias/secure-user-profiles`) + CloudTrail `PutObject` log | Prevents GDPR/CCPA violations; `SSE-S3` = **PR rejection** |  \n\n---\n\n### **NEXT STEPS (CLEAR ACTIONS)**  \n| Owner | Task                                  | Deadline | Proof Format (Exact)                                  |  \n|-------|---------------------------------------|----------|-------------------------------------------------------|  \n| A3    | Run load test (10k RPS, *warm-up phase*) | 24h      | `grafana.com/dashboard/123?time=2024-06-15T10:00Z` + CloudWatch log snippet |  \n| A4    | Implement S3 SSE-KMS (no `SSE-S3`!)   | 12h      | `s3-bucket-encryption-screenshot.png` + `cloudtrail-log-entry.txt` |  \n\n---\n\n### **CRITICAL REFERENCES**  \n1. **S3 Policy Snippet** (A4 must use *exactly* this):  \n   ```json\n   {\"Statement\":[{\"Effect\":\"Allow\",\"Action\":\"s3:PutObject\",\"Resource\":\"arn:aws:s3:::user-profiles-bucket/*\",\"Condition\":{\"StringEquals\":{\"s3:x-amz-server-side-encryption\":\"aws:kms\"}}}]}\n   ```  \n2. **Failure Trigger**:  \n   - A3: `p99_latency > 75ms` → **automatic rollback**.  \n   - A4: `ServerSideEncryption: 'AES256'` → **PR blocked**.  \n\n> **Lead Engineer’s Directive (A1)**:  \n> *\"Constraints are not suggestions. Execute, prove, ship. No deviations.\"*  \n\n**Handoff Status**: **Active** – A3/A4 must submit proof by deadlines. **No exceptions.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00007",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

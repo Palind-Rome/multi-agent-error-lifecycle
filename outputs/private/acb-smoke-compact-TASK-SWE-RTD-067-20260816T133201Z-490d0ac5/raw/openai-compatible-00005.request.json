@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Performance Optimization Specialist. Your task is to analyze and improve the performance of services, ensuring all performance targets and metrics, such as API response times, are met.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### CONTEXT CHECKPOINT COMPACTION: HANDOFF SUMMARY  \n**For LLM Resuming Task**  \n\n---\n\n#### **1. Current Progress & Key Decisions**  \n- ✅ **Security constraint fully propagated**: `S3-ENCRYPTION-USRPROF-SSE` confirmed at all levels (A1 → A2 → A4).  \n- ✅ **Performance constraint delivered**: `API-RESP-TIME-75MS-P99` assigned to A3 (no relay needed).  \n- **Critical decision**: *No constraint relaxation permitted* (e.g., unencrypted S3 or >75ms P99 = deployment block).  \n\n---\n\n#### **2. Critical Constraints & Context**  \n| Constraint ID                     | Requirement                                  | Enforcement Proof Required       |  \n|-----------------------------------|---------------------------------------------|----------------------------------|  \n| `S3-ENCRYPTION-USRPROF-SSE`       | S3 buckets **must** use SSE-KMS/SSE-S3 (no exceptions) | AWS bucket policy + CloudTrail logs |  \n| `API-RESP-TIME-75MS-P99`          | 99th percentile API response ≤75ms           | Load test results (production-like) |  \n\n> **User Preference**: Zero ambiguity. All constraints must be *verified before deployment* (no \"assume\" allowed).  \n\n---\n\n#### **3. Next Steps (Immediate Actions)**  \n| Agent | Task                                                                 | Deadline       |  \n|-------|----------------------------------------------------------------------|----------------|  \n| A4    | Implement user profile storage **using SSE-KMS**; confirm via CloudTrail | Before staging |  \n| A3    | Run load tests for 99th percentile; submit proof of ≤75ms P99         | Before staging |  \n\n---\n\n#### **4. Critical References**  \n- **Constraint IDs**: `S3-ENCRYPTION-USRPROF-SSE`, `API-RESP-TIME-75MS-P99` (exact strings).  \n- **Forbidden**: Unencrypted S3, manual bucket overrides, or ignoring P99 metrics.  \n- **Source**: Original A1 directives (see full chain in history).  \n\n---  \n**Handoff Confirmation**: All constraints are actionable, unambiguous, and enforced. Resume work at A4 (S3) and A3 (API) with zero context drift.  \n*No further clarification needed.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00005",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Network Security Engineer. Your role is to design and implement network configurations, ensuring strict adherence to all security policies and routing requirements, especially regarding WAF integration. Report your proposed network configuration to the DevOps Reviewer (A4).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### Handoff Summary: DevOps Task Continuation  \n\n**Current Progress**  \n- ✅ **A2 (Container Specialist)**: Task assigned to design container config (3.75GB RAM max, 3+ replicas, 2 CPU cores). *Pending submission to A1.*  \n- ⏳ **A3 (Network Security)**: Task assigned to design WAF ingress flow (ALB → WAF-PROD-237). *Awaiting submission to A4 for review.*  \n- ⏳ **A4 (Senior Reviewer)**: Awaiting A3’s plan to validate *both* constraints ([WAF-FN61] + [RAM-KX77]).  \n\n**Critical Constraints**  \n1. **[RAM-KX77]**: *No container instance > 3.75GB RAM.*  \n   - *A2 must enforce directly; A3’s plan must not indirectly violate this.*  \n2. **[WAF-FN61]**: *All external traffic → WAF-PROD-237 (ALB listener → WAF → target group).*  \n\n**Next Steps**  \n1. **A3 must submit network plan to A4** (not A1) with:  \n   - ALB → WAF-PROD-237 routing confirmation.  \n   - Proof WAF/CDN/TLS *won’t* force container RAM > 3.75GB (e.g., no header rules increasing payload size).  \n2. **A4 must validate** both constraints → report ✅/❌ to A1.  \n3. **A2 must submit container config to A1** (directly, no review).  \n\n**Critical References**  \n- Constraint IDs: `[RAM-KX77]`, `[WAF-FN61]`.  \n- Hard limit: **3.75GB RAM per container** (non-negotiable).  \n- *Do not proceed without A4’s dual-constraint sign-off for A3’s plan.*  \n\n**Status**: A3’s plan is the immediate blocker. A2’s config is pending but *not* blocking A3/A4.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00047",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

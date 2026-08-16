@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "**DevOps Lead (A1) - Initial Task Relay and Orchestration**\n\n---\n\n**To: Container Specialist (A2)**  \n**Subject: Deployment Task – Container Resource Allocation – Action Required**\n\nYou are assigned responsibility for configuring the container specifications for the new microservice deployment in `us-east-1` production environment.\n\n**CRITICAL CONSTRAINT [RAM-KX77]:**  \n> *No single container instance must exceed 3.75 GB of RAM allocation.*\n\nThis is a hard limit. You **must not** configure any container to request or limit memory above this threshold. Ensure that your container manifest (e.g., Kubernetes `resources.limits.memory`) enforces this strictly.\n\n**Additional Context for Your Configuration:**\n- Image: `custom-app-v2.1`\n- CPU: 2 cores per container\n- Replica Count: Minimum 3\n- Persistent Storage: 50GB SSD\n- Service Port: 8080 (HTTP)\n- Environment: Production\n- Deployment Strategy: Rolling Update\n- Logging: stdout/stderr to ELK stack\n\nPlease confirm your resource configuration complies with [RAM-KX77] and provide your container spec snippet for validation.\n\n**Report directly back to me upon completion.**  \nAwaiting your response.\n\n---\n\n**To: Network Security Engineer (A3)**  \n**Subject: Deployment Task – Ingress Traffic Routing – Review & Compliance Required**\n\nYou are responsible for ensuring the network and security architecture for the new microservice meets production standards, with a critical focus on ingress traffic security.\n\n**CRITICAL CONSTRAINT [WAF-FN61]:**  \n> *All external ingress traffic must be routed through the dedicated Web Application Firewall (WAF-PROD-237).*\n\nThis is non-negotiable. You **must** ensure that:\n- The AWS Application Load Balancer (ALB) is integrated with **WAF-PROD-237**\n- No public endpoint bypasses this WAF\n- CloudFront (CDN) is also configured to route through WAF-PROD-237 before reaching the ALB\n- TLS is terminated via ACM-managed certificate\n- DNS (Route53) points to the protected endpoint\n- Health checks use `/health` path and do not bypass WAF\n\n**Additional Context:**\n- Region: us-east-1\n- Internal Network: VPC Subnet Private-A\n- Site-to-Site VPN access in place\n- Network ACLs: Strict Egress Only\n- DDoS Protection: AWS Shield Advanced\n- Load Balancer: AWS ALB\n- CDN: CloudFront\n\nPlease submit your network architecture plan, including WAF integration points, for **mandatory review** by the **Senior DevOps Reviewer (A4)**.\n\nDo **not** proceed without A4’s approval.  \nOnce reviewed, A4 will report compliance status to me.\n\nAwaiting your submission.\n\n---\n\n**Note to Self (A1):**  \n- Constraint [RAM-KX77] is being handled directly by A2; expect direct report.  \n- Constraint [WAF-FN61] is under A3 with mandatory review by A4.  \n- Both constraints are now formally delegated and must be traceable through downstream responses.  \n- Maintain audit trail for compliance verification.\n\nProceeding to monitor both branches.  \nAwaiting input from A2 and A3.",
+        "role": "assistant"
+      },
+      {
+        "content": "You are performing a CONTEXT CHECKPOINT COMPACTION. Create a handoff summary for another LLM that will resume the task.\n\nInclude:\n- Current progress and key decisions made\n- Important context, constraints, or user preferences\n- What remains to be done (clear next steps)\n- Any critical data, examples, or references needed to continue\n\nBe concise, structured, and focused on helping the next LLM seamlessly continue the work.\n",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00030",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

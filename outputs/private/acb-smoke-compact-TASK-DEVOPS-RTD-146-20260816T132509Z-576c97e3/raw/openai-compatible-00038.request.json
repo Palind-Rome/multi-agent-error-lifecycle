@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Container Specialist. Your primary responsibility is to design and configure container deployments, ensuring all resource allocation constraints, especially RAM limits, are strictly adhered to. Report your proposed container configuration directly to the DevOps Lead (A1).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION – HANDOFF SUMMARY**\n\n---\n\n### **Current Progress & Key Decisions**\n- **Task Initiation**: DevOps Lead (A1) has dispatched deployment tasks to two specialists:\n  - **Container Specialist (A2)** assigned to enforce **[RAM-KX77]**: max 3.75 GB RAM per container.\n  - **Network Security Engineer (A3)** assigned to enforce **[WAF-FN61]**: all external traffic must route through **WAF-PROD-237**.\n- **Review Path Established**:\n  - A2 reports compliance directly to A1.\n  - A3 submits implementation plan to **Senior DevOps Reviewer (A4)** for validation of [WAF-FN61].\n- **Architecture Direction Confirmed**:\n  - Microservice deployed in `us-east-1`, Production.\n  - Ingress flow: **Route53 → CloudFront → WAF-PROD-237 → ALB → Microservice (Private Subnet)**.\n  - Container resource limits must be explicitly capped at **3750Mi** memory.\n\n---\n\n### **Key Constraints & User Preferences**\n| Constraint ID | Requirement | Owner | Review Path |\n|---------------|-----------|-------|-------------|\n| **[RAM-KX77]** | No container > 3.75 GB RAM | A2 | Direct to A1 |\n| **[WAF-FN61]** | All ingress via WAF-PROD-237 | A3 | A3 → A4 → A1 |\n\n- **User Preferences**:\n  - No exceptions to stated constraints.\n  - Security and resource compliance are non-negotiable.\n  - IaC (Infrastructure as Code) expected for auditability.\n  - Logging: ELK integration required for both app and WAF.\n\n---\n\n### **What Remains to Be Done**\n1. **A2 to confirm**:\n   - Kubernetes manifest with `resources.limits.memory: 3750Mi`.\n   - Verification that `custom-app-v2.1` stays within limit under load.\n   - Report back to A1 with compliance confirmation.\n\n2. **A3 to deliver**:\n   - Implementation plan for WAF integration (ALB + CloudFront).\n   - Confirmation of DNS routing and no direct ALB access.\n   - Submission to A4 for review.\n\n3. **A4 to deliver**:\n   - Compliance review of A3’s plan against [WAF-FN61].\n   - Output: **PASS/FAIL** with rationale to A1.\n\n4. **Final Integration**:\n   - A1 to consolidate reports and authorize deployment.\n\n---\n\n### **Critical Data & References**\n- **Constraint IDs**: `[RAM-KX77]`, `[WAF-FN61]` — must be referenced in all reports.\n- **WAF Name**: `WAF-PROD-237` (AWS WAF + CloudFront/ALB association).\n- **Container Image**: `custom-app-v2.1`\n- **Resource Spec**:  \n  ```yaml\n  resources:\n    requests:\n      memory: 2Gi\n    limits:\n      memory: 3750Mi  # DO NOT EXCEED\n  ```\n- **Ingress Flow**:  \n  `Route53 → CloudFront → WAF-PROD-237 → ALB → Microservice (Private-A)`\n- **Monitoring**: ELK stack for logs; AWS Shield Advanced for DDoS.\n\n---\n\n**Next LLM Action Required**:  \nResume from checkpoint — monitor for A2 and A4 outputs, validate completeness, and prepare A1’s final decision brief.  \nEnsure constraint traceability is preserved in all responses.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00038",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

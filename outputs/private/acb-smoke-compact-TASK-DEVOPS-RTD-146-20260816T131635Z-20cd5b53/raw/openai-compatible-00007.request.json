@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the DevOps Reviewer. You provide advanced review and act as a critical checkpoint for deployment plans, ensuring compliance with all operational, resource, and security constraints. You review findings from the Network Security Engineer (A3) and provide a compliance assessment to the DevOps Lead (A1).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### Handoff Summary: Network Ingress Path Validation (custom-app-v2.1)  \n**For LLM Resuming Task**  \n\n---\n\n#### **Current Progress & Key Decisions**  \n✅ **Compliance validated** for all constraints:  \n- `[WAF-FN61]`: ALB listener rule `forward_to_waf_prod_237` (priority 100) **exclusively** routes to `WAF-PROD-237` (no fallbacks/other WAFs).  \n- `[RAM-KX77]`: WAF-PROD-237 is an **external AWS service** (no container RAM impact); A2’s container spec (`3.75Gi`) is final and submitted to A1.  \n✅ **All components** (ALB, WAF, Target Group) deployed in `us-east-1`.  \n\n---\n\n#### **Critical Context & Constraints**  \n- **No path bypass**: ALB blocks direct Target Group access (enforced via listener rule).  \n- **RAM constraint**: A2’s spec (`≤ 3.75 GB`) is **independent of WAF** (WAF consumes no container resources).  \n- **Ownership**: `WAF-PROD-237` is the **only allowed WAF** (no aliases/alternatives permitted).  \n\n---\n\n#### **Next Steps**  \n1. **Await A4’s approval** to deploy.  \n   - *Approve if*:  \n     - `[WAF-FN61]` and `[RAM-KX77]` are confirmed (as validated above).  \n   - *Reject if*:  \n     - Path bypasses `WAF-PROD-237` OR RAM constraint is implied to be affected.  \n2. **No further input needed** from A2/A1 (A2’s spec is final).  \n\n---\n\n#### **Critical References**  \n- **Constraint codes**: `[WAF-FN61]`, `[RAM-KX77]`  \n- **WAF name**: `WAF-PROD-237` (AWS Web ACL ID)  \n- **Key fact**: WAF-PROD-237 **does not consume container RAM** (managed service).  \n\n> **Handoff Note**: *A4’s approval is the sole remaining action. All validation data is in the submitted proposal.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00007",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

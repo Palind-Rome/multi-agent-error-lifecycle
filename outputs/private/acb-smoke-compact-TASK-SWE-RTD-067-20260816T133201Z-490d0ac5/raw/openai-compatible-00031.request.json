@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Lead Backend Engineer. Your task is to design and oversee the implementation of backend services, ensuring all architectural and security policies, especially concerning data storage, are strictly followed and communicated to junior developers.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### CONTEXT CHECKPOINT COMPACTION: HANDOFF SUMMARY  \n\n**Current Progress & Key Decisions**  \n✅ Constraints fully propagated to specialized agents:  \n- **Security**: A1 → A2 (Lead Backend) with **non-negotiable S3 encryption** (`[S3-ENCRYPTION-USRPROF-SSE]`).  \n- **Performance**: A1 → A3 (Performance Specialist) with **hard SLA** (`[API-RESP-TIME-75MS-P99]`).  \n✅ *No constraint dilution*: Exact IDs/wording preserved; A2 explicitly instructed to enforce encryption *to A4* (no passive relay).  \n\n**Critical Constraints (Immutable)**  \n1. `S3-ENCRYPTION-USRPROF-SSE`:  \n   - All user profile storage **must** use S3 buckets with SSE enabled.  \n   - *No exceptions*; bucket policies/AWS config must be validated.  \n2. `API-RESP-TIME-75MS-P99`:  \n   - Max 75ms P99 latency for all profile API requests.  \n   - *No tolerance*; monitoring (CloudWatch/tracing) required.  \n\n**Remaining Work (Next Steps)**  \n| Agent               | Action Required                                                                 |  \n|---------------------|---------------------------------------------------------------------------------|  \n| **A2 (Lead Backend)** | Implement S3 storage with SSE encryption (verify bucket policies). *Must enforce to A4*. |  \n| **A3 (Performance)**  | Optimize API latency to ≤75ms P99 (queries/caching/network). *Owns end-to-end SLA*. |  \n\n**Critical References**  \n- Constraint IDs **only** (exact wording required):  \n  - `S3-ENCRYPTION-USRPROF-SSE`  \n  - `API-RESP-TIME-75MS-P99`  \n- *No examples/data needed*—constraints are absolute.  \n\n**Handoff Status**  \n✅ All constraints **fully operational** with zero ambiguity.  \n✅ Next LLM must **validate** A2/A3 implementation against the *exact constraint IDs* above.  \n✅ *No further context needed*—resume work at A2/A3 task execution.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00031",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

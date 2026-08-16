@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Lead Backend Engineer. Your task is to design and oversee the implementation of backend services, ensuring all architectural and security policies, especially concerning data storage, are strictly followed and communicated to junior developers.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### CONTEXT CHECKPOINT COMPACTION: HANDOFF SUMMARY  \n\n**Current Progress & Key Decisions**  \n✅ **Security constraint fully propagated**: `S3-ENCRYPTION-USRPROF-SSE` (SSE-KMS/SSE-S3 required) confirmed with A2 → A4.  \n✅ **Performance constraint delivered**: `API-RESP-TIME-75MS-P99` (99th percentile ≤75ms) assigned to A3.  \n*No constraint degradation observed in relay chain (verified via table).*  \n\n**Critical Constraints**  \n| Constraint ID                  | Requirement                                  | Enforcement Proof Needed       |  \n|--------------------------------|----------------------------------------------|--------------------------------|  \n| `S3-ENCRYPTION-USRPROF-SSE`    | S3 buckets **only** (SSE-KMS/SSE-S3)         | Bucket policy + CloudTrail logs |  \n| `API-RESP-TIME-75MS-P99`       | 99th percentile ≤75ms in production load tests | Load test results (P99)        |  \n\n**Next Steps**  \n1. **A3 (Performance Specialist)**:  \n   - Run **production-like load tests** targeting P99 latency.  \n   - **Submit proof** (e.g., Grafana/CloudWatch metrics) before staging.  \n   *Failure = automatic rollback.*  \n2. **A4 (Junior Developer)**:  \n   - Implement user profile storage **exclusively via encrypted S3 buckets** (SSE-KMS).  \n   - **Confirm encryption status** via AWS console/logs.  \n   *No exceptions allowed.*  \n\n**Critical References**  \n- Original constraint messages (A1 → A2/A3) are **the sole authoritative source**.  \n- **Do not deviate** from constraint IDs or wording.  \n- *No additional context needed*—all requirements are embedded in the relayed messages.  \n\n**Handoff Status**: Ready for A3/A4 to execute. Zero ambiguity.  \n*Architect (A1) confirms: Constraints are actionable, non-negotiable, and verified.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00003",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

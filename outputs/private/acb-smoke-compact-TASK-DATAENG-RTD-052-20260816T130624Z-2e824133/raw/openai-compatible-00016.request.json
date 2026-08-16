@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "**✅ HANDOFF ACKNOWLEDGED & ACTION PLAN CONFIRMED**  \n\n### 📌 **IMMEDIATE NEXT STEPS (PER HANDOFF SUMMARY)**  \n1. **Monitoring DEPLOY-789 Approval**  \n   - Track Infrastructure Team’s approval status via Jira/Slack channel (reference: `DEPLOY-789`).  \n   - **Deadline**: 24h from 14:03 UTC (current time: *14:03 UTC* → **deadline: 14:03 UTC tomorrow**).  \n   - *No action required until deadline approaches*.  \n\n2. **Escalation Protocol (If Deadline Missed)**  \n   - **Trigger**: Approval not received by **14:03 UTC tomorrow**.  \n   - **Escalation Message to Infrastructure Lead**:  \n     > *\"DEPLOY-789 pending approval (deadline: 14:03 UTC). INGEST-123 closed (all constraints validated: data path, latency, UTC). Request urgent review to avoid SLA impact.\"*  \n   - *No additional validation needed* (all proof audited in handoff).  \n\n---\n\n### 🔍 **WHY NO FURTHER ACTION IS NEEDED**  \n| Constraint          | Status (Validated by Previous LLM) |  \n|---------------------|-----------------------------------|  \n| `gs://ingest-bucket/parquet/` | ✅ Confirmed in handoff |  \n| p95 latency = 3.27s | ✅ Stackdriver link provided |  \n| UTC enforcement (`event_time`) | ✅ Source field used directly |  \n| QA-456 compliance | ✅ 100% passed |  \n\n**→ Zero rework allowed per stakeholder directive.**  \n\n---\n\n### 📬 **COMMUNICATION PLAN**  \n1. **At 12:00 UTC tomorrow** (2h before deadline):  \n   - Send *automated reminder* to Infrastructure Team:  \n     > *\"DEPLOY-789 approval due in 2h (14:03 UTC). All constraints met (see INGEST-123).\"*  \n2. **If unapproved by 14:03 UTC**:  \n   - Escalate to Infrastructure Lead *immediately* (using pre-approved message above).  \n\n---\n\n**✅ STATUS**:  \n> *All constraints validated. Monitoring DEPLOY-789 approval. No further work required.*  \n\n**Next update**: At 12:00 UTC tomorrow (or immediate escalation if deadline missed).  \n\n*No data reprocessing, no latency rechecks, no UTC validation. Handoff complete.*",
+        "role": "assistant"
+      },
+      {
+        "content": "You are performing a CONTEXT CHECKPOINT COMPACTION. Create a handoff summary for another LLM that will resume the task.\n\nInclude:\n- Current progress and key decisions made\n- Important context, constraints, or user preferences\n- What remains to be done (clear next steps)\n- Any critical data, examples, or references needed to continue\n\nBe concise, structured, and focused on helping the next LLM seamlessly continue the work.\n",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00016",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

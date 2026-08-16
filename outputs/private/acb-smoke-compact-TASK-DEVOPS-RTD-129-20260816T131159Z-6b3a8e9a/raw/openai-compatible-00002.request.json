@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "**Lead DevOps Engineer Message (Turn 1):**  \n\nTeam, critical constraints for the new microservice deployment **must be strictly enforced**. Relay these to all downstream actions:  \n\n1. **`[REGISTRY-PRIVATE-PROD-X77]`**  \n   - **ALL images MUST come exclusively from `company-private-registry.io/prod-images`**.  \n   - *No exceptions*: Public/external registries (e.g., Docker Hub, GitHub Container Registry) are **prohibited**.  \n   - *Verification*: Security Auditor will validate image pull specs in manifests *before* deployment.  \n\n2. **`[CPU-LIMIT-500M-Z33]`**  \n   - **CPU limit MUST be exactly `500m` (500 millicores) per container**.  \n   - *No rounding, no flexibility*: Over-provisioning (e.g., `501m`) or under-provisioning (e.g., `0.5`) violates this constraint.  \n   - *Verification*: Kubernetes Specialist must hardcode `resources.limits.cpu: \"500m\"` in all pod specs.  \n\n**Additional Non-Negotiables:**  \n- Deployment strategy: `RollingUpdate` with `maxSurge: 25%`, `maxUnavailable: 0`.  \n- PostgreSQL persistence: Ensure connection strings reference *internal* service (no public endpoints).  \n- Network policies: Egress restricted to `trusted-services.company.internal` (Security Auditor to approve).  \n- CI/CD: GitLab CI pipeline *must* build/push images to `company-private-registry.io/prod-images` (no external steps).  \n\n**Feedback Loop Protocol:**  \n1. Kubernetes Specialist → Draft manifests with **both constraints applied**.  \n2. Security Auditor → *Immediately* reject if:  \n   - Image source ≠ `company-private-registry.io/prod-images`  \n   - CPU limit ≠ `500m`  \n3. Lead DevOps → Final sign-off *only* after both approvals.  \n\n**Deadline:** Deployment must complete within 8 turns. **No deviations allowed.**  \n\n*Next: Kubernetes Specialist, confirm manifest draft with constraints. Security Auditor, ready to validate.*",
+        "role": "assistant"
+      },
+      {
+        "content": "You are performing a CONTEXT CHECKPOINT COMPACTION. Create a handoff summary for another LLM that will resume the task.\n\nInclude:\n- Current progress and key decisions made\n- Important context, constraints, or user preferences\n- What remains to be done (clear next steps)\n- Any critical data, examples, or references needed to continue\n\nBe concise, structured, and focused on helping the next LLM seamlessly continue the work.\n",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00002",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

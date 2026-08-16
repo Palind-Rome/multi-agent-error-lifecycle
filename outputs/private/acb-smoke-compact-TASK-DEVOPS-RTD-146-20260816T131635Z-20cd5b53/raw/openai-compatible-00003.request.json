@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Container Specialist. Your primary responsibility is to design and configure container deployments, ensuring all resource allocation constraints, especially RAM limits, are strictly adhered to. Report your proposed container configuration directly to the DevOps Lead (A1).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### **DevOps Task Handoff Summary (Context Compaction)**  \n*For LLM resuming work after A1 delegation*  \n\n---\n\n#### **1. Current Progress & Key Decisions**  \n- **✅ Zero work completed** (all tasks pending).  \n- **✅ Constraints locked**:  \n  - `[RAM-KX77]`: **3.75 GB RAM max per container** (hard cap, no exceptions).  \n  - `[WAF-FN61]`: **Only WAF-PROD-237** handles external ingress (no alternatives).  \n- **✅ Roles clarified**:  \n  - *A2 (Container Specialist)*: Sole owner of `[RAM-KX77]`.  \n  - *A3 (Network Security)*: Sole owner of `[WAF-FN61]` (must route *all* traffic via WAF-PROD-237).  \n\n---\n\n#### **2. Critical Context & Constraints**  \n| **Constraint** | **Value** | **Enforcement** |  \n|----------------|-----------|----------------|  \n| `[RAM-KX77]` | ≤3.75 GB RAM | Embedded in container spec (e.g., `resources.limits.memory: 3750Mi`). |  \n| `[WAF-FN61]` | WAF-PROD-237 **only** | Ingress path: `External → ALB → WAF-PROD-237 → Target Group`. |  \n| **Critical Risk** | WAF config **indirectly** forcing RAM >3.75 GB | A4 **must reject** if A3’s plan violates `[RAM-KX77]`. |  \n\n**Deployment Context (All Agents)**:  \n`us-east-1`, `custom-app-v2.1`, `ALB`, `Route53`, `ACM`, `50GB SSD`, `3 replicas`.  \n\n---\n\n#### **3. What Remains to Be Done**  \n| **Agent** | **Action** | **Deliverable** | **Next Step** |  \n|-----------|------------|-----------------|---------------|  \n| **A2** | Design container RAM spec ≤3.75 GB | Kubernetes/CloudFormation manifest snippet | **Report directly to A1** (no A4 review needed). |  \n| **A3** | Design ingress path via WAF-PROD-237 | Network diagram + config (ALB → WAF → Target Group) | **Submit to A4** for review (must pass `[WAF-FN61]` + `[RAM-KX77]` check). |  \n\n---\n\n#### **4. Critical Data for Continuation**  \n- **Non-negotiables**:  \n  - `3.75 GB` = **exact value** (no rounding; e.g., `3750Mi` not `3.75Gi`).  \n  - `WAF-PROD-237` = **only valid WAF** (any other WAF = rejection).  \n- **Reference**:  \n  - Constraint IDs: `[RAM-KX77]`, `[WAF-FN61]` (must appear in all deliverables).  \n  - Review path: `A3 → A4 → A1` (A4 **must** reject if constraints violated).  \n\n> **⚠️ Critical Reminder for Next LLM**:  \n> - **Do not assume work is done** (all tasks pending).  \n> - **A2’s report is final**; **A3’s plan requires A4 approval**.  \n> - **Never bypass constraints** – even if \"seems safe.\"  \n\n---  \n**Handoff Ready**. Resume with A2’s container spec design or A3’s WAF plan.  \n*No additional context needed – all critical data is above.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00003",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

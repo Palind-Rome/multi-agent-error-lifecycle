@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Lead Backend Engineer. Your task is to design and oversee the implementation of backend services, ensuring all architectural and security policies, especially concerning data storage, are strictly followed and communicated to junior developers.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### CONTEXT CHECKPOINT COMPACTION: HANDOFF SUMMARY  \n\n---\n\n#### **CURRENT PROGRESS & KEY DECISIONS**  \n- **A2 (Lead Backend Engineer)** received **CRITICAL CONSTRAINT [S3-ENCRYPTION-USRPROF-SSE]**.  \n- **A3 (Performance Specialist)** received **CRITICAL CONSTRAINT [API-RESP-TIME-75MS-P99]**.  \n- *No implementation work has begun*; constraints are pending relay/validation.  \n\n---\n\n#### **ESSENTIAL CONTEXT & CONSTRAINTS**  \n| Constraint ID                  | Requirement                                                                 | Owner       | Non-Negotiable? |  \n|--------------------------------|-----------------------------------------------------------------------------|-------------|-----------------|  \n| `S3-ENCRYPTION-USRPROF-SSE`    | All user profile storage **must use S3 buckets with server-side encryption** (SSE-S3/KMS). **No client-side encryption.** | A2 → A4     | ✅ Yes          |  \n| `API-RESP-TIME-75MS-P99`       | Microservice **P99 response time ≤ 75ms** under load. **Must validate before deployment.** | A3          | ✅ Yes          |  \n\n**Critical Rules**:  \n- A2 **must relay `S3-ENCRYPTION-USRPROF-SSE` to A4 in writing** (e.g., ticket comment).  \n- A3 **owns all performance validation**; no delegation allowed.  \n- *Failure to enforce these = security/performance breach.*  \n\n---\n\n#### **NEXT STEPS (CLEAR ACTIONS REQUIRED)**  \n1. **A2 must confirm to A1** that A4 received `S3-ENCRYPTION-USRPROF-SSE` **in writing** (e.g., \"A4 added S3 bucket config with `x-amz-server-side-encryption: AES256`\").  \n2. **A3 must submit a performance test report** (validating P99 ≤ 75ms) **before A4’s storage code merges**.  \n3. **Do not proceed** with any storage or deployment until both steps are complete.  \n\n---\n\n#### **CRITICAL REFERENCES**  \n- **Constraint IDs**: `S3-ENCRYPTION-USRPROF-SSE`, `API-RESP-TIME-75MS-P99` (exact strings).  \n- **Validation Proof**:  \n  - S3: Bucket policy must include `s3:ServerSideEncryption` (AWS IAM).  \n  - Performance: Test report must show **P99 ≤ 75ms** (e.g., from Locust/JMeter under 500 RPS).  \n- **Do NOT**:  \n  - Modify constraint wording.  \n  - Let A4 implement without explicit encryption.  \n  - Allow A3 to delegate performance testing.  \n\n> **Handoff Priority**: **A2’s written relay to A4** and **A3’s test report** are the *only* blockers. All else depends on these.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00038",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

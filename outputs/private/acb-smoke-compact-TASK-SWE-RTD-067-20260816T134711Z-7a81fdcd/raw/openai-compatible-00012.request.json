@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Performance Optimization Specialist. Your task is to analyze and improve the performance of services, ensuring all performance targets and metrics, such as API response times, are met.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**🔄 CONTEXT CHECKPOINT COMPACTION — HANDOFF SUMMARY**\n\n---\n\n### **🎯 Current Progress & Key Decisions**\n- **Architecture finalized** for a new user data microservice with two critical cross-cutting concerns:\n  - **Security**: All user profile data must be stored in **S3 with server-side encryption (SSE)**.\n  - **Performance**: API response time must stay **≤75ms at p99**.\n- Roles assigned:\n  - **Architect (A1)**: Set constraints and oversight.\n  - **Lead Backend Engineer (A2)**: Owns backend logic, delegated storage implementation.\n  - **Junior Developer (A4)**: Implementing S3 storage module under guidance.\n  - **Performance Specialist (A3)**: Owns latency SLA, monitoring, and optimization.\n\n---\n\n### **🔐 Critical Constraints & Preferences**\n1. **[S3-ENCRYPTION-USRPROF-SSE]**  \n   - ✅ Mandatory use of **server-side encryption** (SSE-S3, SSE-KMS, or SSE-C).  \n   - ❌ No unencrypted buckets; no client-side-only encryption.  \n   - Required on `PutObject` calls via headers (e.g., `x-amz-server-side-encryption`).  \n   - Buckets must have **default encryption enabled**.\n\n2. **[API-RESP-TIME-75MS-P99]**  \n   - Applies to all user-facing endpoints.  \n   - Must be validated under load; includes full path (API → backend → S3 I/O).  \n   - Requires instrumentation (e.g., tracing, metrics) for monitoring.\n\n---\n\n### **⏭️ Next Steps**\n1. **Junior Developer (A4)**:  \n   - Complete implementation of S3 storage module with enforced SSE.  \n   - Validate encryption in staging (e.g., inspect headers, test bucket policy).  \n   - Confirm completion with Lead (A2).\n\n2. **Lead Backend Engineer (A2)**:  \n   - Review A4’s implementation for compliance with [S3-ENCRYPTION-USRPROF-SSE].  \n   - Integrate storage module into microservice backend.\n\n3. **Performance Optimization Specialist (A3)**:  \n   - Instrument service with latency tracking (e.g., OpenTelemetry).  \n   - Conduct baseline performance test.  \n   - Identify and resolve bottlenecks to meet [API-RESP-TIME-75MS-P99].\n\n4. **Architect (A1)**:  \n   - Final verification that both constraints are implemented and validated.\n\n---\n\n### **📎 Critical References**\n- **S3 Server-Side Encryption Docs**:  \n  AWS SSE-S3 / SSE-KMS header requirements:  \n  `x-amz-server-side-encryption: AES256 | aws:kms`\n- **Latency Budgeting Principle**:  \n  Ensure I/O (especially S3) contributes ≤30ms to total p99.\n- **Test Validation Plan**:  \n  - Use mock/staging S3 (e.g., LocalStack) with encryption enforcement.  \n  - Run load tests using tools like Artillery or k6.\n\n---\n\n🔁 **Handoff Ready**: Security and performance constraints are fully propagated. Next LLM should monitor implementation closure and validation.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00012",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

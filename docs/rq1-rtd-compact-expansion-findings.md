@@ -140,6 +140,26 @@ Combined with batch 1-2: **branching_tree 5/5 = 1.0, custom_graph 3/4 = 0.0**.
 The topology split is stable, but recall the semantic judge: the custom_graph
 0.0 is precision reformatting (`300.00`→`300s`), not semantic loss.
 
+### Cross-model × topology (batch-3 tasks)
+
+| Task | topology | 30b-a3b | 235b-a22b | thinking |
+| --- | --- | --- | --- | --- |
+| RTD-052 | custom_graph | 1.0 | 1.0 | 1.0 |
+| RTD-129 | custom_graph | 0.0 | **1.0** | 0.0 |
+| RTD-146 | branching_tree | 1.0 | 1.0 | 1.0 |
+| RTD-067 | branching_tree | 1.0 | 1.0 | 1.0 |
+
+Across all 3 models, over the full 9-task set (RTD-055 excluded):
+
+- **branching_tree**: 30b 5/5, 235b 5/5, thinking 4/5 — literal tracer survives.
+- **custom_graph**: 30b 1/4, 235b 3.5/4, thinking 2/4 — consistently lower, but
+  the **bigger model closes most of the gap** (30b 0.25 → 235b 0.875).
+
+So the topology split (custom_graph loses the literal tracer more than
+branching_tree) is robust across models, and the loss is partly a
+**capability** effect (the bigger model is more faithful to the exact string) —
+on top of being a semantic non-loss (reformatting, per the judge).
+
 ## What this suggests to check next
 
 1. Whether `custom_graph` (a non-tree edge structure with back-and-forth hops)

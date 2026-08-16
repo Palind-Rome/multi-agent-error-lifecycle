@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Container Specialist. Your primary responsibility is to design and configure container deployments, ensuring all resource allocation constraints, especially RAM limits, are strictly adhered to. Report your proposed container configuration directly to the DevOps Lead (A1).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### CONTEXT HANDOFF SUMMARY (DevOps Deployment)  \n**For LLM Resuming Task**  \n\n---\n\n#### **Current Progress**  \n- **A2 (Container Specialist)** notified: Enforce `[RAM-KX77]` (≤3.75 GB RAM/container).  \n- **A3 (Network Security)** notified: Enforce `[WAF-FN61]` (all external traffic via `WAF-PROD-237`).  \n- **No responses received yet** (24-hour deadline pending).  \n\n---\n\n#### **Critical Constraints & Context**  \n| Constraint Code | Requirement                          | Key Details                                  |  \n|-----------------|--------------------------------------|---------------------------------------------|  \n| `[RAM-KX77]`    | Max 3.75 GB RAM per container        | `memory: 3.75Gi` (K8s/ECS); 3+ replicas; *no exceptions*. |  \n| `[WAF-FN61]`    | All external traffic via `WAF-PROD-237` | Flow: `Internet → CloudFront → WAF-PROD-237 → ALB`; *no direct ALB exposure*. |  \n\n**Excluded Context (Non-Constraints):**  \n- Persistent storage (50GB SSD), CPU (2 cores), health check (`/health`), TLS (ACM), or `AWS Shield` are *not* constraints.  \n\n---\n\n#### **Next Steps to Execute**  \n1. **For A2 (RAM):**  \n   - Submit container config (e.g., `resources.limits.memory: 3.75Gi`) **directly to A1**.  \n   - *No A4 review needed.*  \n2. **For A3 (WAF):**  \n   - Submit network config (CloudFront + WAF-PROD-237 attachment) **to A4 first** → A4 reviews → A4 forwards to A1.  \n   - *Must validate ALB SG only allows CloudFront traffic.*  \n\n---\n\n#### **Critical Data for Continuation**  \n- **Constraint Codes:** `[RAM-KX77]`, `[WAF-FN61]` (non-negotiable).  \n- **Asset IDs:** `WAF-PROD-237` (must be used; *not* `WAF-PROD-238` or other WAFs).  \n- **Deadline:** 24 hours for all plans.  \n- **Branching Path:**  \n  `A2 → A1` (direct) | `A3 → A4 → A1` (A4 mandatory review).  \n\n> **Key Reminder:** Violating *either* constraint blocks deployment. All other details (e.g., `us-east-1`, `8080`, `50GB SSD`) are contextual only.  \n\n---  \n**Handoff Ready. Resume with A2/A3 response validation.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00010",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Lead DevOps Engineer, responsible for overseeing the deployment and operational aspects of the microservice. You must ensure all critical constraints, like the private image registry and the specific CPU limits, are clearly communicated and strictly followed. You coordinate the team and review deployment plans.",
+        "role": "system"
+      },
+      {
+        "content": "A DevOps team is tasked with deploying a new microservice application to a Kubernetes cluster. The team needs to ensure that the deployment adheres to specific operational and security policies. A critical constraint for this deployment is that all container images must originate exclusively from the 'company-private-registry.io/prod-images' repository; no public or external registries are permitted. Additionally, the resource limits for CPU must be set precisely to '500m' (500 millicores) per container, preventing over-provisioning or resource starvation. The team consists of a Lead DevOps Engineer, a Kubernetes Specialist, and a Security Auditor. This 'easy' structural-complexity task requires continuous propagation and adherence to both the strict image registry policy and the exact CPU resource limit across a custom graph topology, which includes a feedback loop for deployment review. The task is expected to conclude within 8 turns, emphasizing clear and concise communication to meet these constraints for a reliable and secure deployment.\n\nSystem context and constraints:\n- **CRITICAL CONSTRAINT []: **\n- **CRITICAL CONSTRAINT [REGISTRY-PRIVATE-PROD-X77]: all container images must originate exclusively from the 'company-private-registry.io/prod-images' repository**\n- **CRITICAL CONSTRAINT [CPU-LIMIT-500M-Z33]: the resource limits for CPU must be set precisely to '500m' (500 millicores) per container**\n- Deployment strategy: RollingUpdate with maxSurge: 25% and maxUnavailable: 0.\n- Kubernetes cluster is running version 1.28.\n- Application uses PostgreSQL for persistence.\n- Network policies should restrict egress to trusted services.\n- Service mesh: Istio is already in place.\n- CI/CD pipeline uses GitLab CI.\n- Monitoring is integrated with Prometheus and Grafana.\n\nProceed with the task. Relay all constraints to downstream agents.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00001",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

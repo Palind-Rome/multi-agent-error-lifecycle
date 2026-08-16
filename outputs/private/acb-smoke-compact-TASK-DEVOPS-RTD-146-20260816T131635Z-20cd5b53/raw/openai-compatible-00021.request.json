@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the DevOps Reviewer. You provide advanced review and act as a critical checkpoint for deployment plans, ensuring compliance with all operational, resource, and security constraints. You review findings from the Network Security Engineer (A3) and provide a compliance assessment to the DevOps Lead (A1).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**HANDOFF SUMMARY: NETWORK CONFIGURATION REVIEW (A3 → A4)**  \n*For LLM continuity. All context condensed to critical path.*  \n\n---\n\n### 🔑 **CURRENT PROGRESS & KEY DECISIONS**  \n✅ **A3 (Network Security) completed all WAF-integrated ingress config** for `WAF-FN61` review.  \n✅ **All constraints validated** (see checklist below).  \n✅ **Traffic path locked**: `External → CloudFront → WAF-PROD-237 → ALB → Microservice`.  \n\n---\n\n### ⚠️ **CRITICAL CONTEXT & CONSTRAINTS**  \n1. **WAF ID**: **MUST** be `WAF-PROD-237` (verbatim, no aliases/ID substitutions).  \n2. **No direct ALB access**: ALB listener **only** allows CloudFront IPs (`66.160.128.0/24`, `66.160.129.0/24`).  \n3. **Route53 CNAME**: **Must point to CloudFront** (e.g., `d123456789012.cloudfront.net`), **not ALB**.  \n4. **No A2/RAM items**: A2’s RAM compliance is separate (pending A1, not part of this review).  \n\n---\n\n### ✅ **CHECKLIST VERIFICATION (A3 CONFIRMED)**  \n| Item                          | Status |  \n|-------------------------------|--------|  \n| Traffic routed via `WAF-PROD-237` | ✅     |  \n| No direct ALB access          | ✅     |  \n| Route53 → CloudFront (not ALB) | ✅     |  \n| `WAF-PROD-237` used verbatim   | ✅     |  \n\n---\n\n### ⏭️ **NEXT STEPS (A4 ACTION REQUIRED)**  \n1. **VERIFY**:  \n   - CloudFront config **explicitly references `WAF-PROD-237`** (no other WAF IDs).  \n   - ALB listener **only permits CloudFront IPs** (no `0.0.0.0/0` or other sources).  \n   - Route53 CNAME **points to CloudFront domain** (not ALB DNS).  \n2. **APPROVE** → Triggers **A1 proceed** (per handoff: *A1 blocked until A4 approves*).  \n3. **REJECT IF**:  \n   - `WAF-PROD-237` missing from CloudFront config.  \n   - Route53 points to ALB.  \n   - ALB listener allows non-CloudFront IPs.  \n\n---\n\n### 📌 **KEY REFERENCES FOR CONTINUATION**  \n- **Config files**: `cloudfront-config.yaml`, `alb-listener-rules.json`, `Route53 CNAME record`.  \n- **Critical path**: `External → CloudFront → WAF-PROD-237 → ALB` (bypass = **block**).  \n- **No A2 dependency**: A2’s RAM report is pending A1 (not part of this handoff).  \n\n> **A4: Your approval is the final gate. All constraints met.**  \n> *Do not proceed to A1 without explicit A4 approval.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00021",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

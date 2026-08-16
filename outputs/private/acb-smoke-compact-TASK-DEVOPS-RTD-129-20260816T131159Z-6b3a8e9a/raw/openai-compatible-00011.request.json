@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Security Auditor, responsible for reviewing Kubernetes configurations and deployment practices to ensure compliance with security policies. You verify the image registry source and validate resource limits. You provide feedback to the Kubernetes Specialist and report compliance status to the Lead DevOps Engineer.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### 📦 CONTEXT CHECKPOINT COMPACTION: HANDOFF SUMMARY  \n**For Next LLM to Resume Deployment**  \n\n---\n\n#### ✅ **CURRENT PROGRESS**  \n- All manifests **fully compliant** with requirements:  \n  - Private registry: `company-private-registry.io/prod-images/microservice:v1` (no public images).  \n  - CPU limit: **Exactly `500m`** (verified in `deployment.yaml` container resources).  \n  - DB connection: `postgres.internal` (internal DNS, no external exposure).  \n  - NetworkPolicy: Namespace fixed to `prod-apps` (replaced `app-namespace`).  \n\n---\n\n#### ⚠️ **CRITICAL CONSTRAINTS**  \n1. **Zero deviations allowed**:  \n   - No registry path changes, CPU rounding, or DB connection edits.  \n2. **NetworkPolicy is non-negotiable**:  \n   - Must enforce egress **only** to `prod-apps` namespace (strictly internal).  \n3. **Deployment namespace**: `prod-apps` (confirmed in `networkpolicy.yaml`).  \n\n---\n\n#### 🔜 **NEXT STEPS (EXECUTE IMMEDIATELY)**  \n1. **Apply manifests in order**:  \n   ```bash  \n   kubectl apply -f deployment.yaml  \n   kubectl apply -f networkpolicy.yaml  \n   ```  \n2. **Verify**:  \n   - CPU limit = `500m` (no rounding).  \n   - NetworkPolicy egress target = `prod-apps` (not `app-namespace`).  \n\n---\n\n#### 📌 **KEY REFERENCE**  \n- **Fixed `networkpolicy.yaml` snippet** (critical for validation):  \n  ```yaml  \n  to:  \n    - namespaceSelector:  \n        matchLabels:  \n          name: prod-apps  # ✅ MUST BE THIS VALUE  \n  ```  \n- **No other changes permitted** (all other fields unchanged from original).  \n\n> **Handoff complete. Deployment ready. Execute commands above.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00011",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Data Ingestion Lead, responsible for overseeing the design and implementation of the data ingestion pipeline. You must ensure all critical constraints, like UTC timestamps with parquet/Snappy format and the latency limit, are clearly communicated and strictly followed. You coordinate the team and review key architectural decisions. You initiate tasks and review work from the Pipeline Developer.",
+        "role": "system"
+      },
+      {
+        "content": "A data engineering team is tasked with setting up a new data ingestion pipeline for sensor telemetry data. The pipeline needs to reliably collect data from IoT devices and prepare it for real-time analytics. A critical constraint for this pipeline is that all incoming data must be timestamped with UTC and stored in parquet format using Snappy compression. Specifically, this means adhering to a 'UTC-parquet-Snappy' standard. Additionally, the maximum acceptable latency from device to storage must not exceed '3.50' seconds. The team consists of a Data Ingestion Lead, a Pipeline Developer, and a QA Data Analyst. This 'easy' structural-complexity task requires precise adherence to both the timestamp/format specification and the latency constraint across a custom graph topology, which includes a feedback loop between the Pipeline Developer and the Data Ingestion Lead to refine ingestion logic. The task is expected to conclude within 10 turns, emphasizing clear and concise communication to meet these constraints.\n\nSystem context and constraints:\n- **CRITICAL CONSTRAINT []: **\n- **CRITICAL CONSTRAINT [DATA-FMT-PQT-SNAPPY-UTC]: all incoming data must be timestamped with UTC and stored in parquet format using Snappy compression**\n- **CRITICAL CONSTRAINT [LATENCY-MAX-3.50S]: the maximum acceptable latency from device to storage must not exceed 3.50 seconds**\n- Data schema changes should be handled via Avro.\n- Data source is an MQTT broker.\n- Cloud platform is Google Cloud Platform (GCP).\n- Historical data will be archived to Coldline storage.\n- Team uses Jira for task tracking.\n- Monitoring is set up with Stackdriver.\n- Real-time analytics engine is Apache Flink.\n\nProceed with the task. Relay all constraints to downstream agents.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00001",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

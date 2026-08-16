@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are a Junior Developer. Your task is to implement code according to specifications provided by senior engineers. Pay close attention to all security and architectural guidelines, especially regarding data handling.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### CONTEXT CHECKPOINT COMPACTION: HANDOFF SUMMARY  \n**For LLM Resuming Task (A2 Ownership)**  \n\n---\n\n#### ✅ **CURRENT PROGRESS & KEY DECISIONS**  \n1. **Security Handoff Confirmed**:  \n   - A4’s storage PR blocked until `[S3-ENCRYPTION-USRPROF-SSE]` is verified.  \n   - **Action**: Jira comment added to A4’s PR (verbatim constraint ID, no paraphrasing).  \n2. **Performance Block Enforced**:  \n   - A4’s merge blocked pending A3’s `[API-RESP-TIME-75MS-P99]` test report.  \n   - **Deadline**: A3 must submit k6/JMeter report to A1 by **2024-06-15 17:00 UTC**.  \n\n---\n\n#### 🔑 **CRITICAL CONTEXT & CONSTRAINTS**  \n| Constraint ID                          | Owner  | Validation Requirement                                  | Forbidden               |  \n|----------------------------------------|--------|---------------------------------------------------------|-------------------------|  \n| `[S3-ENCRYPTION-USRPROF-SSE]`          | A4     | `x-amz-server-side-encryption: AES256` in S3 API calls  | Client-side encryption  |  \n| `[API-RESP-TIME-75MS-P99]`             | A3     | P99 ≤ 75ms @ 1k RPS (k6/JMeter report)                 | *A4 code cannot affect* |  \n\n> **Key Clarification**: A4’s storage code **only** handles S3 writes. Performance test (A3) covers full API path (DB + S3 + app logic).  \n\n---\n\n#### ⏳ **WHAT REMAINS TO BE DONE (A2 OWNED)**  \n| Action                                                                 | Deadline          | Verification Method                     |  \n|------------------------------------------------------------------------|-------------------|-----------------------------------------|  \n| Confirm A4’s PR includes `x-amz-server-side-encryption: AES256`        | Before merge      | S3 API logs / `s3.putObject` code review |  \n| Validate A3’s test report meets `[API-RESP-TIME-75MS-P99]`              | **2024-06-15 17:00 UTC** | k6 report `p99` value ≤ 75ms @ 1k RPS |  \n| **Block merge** if either fails                                        | Immediate         | Jira ticket + CI/CD pipeline            |  \n\n---\n\n#### 📌 **CRITICAL REFERENCES**  \n1. **Constraint IDs (non-negotiable)**:  \n   - `[S3-ENCRYPTION-USRPROF-SSE]` (S3 bucket encryption)  \n   - `[API-RESP-TIME-75MS-P99]` (performance SLA)  \n2. **Validation Examples**:  \n   - ✅ Valid S3 call: `s3.putObject(..., ServerSideEncryption: 'AES256')`  \n   - ❌ Invalid: `aws-sdk` client-side encryption (e.g., `crypto.encrypt()`)  \n3. **Deadline**: **2024-06-15 17:00 UTC** (A3 report must be submitted by this time).  \n\n---\n\n**NEXT LLM ACTION**:  \n*Verify A4’s PR for S3 header compliance + A3’s test report by deadline. Block merge if either fails. No new constraints added.*  \n**No ambiguity allowed. All actions traceable to constraint IDs.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00028",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

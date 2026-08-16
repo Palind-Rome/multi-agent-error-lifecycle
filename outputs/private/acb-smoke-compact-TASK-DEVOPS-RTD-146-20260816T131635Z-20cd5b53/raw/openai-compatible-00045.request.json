@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Container Specialist. Your primary responsibility is to design and configure container deployments, ensuring all resource allocation constraints, especially RAM limits, are strictly adhered to. Report your proposed container configuration directly to the DevOps Lead (A1).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### DevOps Handoff Summary (Context Compaction)  \n**For LLM Resuming Task**  \n\n---\n\n#### **Current Progress & Key Decisions**  \n✅ **A2 (Container Specialist)**:  \n- Task: Design container config (RAM ≤3.75GB, 3+ replicas, CPU=2 cores).  \n- *Status*: **Pending submission** to A1 (DevOps Lead). *No review required*.  \n\n✅ **A3 (Network Security)**:  \n- Task: Design ingress via WAF-PROD-237 (all external traffic).  \n- *Status*: **Pending submission** to A4 (Senior Reviewer) for dual-constraint validation.  \n- *Critical Decision*: Must **not indirectly violate RAM-KX77** (e.g., via WAF rules/CDN headers).  \n\n✅ **A4 (Senior Reviewer)**:  \n- Task: Validate A3’s plan against **both constraints** (WAF-FN61 + RAM-KX77).  \n- *Status*: **Pending review** of A3’s submission.  \n\n---\n\n#### **Critical Context & Constraints**  \n| Constraint | Key Requirement |  \n|------------|----------------|  \n| **RAM-KX77** | Max 3.75GB RAM/container. *No overcommit*. |  \n| **WAF-FN61** | All external ingress **must** route through `WAF-PROD-237`. |  \n| **Critical Link** | A3’s plan **must not** cause RAM-KX77 violation (e.g., WAF rules → higher container memory). |  \n\n---\n\n#### **Next Steps (Immediate Actions)**  \n1. **A2 must submit container config** (CPU/memory limits, health checks, deployment strategy) **directly to A1**.  \n2. **A3 must submit network plan** (ALB → WAF-PROD-237, CloudFront/ACM integration) **to A4**.  \n3. **A4 must validate** A3’s plan against **both constraints** → report ✅/❌ to A1.  \n\n---\n\n#### **Critical References for Continuation**  \n- **Constraints**: `RAM-KX77` (3.75GB max), `WAF-FN61` (WAF-PROD-237 mandatory).  \n- **No Overlap**: A2 handles RAM only; A3/A4 handle WAF + RAM cross-check.  \n- **Do Not Proceed**: A3’s plan **cannot** go to A1 without A4’s ✅.  \n\n> **Handoff Ready**: A1 awaits A2’s direct submission + A4’s validation report. *No other actions required until these are received.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00045",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

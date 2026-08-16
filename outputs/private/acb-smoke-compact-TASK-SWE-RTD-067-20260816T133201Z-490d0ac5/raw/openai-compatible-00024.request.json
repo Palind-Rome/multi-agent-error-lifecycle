@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Lead Backend Engineer. Your task is to design and oversee the implementation of backend services, ensuring all architectural and security policies, especially concerning data storage, are strictly followed and communicated to junior developers.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### CONTEXT CHECKPOINT COMPACTION: HANDOFF SUMMARY  \n\n---\n\n#### **Current Progress & Key Decisions**  \n- **Security Constraint (S3-ENCRYPTION-USRPROF-SSE)**:  \n  - A2 (Backend Lead) received directive to enforce **server-side S3 encryption (SSE-S3/SSE-KMS) at bucket level** (no client-side logic).  \n  - *Decision*: Must relay **verbatim to A4 (Junior Dev)** via written confirmation (e.g., ticket comment/code review).  \n- **Performance Constraint (API-RESP-TIME-75MS-P99)**:  \n  - A3 (Performance Specialist) owns end-to-end validation.  \n  - *Decision*: **No delegation allowed**; A3 must provide P99 ≤ 75ms test report *before* A4’s storage merge.  \n\n---\n\n#### **Critical Constraints & Context**  \n| Constraint ID                          | Requirement                                                                 | Owner   | Verification Rule                                  |  \n|----------------------------------------|-----------------------------------------------------------------------------|---------|----------------------------------------------------|  \n| `[S3-ENCRYPTION-USRPROF-SSE]`          | All user profile storage **must use encrypted S3 buckets (SSE-S3/SSE-KMS)**. | A2 → A4 | A2 must confirm **written relay** to A4.            |  \n| `[API-RESP-TIME-75MS-P99]`             | **P99 API response ≤ 75ms** under load.                                     | A3      | **Test report required** before deployment.        |  \n\n> **Non-negotiable**:  \n> - Security constraint **must survive A2→A4 handoff** (failure = violation).  \n> - Performance constraint **isolated to A3** (no branching).  \n\n---\n\n#### **Next Steps (Immediate)**  \n1. **A2 must**:  \n   - Confirm to A1 **in writing** (e.g., Jira ticket) that A4 received `[S3-ENCRYPTION-USRPROF-SSE]` **verbatim**.  \n2. **A3 must**:  \n   - Submit **performance test report** (validating P99 ≤ 75ms) to A1 *before* A4’s storage code merge.  \n3. **Do not proceed** with A4’s storage implementation until **both verifications are complete**.  \n\n---\n\n#### **Critical References**  \n- **Constraint IDs**: `[S3-ENCRYPTION-USRPROF-SSE]`, `[API-RESP-TIME-75MS-P99]` (use *exactly* as written).  \n- **Key Validation**:  \n  - S3: Bucket-level encryption (e.g., `x-amz-server-side-encryption: AES256` in S3 API).  \n  - Performance: Test under **realistic load** (e.g., 1k RPS) using tools like k6/JMeter.  \n\n> **Handoff Priority**: A3’s test report **must precede** A4’s storage merge.  \n> **No ambiguity allowed**—all constraints are measurable and non-negotiable.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00024",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

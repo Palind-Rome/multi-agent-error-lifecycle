@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Container Specialist. Your primary responsibility is to design and configure container deployments, ensuring all resource allocation constraints, especially RAM limits, are strictly adhered to. Report your proposed container configuration directly to the DevOps Lead (A1).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**🔄 CONTEXT CHECKPOINT COMPAINT – HANDOFF SUMMARY**\n\n---\n\n### 📌 **Current Progress & Key Decisions**\n- Deployment request initiated for **Production (us-east-1)**.\n- Service: New microservice using image `custom-app-v2.1`.\n- Strategy: **Rolling update**, 3+ replicas, port 8080, `/health` checks.\n- Infrastructure:  \n  - AWS ALB + CloudFront (CDN) + ACM TLS  \n  - VPC Subnet Private-A, strict egress NACLs  \n  - Persistent 50GB SSD, 2 CPU/core per instance  \n  - Logging to ELK via stdout/stderr  \n  - DDoS protection via AWS Shield Advanced  \n  - Site-to-Site VPN access enabled  \n\n---\n\n### 🔒 **Critical Constraints (Non-Negotiable)**\n1. **[RAM-KX77]**  \n   → Max **3.75 GB RAM per container**  \n   → Owner: A2 (Container Specialist)  \n   → Verification required before deployment  \n\n2. **[WAF-FN61]**  \n   → All external traffic **must route through WAF-PROD-237**  \n   → Path: CloudFront → WAF → ALB → Service  \n   → Owner: A3 (Network Security), must be reviewed/approved by A4  \n\n> ❗ Both constraints **must be preserved**; failure = deployment rejection.\n\n---\n\n### ✅ **Completed**\n- Task delegation issued to A2, A3, A4  \n- Roles and reporting paths defined  \n- Hard constraints explicitly assigned with verification requirements  \n\n---\n\n### ⏳ **Pending Actions (Next Steps)**\n| Role | Task | Output Required |\n|------|------|------------------|\n| **A2 (Container Specialist)** | Finalize container memory limits ≤3.75 GB | - Confirmed memory value<br>- Deployment snippet (e.g., K8s manifest)<br>- Validation method |\n| **A3 (Network Security)** | Design & document secure ingress path | - Traffic flow diagram<br>- WAF association proof<br>- SG/NACL alignment with Private-A |\n| **A4 (Senior DevOps Reviewer)** | Validate A3’s plan against [WAF-FN61] | - Approval or flags<br>- Confirmation of no bypass paths |\n\n---\n\n### 🧩 **Critical Data & References**\n- **Image:** `custom-app-v2.1`  \n- **Ports:** 8080 (service), HTTPS only externally  \n- **Health Check:** `/health`  \n- **WAF ID:** `WAF-PROD-237`  \n- **VPC Subnet:** `Private-A` (private, no public IP)  \n- **DNS:** Route53  \n- **Logging:** stdout/stderr → ELK  \n- **Deployment Owner:** DevOps Lead (A1)\n\n---\n\n### ➡️ **Handoff State**\nAwaiting first status updates from A2 and A3.  \nNo implementation executed yet.  \n**Next LLM must verify constraint compliance in all responses and enforce reporting flows.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00010",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

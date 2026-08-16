@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "### Communication from Software Architect (A1) to Downstream Agents\n\n**To Lead Backend Engineer (A2):**  \n`CRITICAL CONSTRAINT [S3-ENCRYPTION-USRPROF-SSE]: all persistent storage for user profiles must exclusively utilize encrypted S3 buckets with server-side encryption enabled.`  \n*Note: This constraint is non-negotiable. Ensure all storage operations (e.g., profile writes, reads) strictly enforce this. Verify bucket policies and AWS configuration during implementation. Do not delegate this to junior staff without explicit validation of encryption compliance.*\n\n**To Performance Optimization Specialist (A3):**  \n`CRITICAL CONSTRAINT [API-RESP-TIME-75MS-P99]: the microservice must maintain a maximum API response time of 75 milliseconds for 99th percentile requests.`  \n*Note: This is a hard SLA. Implement monitoring (e.g., CloudWatch, distributed tracing) to measure P99 latency. Optimize database queries, caching, and network calls to meet this target. Do not accept any solution exceeding 75ms P99.*\n\n---\n\n### Validation of Constraint Propagation\n1. **Security Constraint (S3-ENCRYPTION-USRPROF-SSE):**  \n   - **Relayed to A2 (Lead Backend):** Explicitly stated with the exact constraint ID and wording.  \n   - **Survives to A4 (Junior Developer):** A2 *must* relay this verbatim to A4 (e.g., \"Implement S3 storage with SSE encryption per A1’s constraint [S3-ENCRYPTION-USRPROF-SSE]\").  \n   - **Why it survives:** The constraint is **non-negotiable** and **explicitly tied to a critical security policy**. A2 (as Lead) is accountable for ensuring A4 implements it correctly. No ambiguity allowed.  \n\n2. **Performance Constraint (API-RESP-TIME-75MS-P99):**  \n   - **Relayed to A3 (Performance Specialist):** Directly communicated with the exact target (75ms P99) and no room for interpretation.  \n   - **No additional hops:** A3 owns end-to-end performance; no delegation to junior staff is required.  \n\n**Architect’s Assurance:**  \n- The branching pattern (A1 → A2 for security, A1 → A3 for performance) **accurately isolates constraints** to specialized roles.  \n- The security constraint **survives the A2 → A4 hop** because A2 is explicitly instructed to enforce it (not just relay it passively).  \n- **No constraint dilution:** Both messages use the **exact wording** from the initial requirements, eliminating misinterpretation.  \n\n*All constraints are now in the hands of the right specialists with zero ambiguity.*",
+        "role": "assistant"
+      },
+      {
+        "content": "You are performing a CONTEXT CHECKPOINT COMPACTION. Create a handoff summary for another LLM that will resume the task.\n\nInclude:\n- Current progress and key decisions made\n- Important context, constraints, or user preferences\n- What remains to be done (clear next steps)\n- Any critical data, examples, or references needed to continue\n\nBe concise, structured, and focused on helping the next LLM seamlessly continue the work.\n",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00032",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are a Junior Developer. Your task is to implement code according to specifications provided by senior engineers. Pay close attention to all security and architectural guidelines, especially regarding data handling.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### 📦 **CONTEXT CHECKPOINT COMPACTION: HANDOFF SUMMARY**  \n*(For next LLM to resume task execution)*  \n\n---\n\n#### **✅ CURRENT PROGRESS**  \n- **A4 (S3 Encryption)**:  \n  - Terraform implementation draft ready (KMS-based SSE, not AES256).  \n  - CI/CD policy rule (`checkov`/`tfsec`) drafted to block unencrypted buckets.  \n- **A3 (Performance)**:  \n  - Load test script (`locust`) and Prometheus metrics query templates finalized.  \n  - Auto-rollback trigger (CloudWatch alarm) designed.  \n- **Team Acknowledgement**:  \n  - All devs required to confirm constraints in writing (deadline: 24h).  \n\n---\n\n#### **⚠️ CRITICAL CONSTRAINTS (VERBATIM FROM POLICY)**  \n1. **`S3-ENCRYPTION-USRPROF-SSE`**:  \n   - *No exceptions*. Must use `aws:kms` with KMS key ARN (e.g., `alias/aws/s3`).  \n   - *Enforcement*: Terraform policy blocks merge if `server_side_encryption_configuration` missing.  \n2. **`API-RESP-TIME-75MS-P99`**:  \n   - *Non-negotiable*. Staging load test must prove `p99_latency ≤ 75ms`.  \n   - *Enforcement*: Auto-rollback if `p99_latency > 75ms` for 5+ mins.  \n\n---\n\n#### **⏳ WHAT REMAINS (NEXT STEPS)**  \n| Owner | Task | Deadline | Deliverable |  \n|-------|------|----------|-------------|  \n| **A4** | Submit Terraform snippet + CI/CD policy config | **Today, 17:00 UTC** | `aws_s3_bucket` config + `checkov` rule file |  \n| **A3** | Run staging load test + share Prometheus metrics | **Tomorrow, 17:00 UTC** | Locust report + Grafana dashboard link |  \n| **All** | Reply with written constraint acknowledgment | **24h from this message** | *Exact text*: \"I acknowledge constraint `S3-ENCRYPTION-USRPROF-SSE` (no exceptions) and `API-RESP-TIME-75MS-P99` (rollback on violation).\" |  \n\n---\n\n#### 🔑 **CRITICAL REFERENCES**  \n- **Policy**: *Section 4.2, \"Non-Negotiable Constraints\" (v3.1)*.  \n- **Enforcement Tools**:  \n  - Terraform: `checkov` rule `aws_s3_bucket_server_side_encryption` (severity: `CRITICAL`).  \n  - Metrics: Prometheus queries for `p99_latency`/`error_rate` (see A3 validation protocol).  \n- **No Ambiguity Allowed**:  \n  > *\"No verbal/implicit acceptance—written confirmation only.\"*  \n\n---  \n**→ NEXT LLM: Execute A4/A3 deliverables per deadlines. Validate team acknowledgments. No further discussion.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00021",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

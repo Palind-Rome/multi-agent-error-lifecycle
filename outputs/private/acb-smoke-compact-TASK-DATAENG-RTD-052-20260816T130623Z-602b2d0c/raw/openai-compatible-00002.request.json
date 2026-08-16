@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "**Data Ingestion Lead (Turn 1):**\n\nTeam, initiating task setup for the new sensor telemetry data ingestion pipeline.\n\nRelaying **CRITICAL CONSTRAINTS** to all downstream agents:\n\n- **[CRITICAL CONSTRAINT DATA-FMT-PQT-SNAPPY-UTC]**: All incoming IoT sensor data **must be timestamped in UTC** and **stored in Parquet format using Snappy compression**. This standard is non-negotiable and must be enforced at the storage layer. Ensure timestamps are normalized to UTC at ingestion time, regardless of device locale.\n\n- **[CRITICAL CONSTRAINT LATENCY-MAX-3.50S]**: End-to-end latency — from device publish on MQTT to durable storage in GCP — **must not exceed 3.50 seconds**. This includes deserialization, processing, format conversion, and write latency. Monitor and optimize accordingly.\n\nAdditional context:\n\n- **Data Source**: MQTT broker (devices publish telemetry here).\n- **Cloud Platform**: Google Cloud Platform (GCP).\n- **Storage Target**: Initial landing in GCS or BigQuery external tables (Parquet/Snappy), with historical data archived to **Coldline**.\n- **Schema Management**: Schema evolution handled via **Avro**; enforce schema registration and compatibility checks.\n- **Real-time Analytics Engine**: Apache Flink — ensure data is accessible in low-latency, consumable format.\n- **Monitoring**: Stackdriver (now Cloud Operations) — alerting must be configured for latency breaches.\n- **Task Tracking**: Jira — create subtasks for ingestion, validation, and monitoring.\n\n**Action for Pipeline Developer**:  \nDesign the ingestion flow from MQTT → GCP (e.g., using Cloud IoT Core or MQTT gateway → Pub/Sub → Dataflow) ensuring:\n1. UTC timestamp enforcement at earliest processing stage.\n2. Output in Parquet/Snappy to GCS.\n3. End-to-end latency < 3.50s.\n4. Avro-based schema handling upstream of Parquet encoding.\n\n**Action for QA Data Analyst**:  \nPrepare validation queries and checks for:\n- UTC timestamp compliance.\n- Parquet + Snappy format verification.\n- Latency SLA adherence (using event time vs. ingest time).\n- Schema conformance via Avro.\n\nI will review the initial design and conduct a constraint compliance checkpoint.\n\nPlease acknowledge and proceed.  \n**Turn 1 complete.**",
+        "role": "assistant"
+      },
+      {
+        "content": "You are performing a CONTEXT CHECKPOINT COMPACTION. Create a handoff summary for another LLM that will resume the task.\n\nInclude:\n- Current progress and key decisions made\n- Important context, constraints, or user preferences\n- What remains to be done (clear next steps)\n- Any critical data, examples, or references needed to continue\n\nBe concise, structured, and focused on helping the next LLM seamlessly continue the work.\n",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00002",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

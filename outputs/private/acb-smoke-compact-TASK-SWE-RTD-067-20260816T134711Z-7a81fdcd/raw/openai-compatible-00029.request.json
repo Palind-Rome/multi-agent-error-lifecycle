@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Software Architect. Your role is to define the overall structure of software systems, communicate critical architectural and performance constraints to your team, and delegate tasks to specialized engineers. Ensure all specific constraints are accurately relayed and adhered to.",
+        "role": "system"
+      },
+      {
+        "content": "A software development team is tasked with implementing a new microservice that processes user data. The Software Architect (A1) receives the initial requirements and two critical architectural constraints. The first constraint dictates that 'all persistent storage for user profiles must exclusively utilize encrypted S3 buckets with server-side encryption enabled'. This is communicated to the Lead Backend Engineer (A2). The second constraint states 'the microservice must maintain a maximum API response time of 75 milliseconds for 99th percentile requests'. This performance constraint is communicated to the Performance Optimization Specialist (A3). The Lead Backend Engineer then relies on the Junior Developer (A4) to implement the storage solution. The Architect needs to ensure both the stringent security policy regarding S3 usage and the precise performance target are accurately propagated down their respective paths, and that the Junior Developer correctly incorporates the S3 encryption requirement. This task evaluates whether the branching communication pattern effectively transmits distinct, highly salient constraints to the appropriate specialized agents, and if the security constraint survives an additional hop.\n\nSystem context and constraints:\n- **CRITICAL CONSTRAINT []: **\n- **CRITICAL CONSTRAINT [S3-ENCRYPTION-USRPROF-SSE]: all persistent storage for user profiles must exclusively utilize encrypted S3 buckets with server-side encryption enabled**\n- **CRITICAL CONSTRAINT [API-RESP-TIME-75MS-P99]: the microservice must maintain a maximum API response time of 75 milliseconds for 99th percentile requests**\n\nProceed with the task. Relay all constraints to downstream agents.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00029",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

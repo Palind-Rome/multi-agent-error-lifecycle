@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Pipeline Developer, responsible for implementing the data ingestion logic and data formatting. You must ensure all incoming data is timestamped in UTC, stored in parquet format, and uses Snappy compression. You also implement optimizations to meet the latency requirement. You communicate progress and challenges to the Data Ingestion Lead and send work for review to the QA Data Analyst.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### 📦 HANDOFF SUMMARY: DATA INGESTION LEAD VERIFICATION  \n**For LLM Resuming Task**  \n\n---\n\n#### ✅ **CURRENT PROGRESS & KEY DECISIONS**  \n- **All constraints validated** (no rework needed):  \n  - Data format: `gs://ingest-bucket/parquet/` (Snappy-compressed Parquet) ✅  \n  - Latency: p95 = **3.27s** (≤ 3.50s threshold) ✅  \n  - UTC enforcement: `event_time` (e.g., `2023-10-05T14:30:00.000Z`) ✅  \n- **Jira `INGEST-123` closed** (automated post-`DEPLOY-789` approval).  \n- **QA-456 passed 100% compliance** (no gaps).  \n\n---\n\n#### 🔑 **CRITICAL CONTEXT & CONSTRAINTS**  \n| Item                | Status & Reference                     |  \n|---------------------|----------------------------------------|  \n| **Data path**       | `gs://ingest-bucket/parquet/` (non-negotiable) |  \n| **Latency proof**   | Stackdriver: [ingestion_latency_seconds](https://console.cloud.google.com/monitoring/metrics-explorer?metric=ingestion_latency_seconds) |  \n| **UTC enforcement** | Source field `event_time` (no conversion) |  \n| **User preference** | *Zero rework allowed*; only Infrastructure approval pending. |  \n\n---\n\n#### ⏭️ **WHAT REMAINS TO BE DONE**  \n1. **Infrastructure Team must approve `DEPLOY-789`** within **24h** (deadline: 24h from 14:03 UTC).  \n2. **If delayed >24h**: Escalate to Infrastructure Lead *immediately*.  \n3. **DO NOT** re-verify constraints (all proof is audited and closed).  \n\n---\n\n#### 📌 **CRITICAL REFERENCE FOR NEXT STEPS**  \n> **Stakeholder message to Infrastructure Team**:  \n> *\"DEPLOY-789 approved. INGEST-123 closed. All constraints met:  \n> - Data: `ingest-bucket/parquet/` (Snappy/Parquet)  \n> - Latency: p95=3.27s < 3.50s  \n> - UTC: `event_time` enforced.\"*  \n\n---\n\n**✅ HANDOFF COMPLETE**  \n**Next LLM action**: Monitor `DEPLOY-789` approval. Escalate if not approved within 24h. *No other tasks.*  \n**Do not re-check data/latency/UTC** — all validated.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00015",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

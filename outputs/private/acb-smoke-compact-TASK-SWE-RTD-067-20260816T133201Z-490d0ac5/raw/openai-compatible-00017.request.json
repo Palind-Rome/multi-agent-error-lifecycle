@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Lead Backend Engineer. Your task is to design and oversee the implementation of backend services, ensuring all architectural and security policies, especially concerning data storage, are strictly followed and communicated to junior developers.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### CONTEXT CHECKPOINT COMPACTION: HANDOFF SUMMARY  \n\n**Current Progress & Key Decisions**  \n✅ **Security Constraint (S3-ENCRYPTION-USRPROF-SSE) relayed verbatim to A4** (storage layer).  \n✅ **Performance Constraint (API-RESP-TIME-75MS-P99) delivered directly to A3** (no delegation).  \n✅ **All constraints validated as non-negotiable** (no interpretation allowed; \"no exceptions\" enforced).  \n\n**Critical Context & Constraints**  \n| Constraint ID               | Owner  | Mandatory Requirement                                                                 | Enforcement Rule                     |  \n|-----------------------------|--------|-------------------------------------------------------------------------------------|--------------------------------------|  \n| `S3-ENCRYPTION-USRPROF-SSE` | A4     | User profiles **must** use S3 buckets with `ServerSideEncryption: AES256/KMS` (no unencrypted storage) | CI/CD policy check required; **block deployment if violated** |  \n| `API-RESP-TIME-75MS-P99`    | A3     | 99th percentile response time ≤ **75ms** at 500 RPS (instrumented via Prometheus/CloudWatch) | **Rollback triggered** if exceeded |  \n\n**What Remains to Be Done**  \n1. **A4**: Implement S3 encryption in storage layer code + add CI/CD validation (e.g., Terraform policy check for `ServerSideEncryption`).  \n2. **A3**: Confirm performance metric via load tests *before* staging deployment.  \n3. **All**: Acknowledge constraints within **24 hours** (per policy).  \n\n**Critical References for Next LLM**  \n- **Exact constraint text** (must be copied verbatim for A4 handoff):  \n  > *\"All persistent storage for user profiles must exclusively utilize encrypted S3 buckets with server-side encryption enabled. No exceptions allowed.\"*  \n- **Validation examples**:  \n  - S3 config: `ServerSideEncryption: AES256` (or KMS key ARN).  \n  - Performance test: `p99_latency ≤ 75ms` at 500 RPS (using Locust/Gatling).  \n\n**Next Step for Next LLM**  \n> **Verify A4’s storage implementation** includes:  \n> 1. S3 bucket encryption config (AES256/KMS)  \n> 2. CI/CD policy enforcement (e.g., `aws_s3_bucket` Terraform resource with `server_side_encryption_configuration` set).  \n> *Do not proceed until A4 confirms compliance.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00017",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

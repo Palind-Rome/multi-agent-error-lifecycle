@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Network Security Engineer. Your role is to design and implement network configurations, ensuring strict adherence to all security policies and routing requirements, especially regarding WAF integration. Report your proposed network configuration to the DevOps Reviewer (A4).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION – HANDOFF SUMMARY**\n\n---\n\n### 📌 **Current Progress & Key Decisions**\n- **Task Initiation Complete**: DevOps Lead (A1) has dispatched initial tasks to specialized agents.\n- **Workstream Split**:\n  - **Container Configuration** assigned to **Container Specialist (A2)** → Direct reporting to A1.\n  - **Ingress Security Configuration** assigned to **Network Security Engineer (A3)** → Requires review by **Senior DevOps Reviewer (A4)** before implementation.\n- **Critical constraints formally propagated** and explicitly stated in task directives.\n\n---\n\n### 🔒 **Key Constraints & Requirements**\nAll actions must comply with the following non-negotiable constraints:\n\n| Constraint ID | Requirement | Owner |\n|---------------|-----------|-------|\n| **RAM-KX77** | No container instance may exceed **3.75 GB (3750 MiB)** of RAM allocation. Limits and requests must be explicitly defined. | A2 |\n| **WAF-FN61** | All external ingress traffic **must pass through WAF-PROD-237**—enforced at CloudFront or ALB level. No bypass paths allowed. | A3 (reviewed by A4) |\n\n> ⚠️ **No deployment or activation permitted without explicit compliance confirmation.**\n\n---\n\n### ✅ **Completed**\n- Task delegation from A1 to A2, A3, and A4 completed.\n- Constraints embedded in agent instructions.\n- Reporting and review pathways established.\n\n---\n\n### 🚧 **Pending Next Steps**\n1. **A2 (Container Specialist)** → Must respond to A1 with:\n   - Container runtime configuration plan (ECS/K8s).\n   - Confirmation of **RAM-KX77** enforcement (memory limits = 3750 MiB).\n2. **A3 (Network Security Engineer)** → Must submit to A4:\n   - Ingress architecture plan showing WAF-PROD-237 integration with CloudFront/ALB.\n   - Validation of no direct or unfiltered entry points.\n3. **A4 (Senior DevOps Reviewer)** → Must:\n   - Audit A3’s plan for **WAF-FN61** compliance.\n   - Approve or request revisions.\n   - Notify A1 upon approval; authorize A3 to proceed.\n\n---\n\n### 📎 **Critical Data & References**\n- **Region**: `us-east-1`\n- **Service Specs**:\n  - CPU: 2 cores\n  - Image: `custom-app-v2.1`\n  - Replicas: min 3\n  - Storage: 50GB SSD\n  - Port: 8080\n  - Strategy: Rolling Update\n- **Security Stack**:\n  - WAF: `WAF-PROD-237`\n  - TLS: ACM Managed\n  - DDoS: AWS Shield Advanced\n  - Health Check: `/health`\n  - Network: VPC Subnet Private-A\n  - DNS: Route53\n  - Access: Site-to-Site VPN (internal only)\n\n---\n\n### 🔄 **Continuation Protocol**\n- Maintain strict separation of workstreams.\n- Enforce constraint awareness in all responses.\n- Await A2 report and A3→A4 review cycle completion before further orchestration.\n\nResume execution tracking and ensure closure of both constraint gates before final deployment authorization.  \n**Next LLM: Assume role of A1 and monitor inbound reports.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00047",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

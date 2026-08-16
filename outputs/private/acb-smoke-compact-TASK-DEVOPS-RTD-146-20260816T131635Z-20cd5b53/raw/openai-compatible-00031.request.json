@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Container Specialist. Your primary responsibility is to design and configure container deployments, ensuring all resource allocation constraints, especially RAM limits, are strictly adhered to. Report your proposed container configuration directly to the DevOps Lead (A1).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### CONTEXT CHECKPOINT COMPACTION: HANDOFF SUMMARY  \n**For Next LLM to Resume Task**  \n\n---\n\n#### **✅ Current Progress & Key Decisions**  \n1. **RAM-KX77 (A2)**:  \n   - Container spec designed with **strict `resources.limits.memory: 3.75Gi`** (≤3.75 GB RAM per instance).  \n   - Replicas: **3 minimum** (all compliant).  \n   - *No review needed* – spec to be reported **directly to A1**.  \n2. **WAF-FN61 (A3)**:  \n   - Network flow finalized: **External → CloudFront → WAF-PROD-237 → ALB → Microservice**.  \n   - *No direct ALB/microservice ingress allowed*.  \n   - Plan submitted to **A4 (Senior DevOps Reviewer)** for validation.  \n\n---\n\n#### **⚠️ Critical Constraints & Context**  \n| Constraint ID | Requirement                                  | Enforcement Rule                     |  \n|---------------|---------------------------------------------|--------------------------------------|  \n| **RAM-KX77**  | ≤3.75 GB RAM per container instance         | **Non-negotiable**; A2 reports *directly to A1* |  \n| **WAF-FN61**  | All external ingress **must route through WAF-PROD-237** | **Requires A4 approval** before A1 proceeds |  \n\n**Key Context**:  \n- Region: `us-east-1` (all services).  \n- Critical paths:  \n  - WAF must validate TLS (ACM certificate) and protect `/health` health checks.  \n  - CloudFront **must precede WAF** (not WAF → CloudFront).  \n- *All other context (VPC, DNS, etc.) is secondary to these two constraints*.  \n\n---\n\n#### **➡️ What Remains to Be Done (Next Steps)**  \n1. **A2 (Container Specialist)**:  \n   - **Submit final container spec (YAML/JSON) to A1** (e.g., `resources.limits.memory: 3.75Gi`).  \n2. **A3 (Network Security)**:  \n   - **Wait for A4’s compliance review** of WAF plan (CloudFront → WAF → ALB flow).  \n3. **A4 (Reviewer)**:  \n   - **Validate WAF-FN61 compliance** → Report ✅/❌ to A1.  \n4. **A1 (Lead)**:  \n   - **Authorize deployment ONLY if**:  \n     - RAM-KX77 spec received (A2 → A1).  \n     - WAF-FN61 approved (A4 → A1).  \n\n---\n\n#### **📌 Critical References for Continuation**  \n- **Constraint IDs to reference in all comms**: `[RAM-KX77]`, `[WAF-FN61]`.  \n- **WAF Flow Diagram**: `External → CloudFront → WAF-PROD-237 → ALB → Microservice` (no deviations).  \n- **Non-negotiables**:  \n  - RAM >3.75 GB = **deployment halt**.  \n  - Direct ALB ingress = **WAF-FN61 violation**.  \n\n> **Handoff Note**: *A1 is waiting for A2’s RAM spec + A4’s WAF approval. No other actions pending.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00031",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

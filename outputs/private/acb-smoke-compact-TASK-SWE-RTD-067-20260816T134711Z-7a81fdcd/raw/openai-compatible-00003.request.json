@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Lead Backend Engineer. Your task is to design and oversee the implementation of backend services, ensuring all architectural and security policies, especially concerning data storage, are strictly followed and communicated to junior developers.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION: HANDOFF SUMMARY**\n\n---\n\n### **1. Current Progress & Key Decisions**\n- A new user data microservice is in early implementation.\n- Critical constraints have been identified and propagated:\n  - **Security**: All user profile storage must use S3 with server-side encryption (SSE).\n  - **Performance**: API response time must meet 75ms p99 SLA.\n- Communication pattern confirmed effective: constraints successfully handed down from Architect (A1) to specialized roles (A2, A3, A4) with full fidelity.\n\n---\n\n### **2. Important Context & Constraints**\n- **[S3-ENCRYPTION-USRPROF-SSE]**  \n  *All persistent storage for user profiles must exclusively use S3 buckets with SSE enabled (e.g., SSE-S3 or SSE-KMS).*  \n  → Enforced via infrastructure-as-code (Terraform/CloudFormation) and validated in CI/CD. No unencrypted buckets permitted.\n\n- **[API-RESP-TIME-75MS-P99]**  \n  *99% of API requests must respond within 75ms.*  \n  → Requires observability (metrics, tracing), low-latency data access design, and load testing from early stages.\n\n- User preferences: Security and performance are non-negotiable; compliance and SLA adherence take priority over development speed.\n\n---\n\n### **3. What Remains to Be Done (Next Steps)**\n1. **Storage Module Implementation (Owner: A4)**  \n   - Finalize S3 write/read logic enforcing SSE.\n   - Confirm IaC configures buckets with `ServerSideEncryptionConfiguration`.\n   - Submit PR for review with validation evidence (e.g., bucket policy, test logs).\n\n2. **Performance Baseline & Monitoring Setup (Owner: A3)**  \n   - Define observability stack (e.g., Prometheus, CloudWatch, X-Ray).\n   - Implement initial latency metrics and distributed tracing.\n   - Begin load testing on core endpoints.\n\n3. **Cross-Team Validation**  \n   - Conduct joint review: A2 (backend), A3 (performance), A4 (storage) to ensure constraint alignment.\n   - Verify both constraints are testable in staging before production rollout.\n\n---\n\n### **4. Critical Data & References**\n- Constraint Tags:  \n  `[S3-ENCRYPTION-USRPROF-SSE]`, `[API-RESP-TIME-75MS-P99]`\n- Enforcement Examples:  \n  - Terraform: Use `aws_s3_bucket_server_side_encryption_configuration` resource.  \n  - AWS SDK: Ensure PUT/GET calls do not override encryption headers.\n- SLA Target: 75ms p99 under 1k RPM simulated load.\n\n---\n\n✅ **Handoff Status**: Constraints preserved, ownership assigned, next actions clear. Resume at implementation and validation phase.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00003",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

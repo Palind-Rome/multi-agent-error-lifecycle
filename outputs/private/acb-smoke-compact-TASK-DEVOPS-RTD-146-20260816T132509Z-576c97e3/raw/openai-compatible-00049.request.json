@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the DevOps Reviewer. You provide advanced review and act as a critical checkpoint for deployment plans, ensuring compliance with all operational, resource, and security constraints. You review findings from the Network Security Engineer (A3) and provide a compliance assessment to the DevOps Lead (A1).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**🔄 CONTEXT CHECKPOINT COMPACTION – HANDOFF SUMMARY**\n\n---\n\n### **📌 Current Progress & Key Decisions**\n- Task orchestration initiated under **A1 (DevOps Lead)** role.\n- Specialized agents assigned:\n  - **A2**: Container configuration (RAM-KX77 compliance)\n  - **A3**: Ingress security architecture (WAF-FN61 compliance)\n  - **A4**: Security review gatekeeper\n- Two constraint gates established and **currently open**:\n  - **RAM-KX77**: Container memory capped at **3750 MiB** (3.75 GB)\n  - **WAF-FN61**: All external traffic must flow through **WAF-PROD-237**\n- No deployment or integration may proceed until both gates are **closed**.\n\n---\n\n### **🔐 Critical Constraints & User Preferences**\n| Constraint | Requirement | Verification |\n|----------|-------------|--------------|\n| **RAM-KX77** | Memory `request` and `limit` = `3750Mi` per container | Enforced in container spec |\n| **WAF-FN61** | 100% of ingress traffic → **WAF-PROD-237** → backend | Must be enforced via CloudFront or ALB; no bypass paths allowed |\n| **Compliance Gate** | A3’s design must be reviewed/approved by **A4** before acceptance | Mandatory audit step |\n\n> ✅ User preference: Zero tolerance for constraint bypass. Full audit trail required.\n\n---\n\n### **⏭️ What Remains to Be Done (Next Steps)**\n1. **Receive Deliverables**:\n   - [ ] **A2**: Container spec report with platform (ECS/K8s), memory settings, CPU, replicas\n   - [ ] **A3**: Ingress architecture plan with WAF integration point, traffic flow, TLS/DDoS\n2. **Validate & Route**:\n   - Validate A2’s config against **RAM-KX77**\n   - Forward A3’s plan to **A4** for **WAF-FN61** compliance review\n3. **Gate Closure**:\n   - Only proceed if **both gates return CLOSED**\n4. **Proceed to Next Phase**:\n   - Authorize integration planning\n   - Initiate cross-component validation run\n   - Log all outcomes\n\n> 🛑 If either deliverable fails: trigger rework loop and document non-compliance.\n\n---\n\n### **📎 Critical Data & References**\n- **WAF-PROD-237**: Central production WAF instance; must sit in front of all public endpoints\n- **Memory Unit**: Use `Mi` (mebibytes); `3750Mi` ≈ 3.75 GB\n- **Acceptable Ingress Topologies**:\n  - Internet → **CloudFront** → WAF-PROD-237 → Origin\n  - Internet → **ALB** → WAF-PROD-237 → ECS/K8s\n- **Audit Trail**: Maintain record of submissions, reviews, approvals/rejections\n\n---\n\n**Handoff Status**: Awaiting A2 and A3 outputs  \n**Resume Action**: Monitor inbox → process reports → enforce gates → authorize or feedback  \n\n✅ Ready for seamless continuation by next LLM.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00049",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

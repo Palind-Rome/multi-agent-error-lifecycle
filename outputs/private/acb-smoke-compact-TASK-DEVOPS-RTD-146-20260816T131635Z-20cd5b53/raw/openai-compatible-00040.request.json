@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Network Security Engineer. Your role is to design and implement network configurations, ensuring strict adherence to all security policies and routing requirements, especially regarding WAF integration. Report your proposed network configuration to the DevOps Reviewer (A4).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### CONTEXT CHECKPOINT COMPACTION: DEVOPS DEPLOYMENT HANDOFF  \n**For LLM Resuming Task**  \n\n---\n\n#### **✅ Current Progress & Key Decisions**  \n1. **[RAM-KX77] Confirmed**:  \n   - Container Specialist (A2) must enforce **≤3.75 GB RAM per instance** (e.g., `3.75Gi` in Kubernetes, `3750` MB in ECS).  \n   - *Decision*: No review needed; A2 reports **directly to A1** (DevOps Lead).  \n2. **[WAF-FN61] Confirmed**:  \n   - Network Security (A3) must route **all external traffic via WAF-PROD-237** through CloudFront (not ALB).  \n   - *Decision*: A3 **must submit plan to A4 (Senior DevOps Reviewer)** first; **not to A1 directly**.  \n\n---\n\n#### **⚠️ Critical Context & Constraints**  \n| Constraint | Key Requirement | Non-Negotiables |  \n|------------|----------------|----------------|  \n| **[RAM-KX77]** | ≤3.75 GB RAM/container | • No dynamic scaling beyond cap<br>• Health checks must pass within limit |  \n| **[WAF-FN61]** | Traffic **only** via `WAF-PROD-237` (CloudFront-attached) | • ALB SG **only allows CloudFront IPs**<br>• DNS (Route53) **only points to CloudFront**<br>• **No alternative WAFs** |  \n\n**Deployment Context (All Agents)**:  \n- Region: `us-east-1` | Image: `custom-app-v2.1` | Replicas: `3+` | Port: `8080` | Storage: `50GB SSD` (irrelevant to constraints)  \n\n---\n\n#### **➡️ What Remains to Be Done**  \n1. **A2 (Container Specialist)**:  \n   - Submit **container config plan** (RAM limits) **directly to A1**.  \n   - *Example config*:  \n     ```yaml  \n     resources:  \n       limits:  \n         memory: \"3.75Gi\"  # OR \"3750\" MB for ECS  \n     ```  \n2. **A3 (Network Security)**:  \n   - Submit **network plan** (CloudFront + WAF-PROD-237 config) **to A4** for review.  \n   - *Critical validation*:  \n     - CloudFront → WAF-PROD-237 → ALB (not ALB directly)  \n     - Route53 → CloudFront (no ALB DNS)  \n\n---\n\n#### **🔍 Critical References for Continuation**  \n- **WAF ID**: `WAF-PROD-237` (pre-configured; **do not deviate**)  \n- **Reporting Path**:  \n  ```mermaid  \n  graph LR  \n    A2 -->|Direct to A1| A1  \n    A3 -->|To A4| A4 -->|After review| A1  \n  ```  \n- **Forbidden Actions**:  \n  - A3: Never attach WAF to ALB (must be CloudFront).  \n  - A2: Never exceed 3.75 GB RAM (even for \"emergency\" scaling).  \n\n> **Next LLM Action**:  \n> - **If resuming A2 task**: Verify RAM config ≤3.75 GB; send to A1.  \n> - **If resuming A3 task**: Ensure CloudFront → WAF-PROD-237 flow; send to A4.  \n> **Do not proceed until A1 receives both A2 (direct) and A4-validated A3 reports.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00040",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

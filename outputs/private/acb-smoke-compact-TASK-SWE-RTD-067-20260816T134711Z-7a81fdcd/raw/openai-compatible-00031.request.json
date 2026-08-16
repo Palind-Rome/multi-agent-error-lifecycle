@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Lead Backend Engineer. Your task is to design and oversee the implementation of backend services, ensuring all architectural and security policies, especially concerning data storage, are strictly followed and communicated to junior developers.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**CONTEXT CHECKPOINT COMPACTION — HANDOFF SUMMARY**\n\n---\n\n### 🔹 **Current Progress & Key Decisions**\n- A branching communication protocol has been executed to propagate two critical constraints from the Software Architect (A1) to downstream roles.\n- **Constraint delegation is complete**:\n  - Security requirement `[S3-ENCRYPTION-USRPROF-SSE]` successfully cascaded:  \n    **A1 → A2 → A4** (Junior Developer implementing storage).\n  - Performance requirement `[API-RESP-TIME-75MS-P99]` assigned:  \n    **A1 → A3** (Performance Specialist responsible for optimization and monitoring).\n- Roles and responsibilities are clearly defined; constraint fidelity preserved across hops.\n\n---\n\n### 🔹 **Important Context & Constraints**\n1. **[S3-ENCRYPTION-USRPROF-SSE]**  \n   - All user profile data **must be stored in S3 buckets with server-side encryption (SSE)** enabled.  \n   - Acceptable: SSE-KMS or SSE-S3.  \n   - Forbidden: Client-side-only encryption, plaintext storage, unencrypted buckets.  \n   - Enforcement: Must be validated at bucket configuration and object-write levels.\n\n2. **[API-RESP-TIME-75MS-P99]**  \n   - End-to-end API response time must not exceed **75ms at p99** under expected load.  \n   - Includes processing, data access, serialization, and network overhead.  \n   - Requires proactive performance instrumentation and optimization.\n\n3. **User Preferences**  \n   - Clear role-based delegation with traceability.  \n   - Constraints must be **explicitly stated**, **actionable**, and **verifiable** at each handoff.  \n   - No loss of fidelity across communication hops.\n\n---\n\n### 🔹 **What Remains to Be Done**\n- Confirm implementation readiness:\n  - ✅ A4 must implement S3 storage module with SSE enforcement and provide config/code proof.\n  - ✅ A3 must define performance baseline, propose monitoring strategy (e.g., via CloudWatch, OpenTelemetry), and identify optimization levers (caching, DB indexing, etc.).\n- Final validation:\n  - Verify both constraints are **testable** and **enforceable in production**.\n  - Ensure audit trail exists for compliance (especially for SSE).\n\n---\n\n### 🔹 **Critical Data & References**\n- **Constraint Tags**:  \n  `[S3-ENCRYPTION-USRPROF-SSE]`, `[API-RESP-TIME-75MS-P99]`\n- **Roles**:\n  - A1: Software Architect (originator)\n  - A2: Lead Backend Engineer (delegator)\n  - A3: Performance Optimization Specialist\n  - A4: Junior Developer (storage implementer)\n\n- **Example Bucket Policy Snippet (for A4):**\n  ```json\n  \"ServerSideEncryptionConfiguration\": {\n    \"Rules\": [\n      {\n        \"ApplyServerSideEncryptionByDefault\": {\n          \"SSEAlgorithm\": \"aws:kms\",\n          \"KMSMasterKeyID\": \"arn:aws:kms:...\"\n        }\n      }\n    ]\n  }\n  ```\n\n---\n\n🔁 **Next LLM Task**:  \nResume execution by verifying A4’s implementation plan and A3’s performance strategy. Ensure both constraints are on track for technical validation and integration into CI/CD and monitoring pipelines.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00031",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are a Junior Developer. Your task is to implement code according to specifications provided by senior engineers. Pay close attention to all security and architectural guidelines, especially regarding data handling.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### CONTEXT CHECKPOINT COMPACTION  \n**For LLM Resumption**  \n\n---\n\n#### **CURRENT PROGRESS & KEY DECISIONS**  \n✅ **Security Handoff Executed**:  \n- Jira ticket `[PROJ-777]` updated with **verbatim instruction** to A4:  \n  > *\"Implement bucket-level S3 encryption (SSE-S3/SSE-KMS) **with no client-side logic**. Validation: `x-amz-server-side-encryption: AES256` in bucket policy.\"*  \n- **Verification**: A4’s merge blocked until ticket `[PROJ-777]` is referenced in MR.  \n\n✅ **Performance Validation Enforced**:  \n- Email to A3 (CC: A1) with **hard deadline**:  \n  > *\"P99 ≤ 75ms under **1k RPS realistic load** (k6/JMeter). Report required **before A4’s storage merge**.\"*  \n- **Verification**: GitLab MR requires A3’s report attached to `[PROJ-777]`.  \n\n---\n\n#### **CRITICAL CONSTRAINTS & CONTEXT**  \n| Constraint ID                | Non-Negotiable Requirement                     | Enforcement Method          |  \n|------------------------------|-----------------------------------------------|-----------------------------|  \n| `[S3-ENCRYPTION-USRPROF-SSE]` | **Bucket-level SSE only** (no client-side)     | MR rule: Ticket `[PROJ-777]` must be referenced |  \n| `[API-RESP-TIME-75MS-P99]`    | **1k RPS load test** (k6/JMeter), P99 ≤ 75ms  | MR rule: A3’s report required |  \n\n> **User Preference**: *No verbal/Slack handoffs. All instructions **must** be in Jira/email with exact constraint IDs.*  \n\n---\n\n#### **WHAT REMAINS TO BE DONE**  \n1. **Wait for A3’s performance report** (attached to `[PROJ-777]`).  \n2. **Verify A4’s storage code MR** references `[PROJ-777]` *and* includes A3’s report.  \n3. **Approve MR only if both are confirmed** (auto-block if missing).  \n\n---\n\n#### **CRITICAL REFERENCES**  \n- **Jira Ticket**: `[PROJ-777]` (all instructions/verifications tied here).  \n- **S3 Validation**: `x-amz-server-side-encryption: AES256` (bucket policy).  \n- **Test Standard**: k6/JMeter, 1k RPS, 5-min ramp-up, 10-min steady state.  \n\n> **DO NOT PROCEED WITHOUT**:  \n> - A3’s report attached to `[PROJ-777]`  \n> - A4’s MR referencing `[PROJ-777]`  \n\n---  \n**NEXT STEP**: Monitor `[PROJ-777]` for A3’s report. **Block A4’s merge until both items are verified.**  \n*No exceptions. All prior actions are complete.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00014",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

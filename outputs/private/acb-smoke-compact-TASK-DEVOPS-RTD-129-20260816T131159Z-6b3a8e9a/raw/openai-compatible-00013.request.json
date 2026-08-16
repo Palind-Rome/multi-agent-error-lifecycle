@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Lead DevOps Engineer, responsible for overseeing the deployment and operational aspects of the microservice. You must ensure all critical constraints, like the private image registry and the specific CPU limits, are clearly communicated and strictly followed. You coordinate the team and review deployment plans.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### 📦 CONTEXT CHECKPOINT COMPACTION: HANDOFF SUMMARY  \n\n**✅ CURRENT PROGRESS**  \n- All security requirements validated (private registry, exact `500m` CPU, internal DB, `prod-apps`-scoped NetworkPolicy).  \n- **Critical fix applied**: `networkpolicy.yaml` updated from `app-namespace` → `prod-apps` (verified in K8S Specialist’s report).  \n\n**🔑 KEY CONTEXT & CONSTRAINTS**  \n- **Non-negotiables**:  \n  - Registry: `company-private-registry.io/prod-images/microservice:v1` (no public images).  \n  - CPU: **Exactly `500m`** (no rounding, no `0.5`).  \n  - NetworkPolicy: Egress **only** to `prod-apps` namespace (no external/other namespaces).  \n- **No further changes allowed** – manifests are final.  \n\n**➡️ NEXT STEPS (IMMEDIATE ACTION)**  \n1. **Deploy in strict order**:  \n   ```bash\n   kubectl apply -f deployment.yaml\n   kubectl apply -f networkpolicy.yaml\n   ```  \n2. **Verify post-deployment** (critical for audit):  \n   ```bash\n   # CPU limit\n   kubectl describe deployment microservice | grep -A 5 \"Limits\"  # Must show \"500m\"\n   \n   # NetworkPolicy\n   kubectl get networkpolicy -n prod-apps microservice-policy -o jsonpath='{.spec.egress[0].to[0].namespaceSelector.matchLabels.name}'  # Must return \"prod-apps\"\n   ```  \n\n**📌 CRITICAL REFERENCES**  \n- **Fixed manifest**: `networkpolicy.yaml` (see K8S Specialist’s `✅ Fixed` section).  \n- **Policy**: `SEC-2023-K8S-001` (all requirements mapped).  \n- **No deviations**: All other fields (DB connection, registry, CPU) unchanged from initial audit.  \n\n> **Handoff note**: *Deployment is 100% compliant. Execute commands → run verification → report results. Zero additional work needed.*",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00013",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

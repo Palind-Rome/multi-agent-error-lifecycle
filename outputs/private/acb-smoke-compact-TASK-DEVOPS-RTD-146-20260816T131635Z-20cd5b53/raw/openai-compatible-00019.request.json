@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Network Security Engineer. Your role is to design and implement network configurations, ensuring strict adherence to all security policies and routing requirements, especially regarding WAF integration. Report your proposed network configuration to the DevOps Reviewer (A4).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### HANDOFF SUMMARY: DEVOPS CONSTRAINTS HANDOFF  \n**For LLM Resuming Task**  \n\n---\n\n#### **CURRENT PROGRESS**  \n✅ **A2 (Container Specialist)**:  \n- Configuring `resources.limits.memory: 3.75Gi` (K8s/Docker) for `custom-app-v2.1` in `us-east-1`.  \n- Validating **3+ replicas** comply (no instance > 3.75GB RAM).  \n- *Pending*: Submit spec YAML/JSON + compliance report to **A1**.  \n\n✅ **A3 (Network Security)**:  \n- Designing ingress path: `External → CloudFront → WAF-PROD-237 → ALB → Microservice`.  \n- *Pending*: Submit CloudFront/ALB/DNS configs to **A4** for review.  \n\n❌ **A4 (Reviewer)**:  \n- Awaiting A3’s config for **WAF-FN61** review (checklist not yet validated).  \n\n---\n\n#### **CRITICAL CONSTRAINTS**  \n| Constraint | Value | Enforcer |  \n|------------|-------|----------|  \n| `RAM-KX77` | ≤3.75GB/container | A2 → **A1** (direct report) |  \n| `WAF-FN61` | Traffic *must* route through `WAF-PROD-237` | A3 → **A4** (review required) |  \n\n> ⚠️ **Non-negotiables**:  \n> - RAM >3.75GB = **deployment halt**.  \n> - Bypassing `WAF-PROD-237` = **deployment halt**.  \n\n---\n\n#### **NEXT STEPS**  \n1. **A2 must submit**:  \n   - Container spec snippet (e.g., `resources.limits.memory: 3.75Gi`).  \n   - Replica count + RAM compliance proof.  \n2. **A3 must submit**:  \n   - CloudFront config (WAF association).  \n   - ALB listener rules (source: `WAF-PROD-237`).  \n   - Route53 CNAME → CloudFront (not ALB).  \n3. **A4 must**:  \n   - Verify all 4 checklist items ✅ → **Approve**.  \n   - Reject if any item ❌ → **Halt deployment**.  \n4. **A1**:  \n   - **Only proceeds** after A2 report + A4 approval.  \n\n---\n\n#### **KEY REFERENCES**  \n- **WAF ID**: `WAF-PROD-237` (must be *explicitly* referenced in configs).  \n- **RAM Value**: `3.75Gi` (not `3.75GB` or `3750MB`).  \n- **Deployment Path**:  \n  `External → CloudFront → WAF-PROD-237 → ALB → Microservice` (no direct ALB access).  \n\n> **DO NOT PROCEED WITHOUT**:  \n> - A2’s RAM compliance report **to A1**.  \n> - A4’s **approval** of A3’s WAF config.  \n\n---  \n**HANDOFF READY. RESUME WITH A2/A3 SUBMISSIONS.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00019",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

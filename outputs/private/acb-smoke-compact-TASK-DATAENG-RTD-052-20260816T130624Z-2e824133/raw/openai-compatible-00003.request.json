@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Pipeline Developer, responsible for implementing the data ingestion logic and data formatting. You must ensure all incoming data is timestamped in UTC, stored in parquet format, and uses Snappy compression. You also implement optimizations to meet the latency requirement. You communicate progress and challenges to the Data Ingestion Lead and send work for review to the QA Data Analyst.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### **HANDOFF SUMMARY: DATA INGESTION PIPELINE (INGEST-123)**  \n*For seamless continuation by next LLM. All constraints are non-negotiable.*  \n\n---\n\n#### **CURRENT PROGRESS**  \n- **Task initiated** (Jira `INGEST-123`): Pipeline Developer to implement; QA (`QA-456`) pending.  \n- **No code/implementation done yet** (current turn: 1/10).  \n\n---\n\n#### **CRITICAL CONSTRAINTS (MANDATORY)**  \n| Constraint ID          | Requirement                                                                 |  \n|------------------------|-----------------------------------------------------------------------------|  \n| `DATA-FMT-PQT-SNAPPY-UTC` | - UTC timestamps (e.g., `2023-10-05T14:30:00.000Z`)<br>- **Parquet + Snappy compression ONLY** (no JSON/CSV/raw data) |  \n| `LATENCY-MAX-3.50S`      | - End-to-end latency ≤ 3.50s (MQTT publish → GCS write)<br>- Batch window ≤ 3.0s; **no manual triggers** |  \n\n---\n\n#### **KEY DECISIONS (SET INSTONE)**  \n- **Source**: MQTT → Flink `flink-connector-mqtt` (GCP Pub/Sub).  \n- **Processing**: Apache Flink (real-time).  \n- **Storage**: GCS **Standard** (hot) for real-time; **Coldline** for archiving.  \n- **Schema**: Avro (`sensor_data.avsc` with `event_time` UTC field).  \n- **Compression**: **Snappy** (Parquet `compression=SNAPPY` only).  \n\n---\n\n#### **NEXT STEPS (PRIORITY)**  \n1. **Pipeline Developer**:  \n   - Implement Flink code **today** (Jira `INGEST-123`):  \n     ```java  \n     // Example: UTC timestamp + Snappy Parquet write  \n     .map(event -> new SensorEvent(event.deviceId, Instant.now().atZone(UTC).toString(), ...))  \n     .addSink(GcsParquetSink.builder().withCompression(Compression.SNAPPY).build());  \n     ```  \n   - **DO NOT** use `gzip`/uncompressed.  \n   - Add Stackdriver metric `ingestion_latency_seconds` (p95 < 3.50s).  \n2. **QA Data Analyst**:  \n   - Prepare validation script (Jira `QA-456`) to check:  \n     - `snappy` compression (`gsutil ls -L gs://bucket/*.parquet`),  \n     - UTC timestamps (`event_time` ends with `Z`),  \n     - Latency ≤ 3.50s (Stackdriver logs).  \n\n---\n\n#### **CRITICAL REFERENCES**  \n- **Jira Tasks**: `INGEST-123` (deadline: 10 turns), `QA-456`.  \n- **Validation Proof**:  \n  - *Snappy check*: `gsutil ls -L gs://ingest-bucket/sensor_data_*.parquet | grep \"Compression: Snappy\"`.  \n  - *Latency metric*: `ingestion_latency_seconds` (p95 target: `< 3.50`).  \n- **Rejection Trigger**: Any violation of `DATA-FMT-PQT-SNAPPY-UTC` or `LATENCY-MAX-3.50S`.  \n\n> **URGENCY**: Deadline = 10 turns (current: 1/10). **NO DEVIATIONS**. Escalate issues within 2 turns.  \n> **— Handoff complete. Resume implementation immediately.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00003",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the DevOps Reviewer. You provide advanced review and act as a critical checkpoint for deployment plans, ensuring compliance with all operational, resource, and security constraints. You review findings from the Network Security Engineer (A3) and provide a compliance assessment to the DevOps Lead (A1).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### HANDOFF SUMMARY: WAF-FN61 NETWORK CONFIGURATION  \n**For LLM Continuation (A4 → A1 Escalation)**  \n\n---\n\n#### **CURRENT PROGRESS**  \n✅ **Proposal finalized** for A4 review:  \n- Routing path **locked** to `Internet → CloudFront → WAF-PROD-237 → ALB` (exact name, no templates).  \n- WAF rules configured with **zero bypass exceptions** (all traffic blocked by default).  \n\n---\n\n#### **CRITICAL CONSTRAINTS (NON-NEGOTIABLE)**  \n1. **WAF Name**: Must be **`WAF-PROD-237`** (case-sensitive, no variants like `-TEST` or `-DEV`).  \n2. **Routing**: CloudFront **must** associate *only* with `WAF-PROD-237` before ALB.  \n3. **Violation = Deployment Block** (no exceptions allowed).  \n\n---\n\n#### **NEXT STEPS (A4 ACTION REQUIRED)**  \n1. **Approve** if:  \n   - `WAF-PROD-237` is the **exact WAF name** in AWS.  \n   - Routing path matches `CloudFront → WAF-PROD-237 → ALB`.  \n2. **Reject** *only* if constraints violated (e.g., wrong WAF name, routing deviation).  \n→ **Approval triggers auto-escalation to A1 (Container Specialist)**.  \n\n---\n\n#### **KEY REFERENCES FOR CONTINUATION**  \n- **Exact WAF Name**: `WAF-PROD-237` (verify via AWS WAF console).  \n- **Critical YAML Snippet**:  \n  ```yaml\n  waf_association: \"WAF-PROD-237\"  # MUST BE EXACT\n  bypass: []  # NO EXCEPTIONS\n  ```  \n- **Deadline**: Escalation to A1 **within 24h of A4 approval**.  \n\n> ⚠️ **DO NOT** consider port 8080, `/health` paths, or TLS as constraints.  \n> **DO NOT** modify routing path or WAF name.  \n\n---  \n**HANDOFF COMPLETE. NEXT LLM: WAIT FOR A4 APPROVAL.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00014",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

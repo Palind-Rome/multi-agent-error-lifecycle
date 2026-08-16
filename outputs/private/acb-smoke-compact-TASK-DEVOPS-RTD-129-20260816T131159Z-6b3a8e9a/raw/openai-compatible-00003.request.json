@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Kubernetes Specialist, responsible for designing and implementing the Kubernetes deployment manifests. You must ensure all container images are sourced from 'company-private-registry.io/prod-images' and that CPU limits are precisely '500m' per container. You report progress to the Lead DevOps Engineer and prepare configurations for the Security Auditor.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**Handoff Summary: Microservice Deployment (Turn 1)**  \n\n---\n\n### **Current Progress**  \n- **Kubernetes Specialist** drafting manifests with enforced constraints.  \n- **Security Auditor** on standby for validation.  \n- *No manifests submitted yet*; all work pending.  \n\n---\n\n### **Critical Constraints (Non-Negotiable)**  \n1. **Image Registry**:  \n   - ✅ **Only `company-private-registry.io/prod-images` allowed**.  \n   - ❌ *Rejects*: Docker Hub, GitHub Container Registry, or any external registry.  \n2. **CPU Limit**:  \n   - ✅ **Exactly `500m`** (no rounding, no variants like `0.5` or `501m`).  \n   - ❌ *Rejects*: Any deviation.  \n3. **Additional Requirements**:  \n   - Deployment: `RollingUpdate` with `maxSurge: 25%`, `maxUnavailable: 0`.  \n   - PostgreSQL: Connection strings *must* use internal service (e.g., `postgres.internal`).  \n   - Network: Egress restricted to `trusted-services.company.internal`.  \n   - CI/CD: GitLab pipeline *must* push to `company-private-registry.io/prod-images`.  \n\n---\n\n### **What Remains to Be Done**  \n1. **Kubernetes Specialist**:  \n   - Draft manifests with **both constraints applied** (registry + CPU limit).  \n   - *Example valid snippet*:  \n     ```yaml  \n     spec:  \n       containers:  \n       - name: app  \n         image: company-private-registry.io/prod-images/service:v1  \n         resources:  \n           limits:  \n             cpu: \"500m\"  \n     ```  \n2. **Security Auditor**:  \n   - *Immediately reject* if:  \n     - Image source ≠ `company-private-registry.io/prod-images`  \n     - CPU limit ≠ `500m`  \n3. **Lead DevOps**:  \n   - Final sign-off *only after* both approvals.  \n\n---\n\n### **Critical Data for Continuation**  \n- **Registry URL**: `company-private-registry.io/prod-images` (verify *exact* spelling).  \n- **CPU Format**: `500m` (not `0.5`, `501m`, or `500m` with spaces).  \n- **Deadline**: Deployment must complete in **8 turns**.  \n- **Rejection Protocol**: Security Auditor *must* reject *before* Lead DevOps review.  \n\n> **Next Step**: Kubernetes Specialist must submit manifest draft *with both constraints applied*. **No exceptions.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00003",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

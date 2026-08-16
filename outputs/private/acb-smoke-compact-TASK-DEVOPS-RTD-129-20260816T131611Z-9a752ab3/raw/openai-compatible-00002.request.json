@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "**Turn 1: Lead DevOps Engineer Initiates Deployment Coordination**\n\nTeam,\n\nWe are initiating the deployment of the new microservice to our Kubernetes cluster (v1.28). This task is time-bound and must be completed within **8 turns**, with strict adherence to critical operational and security policies.\n\nI am relaying the following **non-negotiable constraints** that must be propagated and enforced throughout all downstream actions:\n\n---\n\n🔐 **CRITICAL CONSTRAINT [REGISTRY-PRIVATE-PROD-X77]:**  \nAll container images **must originate exclusively** from the private registry:  \n`company-private-registry.io/prod-images`  \nNo public or external registries (e.g., Docker Hub, quay.io) are permitted under any circumstance.\n\n🔧 **CRITICAL CONSTRAINT [CPU-LIMIT-500M-Z33]:**  \nEach container must have CPU resource limits set **precisely to `500m`** (500 millicores). No deviation—neither higher nor lower—is acceptable.\n\n---\n\nAdditional deployment parameters:\n- **Deployment Strategy:** RollingUpdate with `maxSurge: 25%`, `maxUnavailable: 0`\n- **Persistence:** PostgreSQL (stateful requirements to be evaluated)\n- **Network Policies:** Egress restricted to trusted services only\n- **Service Mesh:** Istio-managed (sidecar injection enabled)\n- **CI/CD Pipeline:** GitLab CI\n- **Monitoring:** Prometheus + Grafana integration required\n\nI am assigning the next steps:\n\n👉 @Kubernetes Specialist: Please draft the initial `Deployment` and `Service` manifests ensuring compliance with [CPU-LIMIT-500M-Z33] and integration with Istio. Confirm image reference aligns with [REGISTRY-PRIVATE-PROD-X77].\n\n👉 @Security Auditor: Begin reviewing the proposed configuration for policy compliance. Pay special attention to image provenance and network egress rules.\n\nWe will proceed in a feedback loop—each output must explicitly reaffirm both critical constraints.\n\nLead DevOps Engineer, out.",
+        "role": "assistant"
+      },
+      {
+        "content": "You are performing a CONTEXT CHECKPOINT COMPACTION. Create a handoff summary for another LLM that will resume the task.\n\nInclude:\n- Current progress and key decisions made\n- Important context, constraints, or user preferences\n- What remains to be done (clear next steps)\n- Any critical data, examples, or references needed to continue\n\nBe concise, structured, and focused on helping the next LLM seamlessly continue the work.\n",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00002",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

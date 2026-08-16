@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Lead DevOps Engineer, responsible for overseeing the deployment and operational aspects of the microservice. You must ensure all critical constraints, like the private image registry and the specific CPU limits, are clearly communicated and strictly followed. You coordinate the team and review deployment plans.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**🔄 CONTEXT CHECKPOINT COMPACTION – HANDOFF SUMMARY**\n\n---\n\n### 📌 **Current Progress & Key Decisions**\n\n- **Kubernetes manifests drafted**:\n  - `Deployment` with 3 replicas, rolling update (`maxUnavailable: 0`), liveness/readiness probes.\n  - `Service` (ClusterIP) exposing port 80 → 8080.\n  - `NetworkPolicy` enforcing egress only to trusted namespaces, DNS, and internal services.\n- **Istio sidecar injection enabled** via label `istio-injection: enabled`.\n- **CI/CD pipeline (GitLab CI)** defined with stages: `build`, `push`, `deploy`.\n  - Builds and tags image under private registry.\n  - Enforces manual approval for production deployment.\n  - Generates SBOM as build artifact.\n\n---\n\n### 🔐 **Key Constraints & Requirements (MUST BE ENFORCED)**\n\n| ID | Requirement | Value |\n|----|-------------|-------|\n| `[REGISTRY-PRIVATE-PROD-X77]` | Image registry | `company-private-registry.io/prod-images` only |\n| `[CPU-LIMIT-500M-Z33]` | CPU limit per container | Exactly `500m` |\n| — | Deployment safety | Zero-downtime rollout (`maxUnavailable: 0`) |\n| — | Production promotion | Manual approval required |\n\n> ⚠️ No public images, no CPU >500m, no auto-deploy to prod.\n\n---\n\n### 🛠️ **What Remains to Be Done**\n\n1. **Monitoring & Observability Setup**:\n   - ✅ App exposes `/metrics` on port `8080`.\n   - Need: Prometheus scrape config targeting the service.\n   - Need: Minimal Grafana dashboard JSON (CPU usage, HTTP request rate, error ratio).\n\n2. **Finalize CI/CD Integration**:\n   - Confirm SBOM generation tooling (e.g., Syft) is invoked in `build` job.\n   - Add image signing step (e.g., Cosign) in `push` stage (if required by policy).\n\n3. **Security Review Completion**:\n   - Validate network policy alignment with cluster-wide policies.\n   - Confirm image provenance (SBOM + signing) meets audit requirements.\n\n4. **Stateful Considerations (if applicable)**:\n   - If PostgreSQL is used, define `StatefulSet` + `PersistentVolumeClaim`.\n   - Otherwise, confirm external DB assumption.\n\n---\n\n### 📎 **Critical Data & References**\n\n```yaml\n# Required image path\nimage: company-private-registry.io/prod-images/microservice:v1.0\n\n# Resource spec (must be preserved)\nresources:\n  limits:\n    cpu: 500m\n```\n\n```yaml\n# Service port mapping\nports:\n  - protocol: TCP\n    port: 80\n    targetPort: 8080\n```\n\n- **Probes**: `/health` (liveness), `/ready` (readiness), `/metrics` (Prometheus).\n- **Registry**: Private-only; no Docker Hub or public sources.\n- **Pipeline**: GitLab CI; manual deploy to production.\n\n---\n\n➡️ **Next LLM Task**:  \n**Draft Prometheus scrape configuration and Grafana dashboard structure**, ensuring compliance with constraints and integration with existing manifests and CI/CD.\n\nAll prior decisions and policies are binding. Continue seamlessly.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00007",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Pipeline Developer, responsible for implementing the data ingestion logic and data formatting. You must ensure all incoming data is timestamped in UTC, stored in parquet format, and uses Snappy compression. You also implement optimizations to meet the latency requirement. You communicate progress and challenges to the Data Ingestion Lead and send work for review to the QA Data Analyst.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### HANDOFF SUMMARY: DEPLOYMENT EXECUTION (DATA INGESTION LEAD)  \n**For LLM Resumption**  \n\n---\n\n#### ✅ **CURRENT PROGRESS & KEY DECISIONS**  \n- **Jira `DEPLOY-789` created** (Status: *To Do → Awaiting Infrastructure Approval*).  \n- **All constraints validated** (QA-456 closed as PASS):  \n  - `DATA-FMT-PQT-SNAPPY-UTC`: GCS output confirmed ([link](https://console.cloud.google.com/storage/browser/ingest-bucket)).  \n  - `LATENCY-MAX-3.50S`: p95 = 3.27s (Stackdriver metric, **10.6% below threshold**).  \n  - `UTC timestamp`: *Source-provided `event_time` enforced* (e.g., `\"2023-10-05T14:30:00.000Z\"`), **no system time overrides**.  \n- **No code changes or rework** required (per handoff: *QA-456 approved, no re-verification*).  \n\n---\n\n#### ⚠️ **CRITICAL CONSTRAINTS / PREFERENCES**  \n| Constraint                | Proof/Reference                          | Action Required (Next LLM) |  \n|---------------------------|------------------------------------------|----------------------------|  \n| `DATA-FMT-PQT-SNAPPY-UTC` | GCS output path (verified)               | **DO NOT MODIFY**          |  \n| `LATENCY-MAX-3.50S`       | Stackdriver p95 = 3.27s (verified)       | **DO NOT ADJUST**          |  \n| `UTC timestamp`           | Source `event_time` only (no overrides)  | **ENFORCE STRICTLY**       |  \n\n> **Non-negotiable**: *No re-validation, no code changes, no deviations.*  \n\n---\n\n#### 🔜 **NEXT STEPS (IMMEDIATE)**  \n1. **Approve Jira `DEPLOY-789`** (Infrastructure Team action).  \n2. **Immediately close Jira `INGEST-123`** *after* `DEPLOY-789` approval (per handoff: *\"Close INGEST-123 (implementation complete)\"*).  \n3. **No further actions** required from this handoff.  \n\n---\n\n#### 🔐 **CRITICAL REFERENCES**  \n- [GCS Output (Snappy/Parquet)](https://console.cloud.google.com/storage/browser/ingest-bucket)  \n- [Stackdriver Latency Metric](https://console.cloud.google.com/monitoring/metrics-explorer?metric=ingestion_latency_seconds)  \n- [QA-456 Report (Closed PASS)](https://jira.example.com/issue/QA-456)  \n\n> **Final Directive**: *Deploy. Approve DEPLOY-789 → Close INGEST-123. Zero rework.*  \n> **Deadline**: 28 hours remaining (deployment initiated).  \n\n**Handoff Complete** → **DEPLOY-789 ready for Infrastructure approval.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00009",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

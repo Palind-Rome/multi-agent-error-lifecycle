@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Network Security Engineer. Your role is to design and implement network configurations, ensuring strict adherence to all security policies and routing requirements, especially regarding WAF integration. Report your proposed network configuration to the DevOps Reviewer (A4).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**🔄 CONTEXT CHECKPOINT COMPACTION – HANDOFF SUMMARY**\n\n---\n\n### 📌 **Current Progress & Key Decisions**\n- Deployment request initiated for **Production (us-east-1)**.\n- Service: `custom-app-v2.1` (3+ replicas, port 8080, `/health` endpoint).\n- Strategy: **Rolling Update** with **AWS ALB + CloudFront (CDN)**, **ACM TLS**, **Shield Advanced**.\n- **VPC Private-A** subnet enforced; **strict egress-only NACLs**.\n- **Logging** to ELK via stdout/stderr.\n- Two **hard constraints** activated:\n  - [RAM-KX77] → Max **3.75 GB RAM per container**\n  - [WAF-FN61] → All ingress **must route through WAF-PROD-237**\n\n---\n\n### 🔐 **Critical Constraints (Non-Negotiable)**\n| ID | Constraint | Owner | Verification |\n|----|----------|-------|--------------|\n| **[RAM-KX77]** | Container RAM ≤ 3.75 GB | A2 | Must report limit + manifest snippet |\n| **[WAF-FN61]** | All external traffic via **WAF-PROD-237** | A3 | Plan → A4 review → A1 approval |\n\n> ❗ **Failure to comply = deployment rejection.**\n\n---\n\n### ✅ **Completed / Confirmed**\n- Deployment scope and environment finalized.\n- Service specs (CPU, storage, replicas, health check) defined.\n- Network and security baseline set (VPC, NACLs, Shield, ACM, CloudFront).\n\n---\n\n### 🚧 **Pending Actions (Next Steps)**\n1. **A2 (Container Specialist)** →  \n   - Finalize container memory limit (≤3.75 GB) in manifest.  \n   - Submit:  \n     - Confirmed memory value  \n     - Deployment snippet (e.g., `resources.limits.memory: 3680Mi`)  \n     - Validation method (e.g., `kubectl describe pod`)  \n   - **→ Report directly to A1**\n\n2. **A3 (Network Security Engineer)** →  \n   - Submit plan for:  \n     - Traffic flow: **CloudFront → WAF-PROD-237 → ALB → Service**  \n     - WAF association evidence (AWS WAFv2)  \n     - No direct ALB exposure  \n     - Alignment with Private-A VPC, NACLs, Shield  \n   - **→ Submit to A4 for review**\n\n3. **A4 (Senior DevOps Reviewer)** →  \n   - Validate A3’s plan against [WAF-FN61]  \n   - Confirm **no bypass paths**, correct WAF integration  \n   - Approve → report to A1\n\n---\n\n### 📎 **Critical Data & References**\n- **Image:** `custom-app-v2.1`\n- **Storage:** 50GB SSD (persistent)\n- **CPU:** 2 cores per instance\n- **Health Check:** `/health`\n- **Logging:** stdout/stderr → ELK\n- **DNS:** Route53\n- **Access:** Site-to-Site VPN\n- **WAF:** WAF-PROD-237 (dedicated)\n- **Constraint IDs:** [RAM-KX77], [WAF-FN61]\n\n---\n\n### 🔄 **Workflow (Handoff Path)**\n```\nA1 (Lead)\n├─→ A2 → [RAM-KX77] → ✅ Report to A1\n└─→ A3 → [WAF-FN61] → A4 → Approval → A1\n```\n\n> ⏱️ **Next status updates expected in next cycle.**  \n> 🚫 **Do not proceed with deployment until both constraints are verified and reported.**\n\n---  \n**Handoff Complete. Ready for continuation.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00012",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

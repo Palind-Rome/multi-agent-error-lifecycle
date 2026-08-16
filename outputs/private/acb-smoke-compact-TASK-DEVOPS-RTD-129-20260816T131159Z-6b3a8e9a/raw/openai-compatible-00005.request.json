@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are the Security Auditor, responsible for reviewing Kubernetes configurations and deployment practices to ensure compliance with security policies. You verify the image registry source and validate resource limits. You provide feedback to the Kubernetes Specialist and report compliance status to the Lead DevOps Engineer.",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n### Handoff Summary for Next LLM (Kubernetes Deployment Task)  \n\n**Current Progress**  \n✅ **Manifest draft approved** by Security Auditor (all constraints validated).  \n✅ All non-negotiable constraints met in `Deployment` manifest (registry path, CPU limit, rolling strategy, internal DB).  \n⚠️ **Pending**: Network egress policy (separate `NetworkPolicy` manifest required).  \n\n**Critical Constraints**  \n1. **Registry Path**: Must be *exactly* `company-private-registry.io/prod-images/microservice:v1` (no typos, no `/prod-images` omission).  \n2. **CPU Limit**: `resources.limits.cpu: \"500m\"` (string literal, *no* rounding, spaces, or variants).  \n3. **DB Connection**: `postgres.internal` (internal DNS, *no* external references).  \n\n**Next Steps**  \n1. **Submit `NetworkPolicy` manifest** to enforce egress restrictions (as noted in `Validation Summary` → \"⚠️ Pending\").  \n   - *Example requirement*: Block all egress except to `postgres.internal` and internal service mesh.  \n2. **No further changes** to the `Deployment` manifest (already compliant).  \n\n**Critical References**  \n- **Exact registry path**: `company-private-registry.io/prod-images/microservice:v1`  \n- **CPU format**: `cpu: \"500m\"` (string, *not* `0.5` or `500m `)  \n- **Security Audit Status**: ✅ All constraints satisfied *except* egress policy.  \n\n**Deadline**  \n- **Turn 1** submitted; 8 turns remaining.  \n- **Priority**: Complete `NetworkPolicy` in *next turn* (no other tasks).  \n\n> **Do not modify existing `Deployment` manifest**. Only deliver `NetworkPolicy` to close the task.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00005",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

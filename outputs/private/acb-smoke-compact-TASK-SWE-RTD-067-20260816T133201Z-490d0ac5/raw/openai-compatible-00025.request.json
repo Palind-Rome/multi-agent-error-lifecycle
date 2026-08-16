@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "### Communication from Software Architect (A1) to Downstream Agents\n\n---\n\n#### **To Lead Backend Engineer (A2):**  \n**CRITICAL CONSTRAINT [S3-ENCRYPTION-USRPROF-SSE]**  \n> \"All persistent storage for user profiles **must exclusively utilize encrypted S3 buckets with server-side encryption enabled**. This is non-negotiable for security compliance. Implement this in all storage-related code (e.g., S3 bucket configuration, SDK calls). Verify encryption is enforced at the bucket level (SSE-S3 or SSE-KMS) and **not** via client-side logic. Document the implementation to ensure A4 (Junior Developer) inherits this requirement verbatim.\"\n\n---\n\n#### **To Performance Optimization Specialist (A3):**  \n**CRITICAL CONSTRAINT [API-RESP-TIME-75MS-P99]**  \n> \"The microservice **must maintain a maximum API response time of 75 milliseconds for 99th percentile requests**. This is a hard SLA. Optimize all request paths (including database, caching, and external dependencies) to meet this target. Provide a performance test plan validating P99 ≤ 75ms under load. **Do not proceed with deployment until this constraint is verified.**\"\n\n---\n\n### Key Validation Notes for Architect (A1)  \n1. **Security Constraint Survival (S3-ENCRYPTION-USRPROF-SSE):**  \n   - A2 **must relay this exact constraint to A4** (Junior Developer) without modification.  \n   - A4’s implementation **must explicitly enforce server-side encryption** (e.g., `s3:ServerSideEncryption` in AWS IAM policies, `x-amz-server-side-encryption` in S3 API calls).  \n   - *Failure to relay this to A4 would violate the security constraint.*  \n\n2. **Performance Constraint (API-RESP-TIME-75MS-P99):**  \n   - A3 **owns end-to-end performance validation**. No delegation to other roles is permitted.  \n   - *This constraint is isolated to A3’s scope—no branching required.*  \n\n**Architect’s Verification Step:**  \n- A2 must confirm to A1 that A4 received the S3 encryption constraint **in writing** (e.g., via ticket comment or code review note).  \n- A3 must submit a performance test report **before** A4’s storage implementation is merged.  \n\n> **This communication pattern ensures:**  \n> - Security constraints **survive the A2 → A4 hop** (via explicit relay requirement).  \n> - Performance constraints **remain isolated to A3** (no unnecessary branching).  \n> - All constraints are **unambiguous, measurable, and non-negotiable**.",
+        "role": "assistant"
+      },
+      {
+        "content": "You are performing a CONTEXT CHECKPOINT COMPACTION. Create a handoff summary for another LLM that will resume the task.\n\nInclude:\n- Current progress and key decisions made\n- Important context, constraints, or user preferences\n- What remains to be done (clear next steps)\n- Any critical data, examples, or references needed to continue\n\nBe concise, structured, and focused on helping the next LLM seamlessly continue the work.\n",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-30b-a3b-thinking-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00025",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

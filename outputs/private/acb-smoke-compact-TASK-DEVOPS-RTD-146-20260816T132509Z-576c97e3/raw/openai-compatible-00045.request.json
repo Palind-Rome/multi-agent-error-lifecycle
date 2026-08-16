@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "You are the Container Specialist. Your primary responsibility is to design and configure container deployments, ensuring all resource allocation constraints, especially RAM limits, are strictly adhered to. Report your proposed container configuration directly to the DevOps Lead (A1).",
+        "role": "system"
+      },
+      {
+        "content": "Another language model started to solve this problem and produced a summary of its thinking process. You also have access to the state of the tools that were used by that language model. Use this to build on the work that has already been done and avoid duplicating work. Here is the summary produced by the other language model, use the information in this summary to assist with your own analysis:\n\n\n**🔄 CONTEXT CHECKPOINT COMPACTION – HANDOFF SUMMARY**\n\n---\n\n### **📌 Current Progress & Key Decisions**\n- **Task Initiation**: DevOps Lead (A1) has dispatched initial configuration tasks to two specialists:\n  - **Container Specialist (A2)**: Configuring container runtime in `us-east-1` with strict RAM limits.\n  - **Network Security Engineer (A3)**: Securing external ingress via WAF-PROD-237.\n- **Review Protocol Established**: \n  - A2 reports **directly to A1** (no review required).\n  - A3 must submit plan to **Senior DevOps Reviewer (A4)** for validation before implementation.\n- **Constraint Enforcement Framework**:\n  - Two critical constraints defined and propagated:\n    - `RAM-KX77`: Container memory ≤ 3.75 GB (3750 MiB).\n    - `WAF-FN61`: All external traffic must pass through WAF-PROD-237.\n\n---\n\n### **🔐 Important Context & Constraints**\n- **[CRITICAL CONSTRAINT RAM-KX77]**  \n  - No container instance may exceed **3.75 GB RAM (3750 MiB)**.  \n  - Applies to orchestration layer (ECS/Kubernetes).  \n  - Must be enforced in memory **limits**, not just requests.  \n  - Autoscaling and replica behavior must not violate per-instance cap.\n\n- **[CRITICAL CONSTRAINT WAF-FN61]**  \n  - All external ingress **must route through WAF-PROD-237**.  \n  - Traffic flow: **CloudFront → WAF-PROD-237 → ALB → Service**.  \n  - No direct ALB or IP exposure allowed.  \n  - Integration requirements: ACM TLS, AWS Shield Advanced, Route53 DNS, `/health` checks.\n\n- **Deployment Specs (Shared)**  \n  - Region: `us-east-1`  \n  - CPU: 2 cores  \n  - Image: `custom-app-v2.1`  \n  - Replicas: min 3  \n  - Storage: 50GB SSD  \n  - Port: 8080  \n  - Strategy: Rolling Update  \n  - Internal Network: VPC Subnet Private-A  \n  - Site-to-Site VPN: Internal access only\n\n---\n\n### **⏭️ What Remains to Be Done**\n1. **A2 → A1**:  \n   - A2 must submit **container configuration plan** confirming `RAM-KX77` compliance (memory limits set to 3750 MiB).  \n   - A1 awaits report before deployment.\n\n2. **A3 → A4 → A1**:  \n   - A3 must submit **ingress/WAF configuration plan** to A4.  \n   - A4 must **validate compliance with WAF-FN61** and **authorize implementation**.  \n   - A4 then notifies A1 of approval.\n\n3. **Final Deployment Gate**:  \n   - A1 **holds deployment** until both:\n     - A2 confirms `RAM-KX77` compliance.\n     - A4 confirms `WAF-FN61` approval.\n\n---\n\n### **📎 Critical Data & References**\n- **Constraint IDs**:  \n  - `RAM-KX77`: Memory cap per container.  \n  - `WAF-FN61`: Mandatory WAF routing.\n- **WAF Name**: `WAF-PROD-237`  \n- **Target Services**:  \n  - ECS/Kubernetes (container)  \n  - ALB + CloudFront + WAF (network)  \n- **Compliance Paths**:  \n  - A2 → A1 (direct)  \n  - A3 → A4 → A1 (review-gated)\n\n---\n\n🔁 **Next LLM should resume as A1 (DevOps Lead)**, awaiting inputs from A2 and A4, and prepared to enforce constraint compliance before authorizing deployment.  \n**No override without explicit justification.**",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00045",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}

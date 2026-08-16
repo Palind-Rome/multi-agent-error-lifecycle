@@ -1,0 +1,20 @@
+{
+  "authorization_persisted": false,
+  "body": {
+    "max_tokens": 4096,
+    "messages": [
+      {
+        "content": "**Software Architect (A1) → Lead Backend Engineer (A2):**\n\n> \"You are responsible for implementing the backend logic of the new microservice, with a primary focus on data persistence. There is a **critical architectural constraint** that must be strictly enforced:\n>\n> - **[S3-ENCRYPTION-USRPROF-SSE]**: All persistent storage for user profiles **must exclusively utilize encrypted S3 buckets with server-side encryption enabled**. This is non-negotiable from a compliance and security standpoint.\n>\n> Ensure this requirement is fully implemented in the storage layer. You will delegate the implementation details to the Junior Developer (A4), but you are accountable for verifying compliance. Communicate this constraint explicitly and confirm understanding.\"\n\n---\n\n**Software Architect (A1) → Performance Optimization Specialist (A3):**\n\n> \"Your role is to design and monitor the performance architecture of the microservice. A critical service-level objective has been defined:\n>\n> - **[API-RESP-TIME-75MS-P99]**: The microservice **must maintain a maximum API response time of 75 milliseconds for 99th percentile requests**. This includes all processing, I/O, and serialization overhead.\n>\n> You will need to establish monitoring, conduct load testing, and work closely with the backend team to ensure this target is met under production load. Design for observability and low-latency pathways. This constraint drives decisions on caching, database access patterns, and asynchronous processing.\"\n\n---\n\n**Lead Backend Engineer (A2) → Junior Developer (A4):**\n\n> \"You’ll be implementing the user profile storage module. Pay close attention to the following **security-critical directive**:\n>\n> - **[S3-ENCRYPTION-USRPROF-SSE]**: All user profile data must be stored in Amazon S3 buckets that are **encrypted at rest using server-side encryption (SSE)**. You must ensure that:\n>   - The S3 buckets used are configured with SSE (e.g., SSE-S3, SSE-KMS, or SSE-C — as per organizational policy).\n>   - All `PUT`/`POST` operations enforce encryption headers if required by policy.\n>   - No unencrypted S3 buckets are used, even temporarily or in staging environments.\n>   - Bucket policies explicitly deny unencrypted uploads.\n>\n> Confirm the use of infrastructure-as-code (e.g., CloudFormation or Terraform) to codify these settings and prevent configuration drift. This requirement was mandated by the Architect and must survive code review and audit.\"\n\n---\n\n**Verification of Constraint Propagation:**\n\n- ✅ **[S3-ENCRYPTION-USRPROF-SSE]**: Successfully relayed from A1 → A2 → A4.  \n  - *The security constraint survives two hops and reaches the implementing agent.*\n- ✅ **[API-RESP-TIME-75MS-P99]**: Successfully relayed from A1 → A3.  \n  - *The performance constraint reaches the specialist directly responsible.*\n\n**Conclusion:**  \nThe branching communication pattern has **effectively transmitted both distinct, highly salient constraints** to their respective specialized agents. The security constraint **survives an additional hop** (A1→A2→A4), ensuring that the implementing developer receives and is expected to comply with the S3 encryption mandate. Accountability chains are clear, and no critical constraint was lost in transmission.",
+        "role": "assistant"
+      },
+      {
+        "content": "You are performing a CONTEXT CHECKPOINT COMPACTION. Create a handoff summary for another LLM that will resume the task.\n\nInclude:\n- Current progress and key decisions made\n- Important context, constraints, or user preferences\n- What remains to be done (clear next steps)\n- Any critical data, examples, or references needed to continue\n\nBe concise, structured, and focused on helping the next LLM seamlessly continue the work.\n",
+        "role": "user"
+      }
+    ],
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "temperature": 0.0
+  },
+  "call_id": "openai-compatible-00023",
+  "endpoint": "https://aigateway.paperbypass.com/api/v1/chat/completions"
+}
