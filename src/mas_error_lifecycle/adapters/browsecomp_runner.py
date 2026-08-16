@@ -76,11 +76,12 @@ def _search_brief(tavily_key: str, query: str, n: int = 3) -> str:
     return "\n".join(lines) or "(no results)"
 
 
-def _first_url(brief: str) -> str:
+def _urls(brief: str, n: int = 2) -> list[str]:
+    urls: list[str] = []
     for line in brief.splitlines():
         if "(http" in line:
-            return "http" + line.split("(http", 1)[1].split(")", 1)[0]
-    return ""
+            urls.append("http" + line.split("(http", 1)[1].split(")", 1)[0])
+    return urls[:n]
 
 
 def _iterative_searcher(
@@ -90,26 +91,31 @@ def _iterative_searcher(
     tavily_key: str,
     model: str,
     trace: list[dict[str, Any]],
-    max_rounds: int = 3,
+    max_rounds: int = 4,
+    pages_per_round: int = 2,
 ) -> str:
-    """Search -> (optionally) follow-up query -> ... -> findings, up to N rounds."""
+    """Search -> (optionally) follow-up query -> ... -> findings, up to N rounds.
+
+    Each round fetches ``pages_per_round`` result pages (not just the top hit) so
+    the evidence the Searcher hands downstream is deeper.
+    """
     evidence_parts: list[str] = []
     query = question
     for round_index in range(max_rounds):
         brief = _search_brief(tavily_key, query)
-        top_url = _first_url(brief)
-        page_text = ""
-        if top_url:
+        pages = []
+        for url in _urls(brief, n=pages_per_round):
             try:
-                page_text = fetch_url(top_url)[:4000]
+                pages.append(f"--- {url} ---\n{fetch_url(url)[:5000]}")
             except WebToolError:
-                page_text = "(fetch failed)"
+                pages.append(f"--- {url} ---\n(fetch failed)")
+        page_text = "\n\n".join(pages) or "(no pages fetched)"
         evidence_parts.append(
-            f"[Round {round_index + 1}] query: {query}\n{brief}\nPage ({top_url}):\n{page_text}"
+            f"[Round {round_index + 1}] query: {query}\n{brief}\nPages:\n{page_text}"
         )
         evidence = "\n\n".join(evidence_parts)
         trace.append({"agent": "searcher", "round": round_index + 1, "query": query,
-                      "brief": brief[:1500], "page_url": top_url})
+                      "brief": brief[:1500], "page_urls": _urls(brief, n=pages_per_round)})
         user = (
             f"Question: {question}\n\nEvidence gathered so far:\n{evidence}\n\n"
             "If more searching is needed, output ONLY your next search query "
@@ -134,7 +140,8 @@ def run_browsecomp_question(
     model_key: str,
     tavily_key: str,
     model: str = DEFAULT_MODEL,
-    max_search_rounds: int = 3,
+    max_search_rounds: int = 4,
+    pages_per_round: int = 2,
 ) -> dict[str, Any]:
     """Run the 3-agent relay on one question and return the trace + final answer."""
     trace: list[dict[str, Any]] = []
@@ -143,6 +150,7 @@ def run_browsecomp_question(
     findings = _iterative_searcher(
         question=question, model_key=model_key, tavily_key=tavily_key,
         model=model, trace=trace, max_rounds=max_search_rounds,
+        pages_per_round=pages_per_round,
     )
     trace.append({"agent": "searcher", "output": findings})
 
