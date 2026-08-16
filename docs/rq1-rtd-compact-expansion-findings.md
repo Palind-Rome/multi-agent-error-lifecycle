@@ -123,6 +123,23 @@ Observations (n = 5, one realization per cell — signal, not conclusion):
   (`max_output_tokens_per_call` 4096 → 16384) or it failed with `BudgetExceeded`
   on two tasks; its reasoning is longer.
 
+## Batch 3 (topology balance, baseline 30b-a3b)
+
+Five more tasks to balance `custom_graph` vs `branching_tree` across domains.
+`RTD-055` is excluded: its first agent emits a full Grafana dashboard that
+exceeds even a 64k output budget (and 64k triggers a provider 502), so it is a
+pathological-output outlier, not a topology signal.
+
+| Task | topology | literal RTD |
+| --- | --- | --- |
+| RTD-058/172/054/146/067 | branching_tree | 1.0 × 5 |
+| RTD-118/047/129 | custom_graph | 0.0 × 3 |
+| RTD-052 | custom_graph | 1.0 |
+
+Combined with batch 1-2: **branching_tree 5/5 = 1.0, custom_graph 3/4 = 0.0**.
+The topology split is stable, but recall the semantic judge: the custom_graph
+0.0 is precision reformatting (`300.00`→`300s`), not semantic loss.
+
 ## What this suggests to check next
 
 1. Whether `custom_graph` (a non-tree edge structure with back-and-forth hops)
