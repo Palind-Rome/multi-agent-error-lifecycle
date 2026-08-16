@@ -45,3 +45,20 @@ Searcher needs an *iterative* loop: search → fetch → issue follow-up queries
 fetch more, with a token/step budget, so the evidence actually reaches the
 hand-off. Until then the pilot mainly demonstrates that the 3-agent relay does
 not lose or corrupt information — the loss is upstream, in search.
+
+## Re-run with the iterative Searcher + a stronger model (235b-a22b)
+
+The Searcher loop (search → follow-up query → findings, up to 3 rounds) was
+added, and the 7 questions re-run with `qwen/qwen3-235b-a22b-2507` throughout.
+
+- **No crashes** (7/7 completed, vs 6/7 with 30b), and the model actually
+  iterates: 1-2 search rounds per question (mean 1.4), where 30b gave up after
+  round 1.
+- **Still 1/7 correct** (only SCAD). The others are now clean *abstentions*
+  ("Unknown", "Insufficient data", "cannot be determined") rather than 30b's
+  confident wrong guesses (e.g. 30b said "Sara Ahmed" where 235b abstains).
+
+Conclusion is unchanged and now cleaner: **the bottleneck is search depth, not
+the relay, and a stronger Searcher abstains instead of hallucinating.** To lift
+accuracy, the search itself must go deeper (more rounds, page-level multi-hop,
+or a real browsing tool) — not the relay.
