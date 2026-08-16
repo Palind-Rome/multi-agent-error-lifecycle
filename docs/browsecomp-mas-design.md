@@ -62,13 +62,13 @@ Concretely, the pilot asks:
 A minimal, deterministic 3-agent chain (not a dynamic swarm) so the topology is
 legible in the trace.
 
-Note on AG2 1.0: the old `GroupChat` / `RoundRobinGroupChat` API is **gone**. The
-current model is one `ag2.Agent(name, prompt, config=…, tools=[…])` (plus a
-declarative `ag2.spec.AgentSpec`), with multi-agent done through a
-`subagent_tool`, `tasks` (`TaskConfig`/`TaskSpec`), or `assembly` policies — not
-a chat manager. The 3-role chain below stays the *logical* design; the concrete
-mechanism (subagents vs. a task graph) is a short spike that must happen before
-harness code is written.
+Note on AG2 1.0 (verified by spike): the old `GroupChat` / `RoundRobinGroupChat`
+API is **gone**. `ag2.Agent(name, prompt, config=…, tools=[…])` is the agent, and
+multi-agent is done by wrapping one agent as a **`subagent_tool`** of another
+(`ag2.tools.subagents.subagent_tool`), plus a separate `tasks`/`assembly`
+surface. That is a *nested* subagent model, not a flat relay, and its trace is a
+tool-call/event stream rather than our source→target `message` records. See the
+harness decision in section 8.
 
 ```
 Searcher ──(findings + cited URLs)──▶ Synthesizer ──(answer + rationale)──▶ Verifier ──▶ final
@@ -133,24 +133,33 @@ Steps, in order:
 
 1. **Get BrowseComp** (encrypted in the official release; decrypt via the
    simple-evals util). Verify the question count and spot-check ~7.
-2. **Spike AG2 1.0's multi-agent path** — verified in a throwaway container that
-   `ag2==1.0.2` installs, ships `Agent`/`AgentSpec` + built-in `WebSearchTool`/
-   `WebFetchTool`, and *removed* the old `GroupChat` API. What still needs a
-   spike before code: how to express a fixed Searcher→Synthesizer→Verifier chain
-   (subagent_tool vs. task graph vs. assembly) and how to capture per-agent
-   turns for our trace schema.
-3. **Wire the built-in tools** (`WebSearchTool`/`WebFetchTool`, or Tavily) with
-   a search key.
-4. **3-agent team + trace logger**, emitting the record vocabulary above.
-5. **Run ~7 questions verbatim**, dump traces, and run the annotation pass.
+2. **Web tools** — done: `adapters/browsecomp_tools.py` provides `tavily_search`
+   + `fetch_url` (stdlib only, key never persisted). Smoke-tested against the
+   real Tavily key.
+3. **3-agent relay + trace logger**, emitting the record vocabulary above.
+4. **Run ~7 questions verbatim**, dump traces, and run the annotation pass.
 
-Blockers that need inputs only you can supply: (a) the search API key,
-(b) the model key at run time (as usual, via stdin, never persisted).
+## 8. Harness decision (updated after the AG2 spike)
+
+AG2 1.0's multi-agent path is a **nested subagent tool** (one agent wraps another
+as a `subagent_tool`), plus a `tasks`/`assembly` surface — not a flat relay, and
+its trace is a tool-call/event stream, not our `source → target` `message`
+records. For a pilot whose whole point is *analyzing the trajectory*, that is a
+poor fit: it hides the hand-off we want to inspect behind framework plumbing.
+
+**Decision: build the BrowseComp MAS as a minimal self-built relay**, reusing the
+existing trace schema + provider primitives (the same machinery the
+AgentCollabBench adapter already uses). The web tools come from
+`browsecomp_tools.py`; the 3 roles are three calls in a controlled loop, so each
+hand-off is an explicit `message` record. This is faster, fully traceable, and
+keeps the error-lifecycle lens (relay → adoption → downstream) intact.
+
+Remaining blocker: **the BrowseComp dataset itself** (encrypted in the official
+release; needs download + decryption via the simple-evals util), plus the model
+key at run time (as usual, via stdin, never persisted).
 
 ## 7. Decisions to confirm
 
-1. **Search backend** — Tavily (cheap, keyed) vs. another provider. Which key
-   do you have?
-2. **3-agent chain vs. something else** — I propose the Searcher/Synthesizer/
-   Verifier chain above for legibility; say if you want a different shape.
+1. ~~Search backend~~ — **Tavily, key supplied** (2026-08).
+2. ~~AG2 vs self-built relay~~ — **self-built relay** (see section 8).
 3. **Verbatim first, or compact as a second arm from the start?**
