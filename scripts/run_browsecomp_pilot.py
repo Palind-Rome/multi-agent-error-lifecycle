@@ -30,6 +30,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--model", default="qwen/qwen3-30b-a3b-instruct-2507")
     parser.add_argument("--skip", type=int, default=0, help="skip the first N questions")
+    parser.add_argument("--max-search-rounds", type=int, default=3)
     return parser
 
 
@@ -53,7 +54,7 @@ def main(argv: list[str] | None = None) -> int:
         try:
             run = run_browsecomp_question(
                 question=question, model_key=model_key, tavily_key=tavily_key,
-                model=args.model,
+                model=args.model, max_search_rounds=args.max_search_rounds,
             )
             record = {"source_row": item["source_row"], "question": question,
                       "true_answer": item["answer"], "final": run["final"],

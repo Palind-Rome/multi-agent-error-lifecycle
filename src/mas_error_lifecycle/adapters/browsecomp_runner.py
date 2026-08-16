@@ -76,37 +76,74 @@ def _search_brief(tavily_key: str, query: str, n: int = 3) -> str:
     return "\n".join(lines) or "(no results)"
 
 
+def _first_url(brief: str) -> str:
+    for line in brief.splitlines():
+        if "(http" in line:
+            return "http" + line.split("(http", 1)[1].split(")", 1)[0]
+    return ""
+
+
+def _iterative_searcher(
+    *,
+    question: str,
+    model_key: str,
+    tavily_key: str,
+    model: str,
+    trace: list[dict[str, Any]],
+    max_rounds: int = 3,
+) -> str:
+    """Search -> (optionally) follow-up query -> ... -> findings, up to N rounds."""
+    evidence_parts: list[str] = []
+    query = question
+    for round_index in range(max_rounds):
+        brief = _search_brief(tavily_key, query)
+        top_url = _first_url(brief)
+        page_text = ""
+        if top_url:
+            try:
+                page_text = fetch_url(top_url)[:4000]
+            except WebToolError:
+                page_text = "(fetch failed)"
+        evidence_parts.append(
+            f"[Round {round_index + 1}] query: {query}\n{brief}\nPage ({top_url}):\n{page_text}"
+        )
+        evidence = "\n\n".join(evidence_parts)
+        trace.append({"agent": "searcher", "round": round_index + 1, "query": query,
+                      "brief": brief[:1500], "page_url": top_url})
+        user = (
+            f"Question: {question}\n\nEvidence gathered so far:\n{evidence}\n\n"
+            "If more searching is needed, output ONLY your next search query "
+            "(one sentence). Otherwise output 'FINDINGS:' followed by your "
+            "findings with source URLs."
+        )
+        response = _chat(model_key, model, _SEARCHER_SYSTEM, user)
+        if "FINDINGS:" in response:
+            return response.split("FINDINGS:", 1)[1].strip()
+        query = response.strip()[:300] or question
+    # Budget exhausted: force findings from everything gathered.
+    user = (
+        f"Question: {question}\n\nEvidence gathered:\n{evidence}\n\n"
+        "Write your findings with source URLs now."
+    )
+    return _chat(model_key, model, _SEARCHER_SYSTEM, user)
+
+
 def run_browsecomp_question(
     *,
     question: str,
     model_key: str,
     tavily_key: str,
     model: str = DEFAULT_MODEL,
+    max_search_rounds: int = 3,
 ) -> dict[str, Any]:
     """Run the 3-agent relay on one question and return the trace + final answer."""
     trace: list[dict[str, Any]] = []
 
-    # --- Searcher ---
-    search_brief = _search_brief(tavily_key, question)
-    top_url = ""
-    for line in search_brief.splitlines():
-        if "(http" in line:
-            top_url = line.split("(http", 1)[1].split(")", 1)[0]
-            top_url = "http" + top_url
-            break
-    page_text = ""
-    if top_url:
-        try:
-            page_text = fetch_url(top_url)[:4000]
-        except WebToolError:
-            page_text = "(fetch failed)"
-    trace.append({"agent": "searcher", "tool": "search", "query": question,
-                  "brief": search_brief[:2000]})
-    searcher_user = (
-        f"Question: {question}\n\nSearch results:\n{search_brief}\n\n"
-        f"Top page text ({top_url}):\n{page_text}\n\nWrite your findings with sources."
+    # --- Searcher (iterative) ---
+    findings = _iterative_searcher(
+        question=question, model_key=model_key, tavily_key=tavily_key,
+        model=model, trace=trace, max_rounds=max_search_rounds,
     )
-    findings = _chat(model_key, model, _SEARCHER_SYSTEM, searcher_user)
     trace.append({"agent": "searcher", "output": findings})
 
     # --- Synthesizer (no tools) ---
