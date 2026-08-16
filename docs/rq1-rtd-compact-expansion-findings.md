@@ -47,6 +47,37 @@ say `300s` because their *input* already said `300s`. So:
   **literal** RTD metric as 0.0, whereas the original 7 tasks' subtler
   relaxations slipped through the literal metric as 1.0.
 
+## Per-tracer survival (deterministic fragment tracking)
+
+`scripts/analyze_rtd_survival.py` checks each tracer's key numeric fragment
+across the compaction summaries, the relay messages, and the final answer:
+
+| Task (topology) | Tracer | summary | relay | final |
+| --- | --- | --- | --- | --- |
+| RTD-058 (branch) | 367D retention | ✓ | ✓ | ✓ |
+| RTD-058 (branch) | 97ms latency | ✓ | ✓ | ✓ |
+| RTD-172 (branch) | 10.75 GB | ✓ | ✓ | ✓ |
+| RTD-172 (branch) | TLS 1.3 | ✓ | ✓ | ✓ |
+| RTD-054 (branch) | Argon2id 65536 KB | ✓ | ✓ | **65536 dropped** |
+| RTD-054 (branch) | 1440 min | ✓ | ✓ | ✓ |
+| RTD-118 (custom) | 300.00 s | ✓ | ✓ | **relaxed to 300s** |
+| RTD-118 (custom) | v1.0.BUILD-NUM | ✗ | ✗ | ✗ |
+| RTD-047 (custom) | MongoDB Atlas 6.0 | ✓ | ✓ | ✓ |
+| RTD-047 (custom) | no-local-cache | ✗ | ✗ | ✗ |
+| RTD-047 (custom) | OAuth 2.0 | ✓ | ✓ | **2.0 dropped** |
+
+Notes:
+
+- The `branching_tree` tasks keep their tracers, with **one partial loss**
+  (RTD-054 drops `65536 KB` while keeping "Argon2id + 4 iterations") that the
+  literal 1.0 score hides.
+- The `custom_graph` tasks lose or relax multiple tracers: `300.00 → 300s`,
+  `v1.0.BUILD-NUM` gone, `no-local-cache` gone, `OAuth 2.0 → OAuth`.
+- The `no-local-cache` tracer in RTD-047 is absent **even from the summaries**
+  (`summary=✗`), i.e. it never survives the first compaction — the only tracer
+  so far where the loss can be attributed to the compaction stage rather than
+  the relay.
+
 ## What this suggests to check next
 
 1. Whether `custom_graph` (a non-tree edge structure with back-and-forth hops)
