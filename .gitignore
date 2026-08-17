@@ -12,6 +12,7 @@ outputs/private-failed/
 outputs/STATUS.md
 outputs/browsecomp-decrypted.jsonl
 outputs/browsecomp-run-*.jsonl
+outputs/feishu-report-draft.md
 configs/*.local.toml
 .env
 .DS_Store
