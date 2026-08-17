@@ -14,13 +14,14 @@ The API key is a plain argument and is never logged or persisted by this module.
 from __future__ import annotations
 
 import json
+import time
 import urllib.error
 import urllib.request
 from html.parser import HTMLParser
 from typing import Any
 
 TAVILY_ENDPOINT = "https://api.tavily.com/search"
-DEFAULT_TIMEOUT_SECONDS = 20.0
+DEFAULT_TIMEOUT_SECONDS = 60.0
 USER_AGENT = "mas-error-lifecycle/0.3 browsecomp-pilot"
 
 
@@ -78,11 +79,17 @@ def tavily_search(api_key: str, query: str, max_results: int = 5) -> list[dict[s
         },
         method="POST",
     )
-    try:
-        with urllib.request.urlopen(request, timeout=DEFAULT_TIMEOUT_SECONDS) as response:
-            body = json.loads(response.read().decode("utf-8"))
-    except (urllib.error.URLError, json.JSONDecodeError, OSError) as exc:
-        raise WebToolError(f"tavily_search failed: {type(exc).__name__}") from exc
+    last_exc: Exception | None = None
+    for _ in range(2):  # one retry for transient slowness/timeouts
+        try:
+            with urllib.request.urlopen(request, timeout=DEFAULT_TIMEOUT_SECONDS) as response:
+                body = json.loads(response.read().decode("utf-8"))
+            break
+        except (urllib.error.URLError, json.JSONDecodeError, OSError) as exc:
+            last_exc = exc
+            time.sleep(2.0)
+    else:
+        raise WebToolError(f"tavily_search failed: {type(last_exc).__name__}") from last_exc
     return [
         {
             "title": item.get("title", ""),
