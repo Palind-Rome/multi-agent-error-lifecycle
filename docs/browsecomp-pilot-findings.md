@@ -62,3 +62,12 @@ Conclusion is unchanged and now cleaner: **the bottleneck is search depth, not
 the relay, and a stronger Searcher abstains instead of hallucinating.** To lift
 accuracy, the search itself must go deeper (more rounds, page-level multi-hop,
 or a real browsing tool) — not the relay.
+
+### Deeper search (2 pages/round × 4 rounds)
+
+A deeper Searcher (2 result pages fetched per round, up to 4 rounds) recovers one
+more answer: row 1 ("Ireland v Romania" was found and answered correctly, vs
+"Insufficient data" before). So depth helps, but the dev-tier infrastructure is
+flaky — both the Tavily dev key and the PaperBypass gateway dropped connections
+(`RemoteDisconnected` / `URLError`) on a few questions, despite backoff retries.
+A clean BrowseComp run needs production keys, not the current dev tiers.
