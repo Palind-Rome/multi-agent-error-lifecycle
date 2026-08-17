@@ -22,6 +22,7 @@ from mas_error_lifecycle.adapters.browsecomp_runner import (
     BrowseCompRunnerError,
     run_browsecomp_question,
 )
+from mas_error_lifecycle.adapters.browsecomp_tools import WebToolError
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -60,7 +61,7 @@ def main(argv: list[str] | None = None) -> int:
                       "true_answer": item["answer"], "final": run["final"],
                       "findings": run["findings"], "answer": run["answer"],
                       "trace": run["trace"], "ok": True}
-        except BrowseCompRunnerError as exc:
+        except (BrowseCompRunnerError, WebToolError) as exc:
             record = {"source_row": item["source_row"], "question": question,
                       "true_answer": item["answer"], "ok": False, "error": str(exc)}
         results.append(record)

@@ -80,14 +80,15 @@ def tavily_search(api_key: str, query: str, max_results: int = 5) -> list[dict[s
         method="POST",
     )
     last_exc: Exception | None = None
-    for _ in range(2):  # one retry for transient slowness/timeouts
+    for attempt, backoff in enumerate((1.0, 2.0, 4.0)):
         try:
             with urllib.request.urlopen(request, timeout=DEFAULT_TIMEOUT_SECONDS) as response:
                 body = json.loads(response.read().decode("utf-8"))
             break
         except (urllib.error.URLError, json.JSONDecodeError, OSError) as exc:
             last_exc = exc
-            time.sleep(2.0)
+            if attempt < 2:  # retry with backoff for transient slowness/resets
+                time.sleep(backoff)
     else:
         raise WebToolError(f"tavily_search failed: {type(last_exc).__name__}") from last_exc
     return [
